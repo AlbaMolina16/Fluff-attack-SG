@@ -1,3 +1,4 @@
+# Unity generated folders
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -5,14 +6,18 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
+
+# User-specific settings
 UserSettings/
+*.user
+*.userprefs
+
+# Visual Studio / Rider / VSCode
 *.csproj
 *.unityproj
 *.sln
 *.suo
 *.tmp
-*.user
-*.userprefs
 *.pidb
 *.booproj
 *.svd
@@ -20,3 +25,48 @@ UserSettings/
 *.mdb
 *.opendb
 *.VC.db
+
+# Crash reports
+sysinfo.txt
+
+# Unity cache
+*.stackdump
+
+# Rider
+.idea/
+*.iml
+
+# VS
+.vs/
+# VSCode
+.vscode/
+
+# Auto-generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.hash
+
+# Collaborate
+.collab/
+
+# PlasticSCM
+.plastic/
+
+# Gradle (Android)
+.gradle/
+*.gradle
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Android build
+*.apk
+*.aab
+
+# iOS build
+*.xcworkspace/
+*.xcuserdata/
+*.xcuserstate
