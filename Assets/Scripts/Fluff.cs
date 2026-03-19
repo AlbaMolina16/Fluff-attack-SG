@@ -17,7 +17,7 @@ public class Fluff : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Destroy the collectible
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }
