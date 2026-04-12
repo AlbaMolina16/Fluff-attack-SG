@@ -13,6 +13,7 @@ UserSettings/
 *.userprefs
 
 # Visual Studio / Rider / VSCode
+[Bb]in/
 *.csproj
 *.unityproj
 *.sln
