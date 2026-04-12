@@ -1,4 +1,5 @@
-﻿using FluffGameApi.Entities;
+﻿using FluffGameApi.Dtos;
+using FluffGameApi.Entities;
 using FluffGameApi.Repositories;
 
 namespace FluffGameApi.Services
@@ -30,18 +31,13 @@ namespace FluffGameApi.Services
             }
         }
 
-
-
-        //public async Task<(bool success, string message, int idUsuario)> Login(LoginDto dto)
-        public async Task<(bool success, string message, string user)> Login(string username)
-
+        public async Task<(bool success, string message, int idUsuario)> Login(LoginDto dto)
         {
-            //var user = await _userRepository.GetByUsername(dto.Username);
-            var user = await _userRepository.GetByUsername(username);
+            var user = await _userRepository.GetByUsername(dto.Username);
 
             if (user == null)
                 //return (false, "Usuario no existe", 0);
-                return (false, "Usuario no existe", null);
+                return (false, "Usuario no existe", 0);
 
 
             //bool match = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
@@ -49,9 +45,7 @@ namespace FluffGameApi.Services
             //if (!match)
             //    return (false, "Contraseña incorrecta", 0);
 
-            //return (true, "Login correcto", user.IdUsuario);
-            return (true, "Login correcto", username);
-
+            return (true, "Login correcto", user.Id);
         }
 
     }

@@ -1,9 +1,12 @@
-﻿using FluffGameApi.Services;
+﻿using FluffGameApi.Dtos;
+using FluffGameApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FluffGameApi.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
@@ -29,10 +32,15 @@ namespace FluffGameApi.Controllers
 
 
         [HttpPost("login")]
-        //public async Task<IActionResult> Login(LoginDto dto)
-        public async Task<IActionResult> Login(string username)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var result = await _authService.Login(username);
+            var result = await _authService.Login(loginDto);
+
+            if (!result.success)
+            {
+                return Unauthorized(new { result.message });
+            }
+
             return Ok(result);
         }
 
