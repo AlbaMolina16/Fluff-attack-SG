@@ -26,5 +26,15 @@ namespace FluffGameApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message });
             }
         }
+
+
+        [HttpPost("login")]
+        //public async Task<IActionResult> Login(LoginDto dto)
+        public async Task<IActionResult> Login(string username)
+        {
+            var result = await _authService.Login(username);
+            return Ok(result);
+        }
+
     }
 }

@@ -21,6 +21,7 @@ namespace FluffGameApi.Services
             try
             {
                 var users = await _userRepository.GetAll();
+
                 return (true, "Users retrieved successfully", users);
             }
             catch (Exception ex)
@@ -28,5 +29,30 @@ namespace FluffGameApi.Services
                 return (false, $"Error retrieving users: {ex.Message}", null);
             }
         }
+
+
+
+        //public async Task<(bool success, string message, int idUsuario)> Login(LoginDto dto)
+        public async Task<(bool success, string message, string user)> Login(string username)
+
+        {
+            //var user = await _userRepository.GetByUsername(dto.Username);
+            var user = await _userRepository.GetByUsername(username);
+
+            if (user == null)
+                //return (false, "Usuario no existe", 0);
+                return (false, "Usuario no existe", null);
+
+
+            //bool match = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+
+            //if (!match)
+            //    return (false, "Contraseña incorrecta", 0);
+
+            //return (true, "Login correcto", user.IdUsuario);
+            return (true, "Login correcto", username);
+
+        }
+
     }
 }

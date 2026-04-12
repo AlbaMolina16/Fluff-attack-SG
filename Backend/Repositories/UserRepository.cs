@@ -26,5 +26,18 @@ namespace FluffGameApi.Repositories
 
             return users.ToList();
         }
+
+        public async Task<User?> GetByUsername(string username)
+        {
+            string sql = "SELECT * FROM users WHERE USERNAME = @Username";
+
+            var user = await Connection.QueryFirstOrDefaultAsync<User>(sql, new
+            {
+                Username = username
+            });
+
+            return user;
+        }
+
     }
 }
