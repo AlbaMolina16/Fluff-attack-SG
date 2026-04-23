@@ -26,7 +26,11 @@ public class LoginController : MonoBehaviour
     public Button loginButon;
     public GameObject loadingSpinner;
 
-    private const string BASE_URL = "https://localhost:44356/api/auth/login";
+    // URL de la API en local
+    // private const string BASE_URL = "https://localhost:44356/api/auth/login";
+    // URL de la API en Azure
+    private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
+
 
     /// <summary>
     /// Valida que los campos de usuario y contraseña no estén vacíos. Si la validación es correcta,
