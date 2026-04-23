@@ -12,6 +12,9 @@ UserSettings/
 *.user
 *.userprefs
 
+# Backend secrets (never commit)
+Backend/appsettings.Development.json
+
 # Visual Studio / Rider / VSCode
 [Bb]in/
 *.csproj

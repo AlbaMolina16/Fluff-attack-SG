@@ -3,6 +3,12 @@ using FluffGameApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var mysqlConnectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+if (string.IsNullOrWhiteSpace(mysqlConnectionString))
+{
+    throw new InvalidOperationException("Connection string 'MySqlConnection' is not configured.");
+}
+
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
