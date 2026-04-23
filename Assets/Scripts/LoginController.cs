@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
 {
@@ -22,10 +23,15 @@ public class LoginController : MonoBehaviour
     public TMP_Text errorMessage;
     // Buttons to activate after successful login
     public GameObject[] buttonsToActivate;
-    public GameObject loginButon;
+    public Button loginButon;
+    public GameObject loadingSpinner;
 
     private const string BASE_URL = "https://localhost:44356/api/auth/login";
 
+    /// <summary>
+    /// Valida que los campos de usuario y contraseña no estén vacíos. Si la validación es correcta,
+    /// se procede a realizar la petición de login.
+    /// </summary>
     public async void ValidateInputs()
     {
         errorMessage.gameObject.SetActive(false); // ocultar mensaje antes de validar
@@ -35,31 +41,42 @@ public class LoginController : MonoBehaviour
         {
             errorMessage.text = "Por favor, rellena todos los campos requeridos.";
             errorMessage.gameObject.SetActive(true);
-
             return;
         }
 
+        loadingSpinner.SetActive(true);
+        SetFieldsStatus(false);
+
         var loginResponse = await Login(username.text, password.text);
+        loadingSpinner.SetActive(false);
 
         if (!loginResponse.success)
         {
             errorMessage.text = loginResponse.errorMessage;
             errorMessage.gameObject.SetActive(true);
+
+            SetFieldsStatus(true);
             return;
         }
 
-        // SceneManager.LoadScene(1);
-        ActivarBotones();
+        OnLoginSuccess();
     }
 
-    private void ActivarBotones()
+    /// <summary>
+    /// Muestra los botones de acciones permitidos al usuario, oculta el botón de Login y deshabilita los input de user y password
+    /// </summary>
+    private void OnLoginSuccess()
     {
+        // Mostramos botones de acción
         foreach (GameObject button in buttonsToActivate)
         {
             button.SetActive(true);
         }
 
-        loginButon.SetActive(false);
+        // Ocultamos el botón de login
+        loginButon.gameObject.SetActive(false);
+        // username.interactable = false;
+        // password.interactable = false;
     }
 
 
@@ -99,5 +116,15 @@ public class LoginController : MonoBehaviour
         return (false, "No se pudo iniciar sesión. Inténtalo de nuevo.");
     }
 
-
+    /// <summary>
+    /// Al pasar las validaciones de campos, como se va a realizar una llamada a la API que puede tardar unos segundos,
+    /// deshabilitamos los campos de usuario y contraseña para evitar que el usuario intente modificar los datos mientras se procesa la petición.
+    /// </summary>
+    private void SetFieldsStatus(bool interactable)
+    {
+        // Deshabilitar campos
+        username.interactable = interactable;
+        password.interactable = interactable;
+        loginButon.interactable = interactable;
+    }
 }
