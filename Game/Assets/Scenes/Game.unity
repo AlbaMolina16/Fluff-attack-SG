@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 1701942255}
   - component: {fileID: 1701942258}
   - component: {fileID: 1701942259}
+  - component: {fileID: 1701942260}
   m_Layer: 0
   m_Name: Crosshair_25
   m_TagString: Player
@@ -505,6 +506,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.56
+--- !u!114 &1701942260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701942254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9147d5cfdfeaa04abe194796b2aa2f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 0.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &152580643887252667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -570,6 +587,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2433794972563560487, guid: b02280f5238daec4095d5105f985198e, type: 3}
+      propertyPath: type
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 632208438983416404, guid: b02280f5238daec4095d5105f985198e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.99

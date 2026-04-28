@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Script que gestiona la navegación entre los campos de login y hace submit al pulsar enter
+/// </summary>
 public class LoginTabNavigation : MonoBehaviour
 {
     public TMP_InputField usernameField;
@@ -41,11 +44,7 @@ public class LoginTabNavigation : MonoBehaviour
         // Detecta la pulsación de la tecla ENTER
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            // if (loginButton.gameObject == UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject)
-            // {
-                // loginButton.interactable = false; // Deshabilitar el botón para evitar múltiples clics
-                loginButton.onClick.Invoke();
-            // }
+            loginButton.onClick.Invoke();
         }
     }
 }

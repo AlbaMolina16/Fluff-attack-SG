@@ -20,6 +20,7 @@ Backend/appsettings.Development.json
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.pidb
@@ -50,9 +51,13 @@ sysinfo.txt
 *.pdb.meta
 *.mdb.meta
 
+# TextMesh Pro (package asset, imported by Unity)
+TextMesh Pro/
+TextMesh Pro.meta
+
 # Addressables
-/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
-/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.hash
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.hash
 
 # Collaborate
 .collab/

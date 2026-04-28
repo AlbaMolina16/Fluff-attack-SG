@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
@@ -30,7 +27,6 @@ public class LoginController : MonoBehaviour
     // private const string BASE_URL = "https://localhost:44356/api/auth/login";
     // URL de la API en Azure
     private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
-
 
     /// <summary>
     /// Valida que los campos de usuario y contraseña no estén vacíos. Si la validación es correcta,
@@ -79,8 +75,6 @@ public class LoginController : MonoBehaviour
 
         // Ocultamos el botón de login
         loginButon.gameObject.SetActive(false);
-        // username.interactable = false;
-        // password.interactable = false;
     }
 
 
