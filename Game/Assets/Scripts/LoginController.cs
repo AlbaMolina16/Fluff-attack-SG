@@ -20,7 +20,7 @@ public class LoginController : MonoBehaviour
     public TMP_Text errorMessage;
     // Buttons to activate after successful login
     public GameObject[] buttonsToActivate;
-    public Button loginButon;
+    public Button submitButton;
     public GameObject loadingSpinner;
 
     // URL de la API en local
@@ -29,20 +29,11 @@ public class LoginController : MonoBehaviour
     private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
 
     /// <summary>
-    /// Valida que los campos de usuario y contraseña no estén vacíos. Si la validación es correcta,
-    /// se procede a realizar la petición de login.
+    /// Realiza la validación de los campos de usuario y contraseña y, si son correctos, intenta iniciar sesión.
     /// </summary>
     public async void ValidateInputs()
     {
-        errorMessage.gameObject.SetActive(false); // ocultar mensaje antes de validar
-
-        if (string.IsNullOrWhiteSpace(username.text) ||
-            string.IsNullOrWhiteSpace(password.text))
-        {
-            errorMessage.text = "Por favor, rellena todos los campos requeridos.";
-            errorMessage.gameObject.SetActive(true);
-            return;
-        }
+        errorMessage.gameObject.SetActive(false);
 
         loadingSpinner.SetActive(true);
         SetFieldsStatus(false);
@@ -74,7 +65,7 @@ public class LoginController : MonoBehaviour
         }
 
         // Ocultamos el botón de login
-        loginButon.gameObject.SetActive(false);
+        submitButton.gameObject.SetActive(false);
     }
 
 
@@ -123,6 +114,6 @@ public class LoginController : MonoBehaviour
         // Deshabilitar campos
         username.interactable = interactable;
         password.interactable = interactable;
-        loginButon.interactable = interactable;
+        submitButton.interactable = interactable;
     }
 }
