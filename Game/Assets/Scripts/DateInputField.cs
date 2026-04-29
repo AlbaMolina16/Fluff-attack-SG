@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Script que gestiona el campo de entrada de fecha
+/// </summary>
 public class DateInputField : MonoBehaviour
 {
     private TMP_InputField dateField;
@@ -19,6 +22,10 @@ public class DateInputField : MonoBehaviour
         dateField.onValueChanged.AddListener(OnValueChanged);
     }
 
+    /// <summary>
+    /// Formatea la entrada del usuario para que siga el formato DD/MM/YYYY, permitiendo solo números y agregando las barras automáticamente. También mueve el cursor al final del texto después de formatear.
+    /// </summary>
+    /// <param name="value">El valor actual del campo de entrada</param>
     private void OnValueChanged(string value)
     {
         // Eliminar caracteres no numéricos
@@ -45,9 +52,13 @@ public class DateInputField : MonoBehaviour
         dateField.onValueChanged.AddListener(OnValueChanged);
     }
 
+    /// <summary>
+    /// Valida si la fecha ingresada es correcta según el formato DD/MM/YYYY y representa una fecha válida.
+    /// <returns>true si la fecha es válida, false en caso contrario</returns>
+    /// </summary>
     public bool IsValidDate()
     {
-        if(dateField == null)
+        if (dateField == null)
         {
             // Debug.LogError("No se encontró TMP_InputField en este GameObject");
             return false;
@@ -62,6 +73,10 @@ public class DateInputField : MonoBehaviour
         );
     }
 
+    /// <summary>
+    /// Devuelve la fecha ingresada. La fecha se espera en formato DD/MM/YYYY.
+    /// </summary>
+    /// <returns>Un objeto DateTime si la fecha es válida, o null si no lo es.</returns>
     public System.DateTime? GetDate()
     {
         if (System.DateTime.TryParseExact(

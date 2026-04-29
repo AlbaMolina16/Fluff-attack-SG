@@ -4,13 +4,37 @@ using UnityEngine.UI;
 
 public class InputFieldNavigation : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField[] inputFields; // Campos que forman parte del formulario de creación de usuario
-    [SerializeField] private Button submitButton; // SignUp button
-    [SerializeField] private TMP_InputField passwordField; // Campo de la contraseña
-    [SerializeField] private TMP_InputField confirmPasswordField; // Campo de la confirmación de contraseña
-    [SerializeField] private DateInputField dateField; // Campo de la fecha de cumpleaños
+    /// <summary>
+    /// Campos de entrada al formulario
+    /// </summary>
+    [SerializeField] private TMP_InputField[] inputFields;
+
+    [Header("Submit Button")]
+    /// <summary>
+    /// Botón submit del panel SignUp
+    /// </summary>
+    [SerializeField] private Button submitButton;
+
+    [Header("Password Validation")]
+    /// <summary>
+    /// Campo de la contraseña
+    /// </summary>
+    [SerializeField] private TMP_InputField passwordField;
+    /// <summary>
+    /// Campo de la confirmación de contraseña
+    /// </summary>
+    [SerializeField] private TMP_InputField confirmPasswordField;
+
+    [Header("Date Validation")]
+    /// <summary>
+    /// Campo de la fecha de cumpleaños
+    /// </summary>
+    [SerializeField] private DateInputField dateField;
 
     [SerializeField] private TMP_Text errorMessageText;
+    /// <summary>
+    /// Spinner de carga
+    /// </summary>
     public GameObject loadingSpinner;
 
     void Start()

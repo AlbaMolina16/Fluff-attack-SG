@@ -14,12 +14,6 @@ public class LoginController : MonoBehaviour
         public string password;
     }
 
-    [System.Serializable]
-    private class ErrorResponse
-    {
-        public string message;
-    }
-
     // Input fields and message
     public TMP_InputField username;
     public TMP_InputField password;
@@ -31,10 +25,6 @@ public class LoginController : MonoBehaviour
 
     public GameObject loadingSpinner;
 
-    // URL de la API en local
-    private const string BASE_URL = "https://localhost:44356/api/auth/login";
-    // URL de la API en Azure
-    // private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
 
     /// <summary>
     /// Realiza la validación de los campos de usuario y contraseña y, si son correctos, intenta iniciar sesión.
@@ -78,7 +68,6 @@ public class LoginController : MonoBehaviour
         signUpButton.gameObject.SetActive(false);
     }
 
-
     public async Task<(bool success, string errorMessage)> Login(string username, string password)
     {
         var payload = new LoginRequest
@@ -89,7 +78,7 @@ public class LoginController : MonoBehaviour
 
         var json = JsonUtility.ToJson(payload);
 
-        using var req = new UnityWebRequest(BASE_URL, "POST");
+        using var req = new UnityWebRequest(ApiConfig.Auth.Login, "POST");
 
         byte[] body = Encoding.UTF8.GetBytes(json);
         req.uploadHandler = new UploadHandlerRaw(body);

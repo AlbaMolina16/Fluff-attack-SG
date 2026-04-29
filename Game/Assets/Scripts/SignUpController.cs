@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class SignUpController : MonoBehaviour
 {
+    [Header("Input Fields to Send")]
     [SerializeField] private TMP_InputField nicknameField;
     [SerializeField] private TMP_InputField firstNameField;
     [SerializeField] private TMP_InputField lastNameField;
@@ -21,8 +22,6 @@ public class SignUpController : MonoBehaviour
 
     public List<Selectable> _formFields; // Almaceno los elementos de tipo texto o botón para habilitarnos o no en función del estado de la llamada
 
-    private const string BASE_URL = "https://localhost:44356/api/auth/register";
-    // private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/register";
 
     [Serializable]
     private class RegisterRequest
@@ -83,7 +82,7 @@ public class SignUpController : MonoBehaviour
 
         var json = JsonUtility.ToJson(payload);
 
-        using var req = new UnityWebRequest(BASE_URL, "POST");
+        using var req = new UnityWebRequest(ApiConfig.Auth.Register, "POST");
         byte[] body = Encoding.UTF8.GetBytes(json);
         req.uploadHandler = new UploadHandlerRaw(body);
         req.downloadHandler = new DownloadHandlerBuffer();
@@ -97,11 +96,18 @@ public class SignUpController : MonoBehaviour
             return (true, string.Empty);
 
         if (req.responseCode == 409)
-            return (false, "El nickname ya está registrado.");
+        {
+            var error = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
+            return (false, error?.message ?? "El nickname ya está registrado.");
+        }
 
         return (false, "No se pudo completar el registro. Inténtalo de nuevo.");
     }
 
+    /// <summary>
+    /// Si el registro ha ido bien, muestra el panel de login y un mensaje toast de éxito al crear el usuario.
+    /// También habilita los campos de entrada y botones en caso de que se hubieran deshabilitado por la llamada.
+    /// </summary>
     private void OnSignUpSuccess()
     {
         if (panelManager != null)
@@ -113,6 +119,10 @@ public class SignUpController : MonoBehaviour
         SetFieldsInteractable(true);
     }
 
+    /// <summary>
+    /// Habilita o deshabilita los campos de entrada y botones para evitar múltiples interacciones
+    /// </summary>
+    /// <param name="interactable"> = true -> habilitado, = false -> deshabilitado</param>
     private void SetFieldsInteractable(bool interactable)
     {
         foreach (var field in _formFields)
