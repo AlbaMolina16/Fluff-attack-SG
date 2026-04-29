@@ -1,6 +1,5 @@
 ﻿using FluffGameApi.Dtos;
 using FluffGameApi.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FluffGameApi.Controllers
@@ -40,6 +39,17 @@ namespace FluffGameApi.Controllers
             {
                 return Unauthorized(new { result.message });
             }
+
+            return Ok(result);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        {
+            var result = await _authService.Register(registerDto);
+
+            if (!result.success)
+                return Conflict(new { result.message });
 
             return Ok(result);
         }

@@ -36,16 +36,36 @@ namespace FluffGameApi.Services
             var user = await _userRepository.GetByUsername(dto.Username);
 
             if (user == null)
-                //return (false, "Usuario no existe", 0);
                 return (false, "Usuario no existe", 0);
 
 
-            //bool match = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+            bool match = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
 
-            //if (!match)
-            //    return (false, "Contraseña incorrecta", 0);
+            if (!match)
+                return (false, "Contraseña incorrecta", 0);
 
             return (true, "Login correcto", user.Id);
+        }
+
+        public async Task<(bool success, string message, int idUsuario)> Register(RegisterDto dto)
+        {
+            var existing = await _userRepository.GetByUsername(dto.Username);
+            if (existing != null)
+                return (false, "El nickname ya está en uso", 0);
+
+            var user = new User
+            {
+                Username = dto.Username,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                FirstName = dto.FirstName ?? string.Empty,
+                LastName = dto.LastName ?? string.Empty,
+                BirthDate = dto.BirthDate,
+                CreatedDate = DateTime.UtcNow,
+                LogTimestamp = DateTime.UtcNow
+            };
+
+            int newId = await _userRepository.CreateUser(user);
+            return (true, "Usuario registrado correctamente", newId);
         }
 
     }

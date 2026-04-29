@@ -6,5 +6,6 @@ namespace FluffGameApi.Repositories
     {
         public Task<List<User>> GetAll();
         public Task<User?> GetByUsername(string username);
+        public Task<int> CreateUser(User user);
     }
 }

@@ -39,5 +39,24 @@ namespace FluffGameApi.Repositories
             return user;
         }
 
+        public async Task<int> CreateUser(User user)
+        {
+            string sql = @"
+                INSERT INTO users (Username, FirstName, LastName, BirthDate, PasswordHash, CreatedDate, LogTimestamp)
+                VALUES (@Username, @FirstName, @LastName, @BirthDate, @PasswordHash, @CreatedDate, @LogTimestamp);
+                SELECT LAST_INSERT_ID();";
+
+            return await Connection.ExecuteScalarAsync<int>(sql, new
+            {
+                user.Username,
+                user.FirstName,
+                user.LastName,
+                user.BirthDate,
+                user.PasswordHash,
+                user.CreatedDate,
+                user.LogTimestamp
+            });
+        }
+
     }
 }
