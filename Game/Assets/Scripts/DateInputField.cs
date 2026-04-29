@@ -11,11 +11,11 @@ public class DateInputField : MonoBehaviour
 
         if (dateField == null)
         {
-            Debug.LogError("No se encontró TMP_InputField en este GameObject");
+            // Debug.LogError("No se encontró TMP_InputField en este GameObject");
             return;
         }
 
-        Debug.Log("InputField encontrado correctamente");
+        // Debug.Log("InputField encontrado correctamente");
         dateField.onValueChanged.AddListener(OnValueChanged);
     }
 
@@ -47,6 +47,12 @@ public class DateInputField : MonoBehaviour
 
     public bool IsValidDate()
     {
+        if(dateField == null)
+        {
+            // Debug.LogError("No se encontró TMP_InputField en este GameObject");
+            return false;
+        }
+
         return System.DateTime.TryParseExact(
             dateField.text,
             "dd/MM/yyyy",
@@ -54,5 +60,17 @@ public class DateInputField : MonoBehaviour
             System.Globalization.DateTimeStyles.None,
             out _
         );
+    }
+
+    public System.DateTime? GetDate()
+    {
+        if (System.DateTime.TryParseExact(
+            dateField.text,
+            "dd/MM/yyyy",
+            null,
+            System.Globalization.DateTimeStyles.None,
+            out System.DateTime result))
+            return result;
+        return null;
     }
 }

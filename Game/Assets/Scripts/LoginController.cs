@@ -14,6 +14,12 @@ public class LoginController : MonoBehaviour
         public string password;
     }
 
+    [System.Serializable]
+    private class ErrorResponse
+    {
+        public string message;
+    }
+
     // Input fields and message
     public TMP_InputField username;
     public TMP_InputField password;
@@ -21,12 +27,14 @@ public class LoginController : MonoBehaviour
     // Buttons to activate after successful login
     public GameObject[] buttonsToActivate;
     public Button submitButton;
+    public Button signUpButton;
+
     public GameObject loadingSpinner;
 
     // URL de la API en local
-    // private const string BASE_URL = "https://localhost:44356/api/auth/login";
+    private const string BASE_URL = "https://localhost:44356/api/auth/login";
     // URL de la API en Azure
-    private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
+    // private const string BASE_URL = "https://fluffgame.azurewebsites.net/api/auth/login";
 
     /// <summary>
     /// Realiza la validación de los campos de usuario y contraseña y, si son correctos, intenta iniciar sesión.
@@ -66,6 +74,8 @@ public class LoginController : MonoBehaviour
 
         // Ocultamos el botón de login
         submitButton.gameObject.SetActive(false);
+        // Ocultamos el botón de registro
+        signUpButton.gameObject.SetActive(false);
     }
 
 
@@ -97,9 +107,10 @@ public class LoginController : MonoBehaviour
             return (true, string.Empty);
         }
 
-        if (req.responseCode == 401 || req.responseCode == 404)
+        if (req.responseCode == 401)
         {
-            return (false, "Usuario no registrado o credenciales incorrectas.");
+            var error = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
+            return (false, error?.message ?? "Credenciales incorrectas.");
         }
 
         return (false, "No se pudo iniciar sesión. Inténtalo de nuevo.");

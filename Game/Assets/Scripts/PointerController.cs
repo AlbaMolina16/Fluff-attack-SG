@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PointerController : MonoBehaviour
@@ -10,8 +8,6 @@ public class PointerController : MonoBehaviour
     // Private variables 
     private Rigidbody2D rb; // Reference to the Rigidbody2D component attached to the player
     private Vector2 movement; // Stores the direction of player movement
-
-
 
     void Start()
     {
