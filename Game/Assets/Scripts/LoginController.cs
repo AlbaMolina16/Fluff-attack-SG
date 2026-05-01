@@ -93,6 +93,9 @@ public class LoginController : MonoBehaviour
 
         if (req.result == UnityWebRequest.Result.Success)
         {
+            var response = JsonUtility.FromJson<LoginResponse>(req.downloadHandler.text);
+            // Alamacenamos en sesión el id y nickname del usuario para poder acceder a ello desde otras escenas
+            UserSession.Instance.SetUser(response.idUsuario, username);
             return (true, string.Empty);
         }
 

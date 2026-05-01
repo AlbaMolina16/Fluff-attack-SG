@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 #region Inyect repositories and services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
+builder.Services.AddScoped<ScoreService>();
 #endregion
 
 var app = builder.Build();

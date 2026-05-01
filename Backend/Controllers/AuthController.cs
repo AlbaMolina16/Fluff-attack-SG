@@ -1,4 +1,4 @@
-﻿using FluffGameApi.Dtos;
+using FluffGameApi.Dtos;
 using FluffGameApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +40,7 @@ namespace FluffGameApi.Controllers
                 return Unauthorized(new { result.message });
             }
 
-            return Ok(result);
+            return Ok(new { result.success, result.message, result.idUsuario });
         }
 
         [HttpPost("register")]
