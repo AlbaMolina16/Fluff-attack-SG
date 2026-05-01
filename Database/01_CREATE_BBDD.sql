@@ -15,7 +15,7 @@ CREATE TABLE users (
     Username VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre de usuario',
     FirstName VARCHAR(50) COMMENT 'Nombre',
     LastName VARCHAR(150) COMMENT 'Apellidos',
-    BirthDate DATETIME COMMENT 'Fecha de cumpleaños',
+    BirthDate DATE COMMENT 'Fecha de cumpleaños',
     PasswordHash VARCHAR(255) NOT NULL COMMENT 'Contraseña hasehada',
     CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha de creacion del usuario',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
