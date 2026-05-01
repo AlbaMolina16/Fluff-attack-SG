@@ -1,6 +1,6 @@
 namespace FluffGameApi.Dtos
 {
-    public class RecentScoreResponseDto
+    public class RecentScoreDto
     {
         public int TotalPoints { get; set; }
         public int IdDifficulty { get; set; }

@@ -22,7 +22,7 @@ namespace FluffGameApi.Repositories
         /// <param name="userId">Numero identificador del usuario</param>
         /// <param name="limit">Numero de registros de puntuacion a obtener</param>
         /// <returns></returns>
-        public async Task<List<RecentScoreResponseDto>> GetRecentScoresByUserId(int userId, int limit)
+        public async Task<List<RecentScoreDto>> GetRecentScoresByUserId(int userId, int limit)
         {
             string sql = @"
                 SELECT s.TotalPoints, s.IdDifficulty, d.Name AS DifficultyName
@@ -32,8 +32,26 @@ namespace FluffGameApi.Repositories
                 ORDER BY s.TotalPoints DESC
                 LIMIT @Limit";
 
-            var scores = await Connection.QueryAsync<RecentScoreResponseDto>(sql, new { UserId = userId, Limit = limit });
+            var scores = await Connection.QueryAsync<RecentScoreDto>(sql, new { UserId = userId, Limit = limit });
             return scores.ToList();
+        }
+
+        /// <summary>
+        /// Obtiene de base de datos la última puntuación registrado para el userId indicado
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<LastScoreDto?> GetLastScoreByUserId(int userId)
+        {
+            string sql = @"
+                SELECT s.TotalPoints, s.RedPoints, s.BluePoints, s.GreenPoints, s.YellowPoints, d.Name AS DifficultyName
+                FROM scores s
+                JOIN difficulties d ON s.IdDifficulty = d.Id
+                WHERE s.IdUser = @UserId
+                ORDER BY s.LogTimestamp DESC
+                LIMIT 1";
+
+            return await Connection.QueryFirstOrDefaultAsync<LastScoreDto>(sql, new { UserId = userId });
         }
     }
 }

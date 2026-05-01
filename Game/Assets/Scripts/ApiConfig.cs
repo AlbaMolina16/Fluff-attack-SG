@@ -15,5 +15,6 @@ public static class ApiConfig
     public static class Scores
     {
         public const string Recent = BASE_URL + "/api/score/recent";
+        public const string Last = BASE_URL + "/api/score/last";
     }
 }

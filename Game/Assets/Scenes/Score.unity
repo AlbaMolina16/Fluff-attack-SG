@@ -250,6 +250,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenFluffScore
       objectReference: {fileID: 0}
+    - target: {fileID: 9175816591940840207, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+      propertyPath: m_Name
+      value: GreenScore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -260,6 +264,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7943670785830766620, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
   m_PrefabInstance: {fileID: 63095709}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &63095711 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7314277522131072621, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+  m_PrefabInstance: {fileID: 63095709}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &173361153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1492,7 +1507,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -1951,6 +1966,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: YellowFluffScore
       objectReference: {fileID: 0}
+    - target: {fileID: 9175816591940840207, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+      propertyPath: m_Name
+      value: YellowScore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1961,6 +1980,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7943670785830766620, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
   m_PrefabInstance: {fileID: 1662047455}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1662047457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7314277522131072621, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+  m_PrefabInstance: {fileID: 1662047455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1676610062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,6 +2182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueFluffScore
       objectReference: {fileID: 0}
+    - target: {fileID: 9175816591940840207, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+      propertyPath: m_Name
+      value: BlueScore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2162,6 +2196,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7943670785830766620, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
   m_PrefabInstance: {fileID: 1782930559}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1782930561 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7314277522131072621, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+  m_PrefabInstance: {fileID: 1782930559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1926259589
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,6 +2257,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoresContainer: {fileID: 490223918}
   errorMessage: {fileID: 401941357}
+  totalPointsText: {fileID: 1974704685}
+  redPointsText: {fileID: 7141149832779091369}
+  bluePointsText: {fileID: 1782930561}
+  greenPointsText: {fileID: 63095711}
+  yellowPointsText: {fileID: 1662047457}
 --- !u!1 &1974704683
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,11 +2584,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedFluffScore
       objectReference: {fileID: 0}
+    - target: {fileID: 9175816591940840207, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+      propertyPath: m_Name
+      value: RedScore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+--- !u!114 &7141149832779091369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7314277522131072621, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+  m_PrefabInstance: {fileID: 7141149832779091368}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7368399373946572235 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7943670785830766620, guid: a887c6572291ffc4789030d51fc67c39, type: 3}

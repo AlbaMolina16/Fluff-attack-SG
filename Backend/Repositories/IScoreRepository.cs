@@ -4,6 +4,7 @@ namespace FluffGameApi.Repositories
 {
     public interface IScoreRepository
     {
-        Task<List<RecentScoreResponseDto>> GetRecentScoresByUserId(int userId, int limit);
+        Task<List<RecentScoreDto>> GetRecentScoresByUserId(int userId, int limit);
+        Task<LastScoreDto?> GetLastScoreByUserId(int userId);
     }
 }

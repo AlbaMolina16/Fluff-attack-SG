@@ -30,5 +30,21 @@ namespace FluffGameApi.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError, new { message });
         }
+
+        /// <summary>
+        /// Endpoint que obtiene la última puntuación conseguida por un usuario
+        /// </summary>
+        /// <param name="userId">Identificador del usuario</param>
+        /// <returns></returns>
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastScore([FromQuery] int userId)
+        {
+            var (success, message, score) = await _scoreService.GetLastScoreForUser(userId);
+
+            if (success)
+                return Ok(new { message, score });
+
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message });
+        }
     }
 }
