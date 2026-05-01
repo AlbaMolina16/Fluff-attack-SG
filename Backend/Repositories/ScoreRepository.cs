@@ -16,6 +16,12 @@ namespace FluffGameApi.Repositories
             _configuration = config;
         }
 
+        /// <summary>
+        /// Obtiene las ultimas puntuaciones recientes de un usuario por su Id
+        /// </summary>
+        /// <param name="userId">Numero identificador del usuario</param>
+        /// <param name="limit">Numero de registros de puntuacion a obtener</param>
+        /// <returns></returns>
         public async Task<List<RecentScoreResponseDto>> GetRecentScoresByUserId(int userId, int limit)
         {
             string sql = @"

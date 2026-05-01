@@ -29,7 +29,11 @@ namespace FluffGameApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Endpoint de login
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -43,10 +47,15 @@ namespace FluffGameApi.Controllers
             return Ok(new { result.success, result.message, result.idUsuario });
         }
 
+        /// <summary>
+        /// Endpoint de creación de usuario
+        /// </summary>
+        /// <param name="newUserDto">Información del usuario que se quiere crear</param>
+        /// <returns></returns>
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto newUserDto)
         {
-            var result = await _authService.Register(registerDto);
+            var result = await _authService.Register(newUserDto);
 
             if (!result.success)
                 return Conflict(new { result.message });

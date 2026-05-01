@@ -27,19 +27,24 @@ namespace FluffGameApi.Services
             }
             catch (Exception ex)
             {
-                return (false, $"Error retrieving users: {ex.Message}", null);
+                return (false, $"Error retrieving users: {ex.Message}", []);
             }
         }
 
-        public async Task<(bool success, string message, int idUsuario)> Login(LoginDto dto)
+        /// <summary>
+        /// Valida la informacion del login y permite el acceso o no
+        /// </summary>
+        /// <param name="loginInfoDto"></param>
+        /// <returns>(success = bool, message = string, userId = int)</returns>
+        public async Task<(bool success, string message, int idUsuario)> Login(LoginDto loginInfoDto)
         {
-            var user = await _userRepository.GetByUsername(dto.Username);
+            var user = await _userRepository.GetByUsername(loginInfoDto.Username);
 
             if (user == null)
                 return (false, "Usuario no existe", 0);
 
 
-            bool match = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+            bool match = BCrypt.Net.BCrypt.Verify(loginInfoDto.Password, user.PasswordHash);
 
             if (!match)
                 return (false, "Contraseña incorrecta", 0);
@@ -47,19 +52,24 @@ namespace FluffGameApi.Services
             return (true, "Login correcto", user.Id);
         }
 
-        public async Task<(bool success, string message, int idUsuario)> Register(RegisterDto dto)
+        /// <summary>
+        /// Valida si ya existe un usuario con ese nickName. Si no existe encripta la contraseña y lo crea en bbdd
+        /// </summary>
+        /// <param name="newUserDto"></param>
+        /// <returns>Si es satisfactorio, de devuelve el id del usuario creado</returns>
+        public async Task<(bool success, string message, int idUsuario)> Register(RegisterDto newUserDto)
         {
-            var existing = await _userRepository.GetByUsername(dto.Username);
+            var existing = await _userRepository.GetByUsername(newUserDto.Username);
             if (existing != null)
                 return (false, "El nickname ya está en uso", 0);
 
             var user = new User
             {
-                Username = dto.Username,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                FirstName = dto.FirstName ?? string.Empty,
-                LastName = dto.LastName ?? string.Empty,
-                BirthDate = dto.BirthDate,
+                Username = newUserDto.Username,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(newUserDto.Password),
+                FirstName = newUserDto.FirstName ?? string.Empty,
+                LastName = newUserDto.LastName ?? string.Empty,
+                BirthDate = newUserDto.BirthDate,
                 CreatedDate = DateTime.UtcNow,
                 LogTimestamp = DateTime.UtcNow
             };
