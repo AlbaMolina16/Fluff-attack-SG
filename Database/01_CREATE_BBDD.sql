@@ -31,7 +31,7 @@ CREATE TABLE scores (
     GreenPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas verdes',
     YellowPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas amarillas',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (IdUser) REFERENCES users(Id),
+    FOREIGN KEY (IdUser) REFERENCES users(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
 ) COMMENT 'Puntuaciones que registra un usuario';
 
@@ -40,6 +40,6 @@ CREATE TABLE user_preferences (
     IdUser INT NOT NULL COMMENT 'Usuario al que pertecenece',
     IdDifficulty INT NOT NULL COMMENT 'Dificultad elegida',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (IdUser) REFERENCES users(Id),
+    FOREIGN KEY (IdUser) REFERENCES users(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
 ) COMMENT 'Preferencias de juego del usuario';
