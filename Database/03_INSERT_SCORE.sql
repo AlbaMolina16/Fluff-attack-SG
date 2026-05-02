@@ -1,0 +1,20 @@
+INSERT INTO `fluff_unity_db`.`scores`
+(
+`IdUser`,
+`IdDifficulty`,
+`RedPoints`,
+`BluePoints`,
+`GreenPoints`,
+`YellowPoints`,
+`MissingPoints`,
+`TotalPoints`)
+VALUES
+(
+1,
+1,
+250,
+250,
+500,
+500,
+1100,
+1500);

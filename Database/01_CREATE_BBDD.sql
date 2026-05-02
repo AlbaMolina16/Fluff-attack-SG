@@ -25,11 +25,12 @@ CREATE TABLE scores (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico de la puntuacion',
     IdUser INT NOT NULL COMMENT 'Usuario al que pertecene',
     IdDifficulty INT NOT NULL COMMENT 'Modo de dificultad sobre la que se ha obtenido la puntuacion',
-    TotalPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion total',
     RedPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas rojas',
     BluePoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas azules',
     GreenPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas verdes',
     YellowPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas amarillas',
+    MissingPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion pelusas perdidas',
+    TotalPoints INT NOT NULL DEFAULT 0 COMMENT 'Puntuacion total',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (IdUser) REFERENCES users(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
