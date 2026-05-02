@@ -44,7 +44,7 @@ namespace FluffGameApi.Controllers
                 return Unauthorized(new { result.message });
             }
 
-            return Ok(new { result.success, result.message, result.idUsuario });
+            return Ok(new { result.success, result.message, result.user });
         }
 
         /// <summary>

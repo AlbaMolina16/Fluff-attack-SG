@@ -66,6 +66,10 @@ public class LoginController : MonoBehaviour
         submitButton.gameObject.SetActive(false);
         // Ocultamos el botón de registro
         signUpButton.gameObject.SetActive(false);
+        // Mostramos mensaje de bienvenida
+        errorMessage.color = Color.white;
+        errorMessage.text = "Welcome, " + UserSession.Instance.User.firstName + "!";
+        errorMessage.gameObject.SetActive(true);
     }
 
     public async Task<(bool success, string errorMessage)> Login(string username, string password)
@@ -95,7 +99,7 @@ public class LoginController : MonoBehaviour
         {
             var response = JsonUtility.FromJson<LoginResponse>(req.downloadHandler.text);
             // Alamacenamos en sesión el id y nickname del usuario para poder acceder a ello desde otras escenas
-            UserSession.Instance.SetUser(response.idUsuario, username);
+            UserSession.Instance.SetUser(response.user);
             return (true, string.Empty);
         }
 

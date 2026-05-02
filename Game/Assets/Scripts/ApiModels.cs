@@ -14,5 +14,18 @@ public class LoginResponse
 {
     public bool success;
     public string message;
-    public int idUsuario;
+    public UserLoginResponse user;
+}
+
+/// <summary>
+/// Dto para mapear la respuesta del API /login
+/// </summary>
+[Serializable]
+public class UserLoginResponse
+{
+    public int id;
+    public string nickname;
+    public string firstName;
+    public string lastName;
+    public DateTime birthday;
 }

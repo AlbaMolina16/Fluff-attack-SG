@@ -36,20 +36,29 @@ namespace FluffGameApi.Services
         /// </summary>
         /// <param name="loginInfoDto"></param>
         /// <returns>(success = bool, message = string, userId = int)</returns>
-        public async Task<(bool success, string message, int idUsuario)> Login(LoginDto loginInfoDto)
+        public async Task<(bool success, string message, UserLoginDto? user)> Login(LoginDto loginInfoDto)
         {
             var user = await _userRepository.GetByUsername(loginInfoDto.Username);
 
             if (user == null)
-                return (false, "Usuario no existe", 0);
+                return (false, "Usuario no existe", null);
 
 
             bool match = BCrypt.Net.BCrypt.Verify(loginInfoDto.Password, user.PasswordHash);
 
             if (!match)
-                return (false, "Contraseña incorrecta", 0);
+                return (false, "Contraseña incorrecta", null);
 
-            return (true, "Login correcto", user.Id);
+            UserLoginDto userLoginDto = new()
+            {
+                Id = user.Id,
+                Nickname = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Birthday = user.BirthDate
+            };
+
+            return (true, "Login correcto", userLoginDto);
         }
 
         /// <summary>

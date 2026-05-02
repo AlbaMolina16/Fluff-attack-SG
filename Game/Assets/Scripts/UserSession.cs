@@ -10,8 +10,7 @@ public class UserSession : MonoBehaviour
     /// </summary>
     public static UserSession Instance { get; private set; }
 
-    public int UserId { get; private set; }
-    public string Username { get; private set; }
+    public UserLoginResponse User { get; private set; }
 
     /// <summary>
     /// Asegura que solo exista una instancia de UserSession y que persista entre escenas.
@@ -29,14 +28,12 @@ public class UserSession : MonoBehaviour
     }
 
     /// <summary>
-    /// Registra en la sesión el identificador del usuario y el nickname
+    /// Registra en la sesión el usuario actual
     /// </summary>
-    /// <param name="userId">Identificador del usuario</param>
-    /// <param name="username">Nick de usuario</param>
-    public void SetUser(int userId, string username)
+    /// <param name="user">Información del usuario</param>
+    public void SetUser(UserLoginResponse user)
     {
-        UserId = userId;
-        Username = username;
+        User = user;
     }
 
     /// <summary>
@@ -44,7 +41,6 @@ public class UserSession : MonoBehaviour
     /// </summary>
     public void Clear()
     {
-        UserId = 0;
-        Username = string.Empty;
+        User = null;
     }
 }

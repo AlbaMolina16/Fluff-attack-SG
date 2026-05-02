@@ -70,7 +70,7 @@ public class ScoreController : MonoBehaviour
     public async Task LoadRecentScores()
     {
         errorMessage.gameObject.SetActive(false);
-        var url = $"{ApiConfig.Scores.Recent}?userId={UserSession.Instance.UserId}";
+        var url = $"{ApiConfig.Scores.Recent}?userId={UserSession.Instance.User?.id}";
         using var req = UnityWebRequest.Get(url);
 
         var operation = req.SendWebRequest();
@@ -92,7 +92,7 @@ public class ScoreController : MonoBehaviour
 
     public async Task LoadLastScore()
     {
-        var url = $"{ApiConfig.Scores.Last}?userId={UserSession.Instance.UserId}";
+        var url = $"{ApiConfig.Scores.Last}?userId={UserSession.Instance.User?.id}";
         using var req = UnityWebRequest.Get(url);
 
         var operation = req.SendWebRequest();
