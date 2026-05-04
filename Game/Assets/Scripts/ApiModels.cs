@@ -18,7 +18,7 @@ public class LoginResponse
 }
 
 /// <summary>
-/// Dto para mapear la respuesta del API /login
+/// Dto para mapear la información del usuario obtenida del API /login
 /// </summary>
 [Serializable]
 public class UserLoginResponse
