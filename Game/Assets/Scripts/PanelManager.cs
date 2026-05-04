@@ -9,8 +9,10 @@ public class PanelManager : MonoBehaviour
 {
     [Header("Panels")]
     [SerializeField] private GameObject loginPanel; // Panel de login con usuario, contraseña, botón de login y botón de resgistro
-    [SerializeField] private GameObject signUpPanel; // Pandel de registro de usuario nuevo
-    [SerializeField] private GameObject toastPanel;
+    [SerializeField] private GameObject signUpPanel; // Panel de registro de usuario nuevo
+    [SerializeField] private GameObject toastPanel; // Panel toast de información
+    [SerializeField] private GameObject settingsPanel; // Panel de ajustes del usuario
+
 
     [Header("Toast")]
     [SerializeField] private float toastDuration = 3f;
@@ -34,6 +36,7 @@ public class PanelManager : MonoBehaviour
     {
         loginPanel.SetActive(true);
         signUpPanel.SetActive(false);
+        settingsPanel.SetActive(false);
         signUpNavigator.ResetFields(); // Resetear los campos de entrada del panel
     }
 
@@ -45,7 +48,24 @@ public class PanelManager : MonoBehaviour
 
         loginPanel.SetActive(false);
         signUpPanel.SetActive(true);
+        settingsPanel.SetActive(false);
         loginNavigation.ResetFields(); // Resetear los campos de entrada del panel
+    }
+
+    /// <summary>
+    /// Muestra el panel de Ajustes
+    /// </summary>
+    public void ShowSettings()
+    {
+        settingsPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Oculta el panel de Ajustes
+    /// </summary>
+    public void HideSettings()
+    {
+        settingsPanel.SetActive(false);
     }
 
     /// <summary>

@@ -36,12 +36,20 @@ namespace FluffGameApi.Repositories
         {
             string sql = "SELECT * FROM users WHERE USERNAME = @Username";
 
-            var user = await Connection.QueryFirstOrDefaultAsync<User>(sql, new
+            try
             {
-                Username = username
-            });
+                var user = await Connection.QueryFirstOrDefaultAsync<User>(sql, new
+                {
+                    Username = username
+                });
 
-            return user;
+                return user;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -53,7 +61,7 @@ namespace FluffGameApi.Repositories
         {
             using var connection = new MySqlConnection(_configuration.GetConnectionString("MySqlConnection"));
             await connection.OpenAsync();
-            
+
             // Se inicia una transaccion para escribir registros en las dos tablas. En caso de fallar en la ejecucion de alguno de ellos
             // hara Rollback y no se informara ningun dato en la bbdd
             using var transaction = connection.BeginTransaction();
