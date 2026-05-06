@@ -82,7 +82,7 @@ public class SignUpController : MonoBehaviour
 
         var json = JsonUtility.ToJson(payload);
 
-        using var req = new UnityWebRequest(ApiConfig.Auth.Register, "POST");
+        using var req = new UnityWebRequest(ApiConfig.User.Register, "POST");
         byte[] body = Encoding.UTF8.GetBytes(json);
         req.uploadHandler = new UploadHandlerRaw(body);
         req.downloadHandler = new DownloadHandlerBuffer();

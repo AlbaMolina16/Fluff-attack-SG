@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FluffGameApi.Dtos;
 using FluffGameApi.Entities;
 using MySql.Data.MySqlClient;
 using System.Data;
@@ -50,6 +51,29 @@ namespace FluffGameApi.Repositories
             {
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Obtiene un usuario por su nickname junto con sus preferencias y la dificultad asociada
+        /// </summary>
+        public async Task<(User? user, UserPreferencesDto? preferences)> GetByUsernameWithPreferences(string username)
+        {
+            using var connection = new MySqlConnection(_configuration.GetConnectionString("MySqlConnection"));
+
+            var user = await connection.QueryFirstOrDefaultAsync<User>(
+                "SELECT * FROM users WHERE Username = @Username",
+                new { Username = username });
+
+            if (user == null) return (null, null);
+
+            var preferences = await connection.QueryFirstOrDefaultAsync<UserPreferencesDto>(
+                @"SELECT up.Id, up.IdDifficulty, d.Name AS DifficultyName
+                  FROM user_preferences up
+                  INNER JOIN difficulties d ON d.Id = up.IdDifficulty
+                  WHERE up.IdUser = @UserId",
+                new { UserId = user.Id });
+
+            return (user, preferences);
         }
 
         /// <summary>
@@ -107,6 +131,12 @@ namespace FluffGameApi.Repositories
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        public async Task UpdatePreferences(int preferencesId, int idDifficulty)
+        {
+            string sql = "UPDATE user_preferences SET IdDifficulty = @IdDifficulty WHERE Id = @Id";
+            await Connection.ExecuteAsync(sql, new { IdDifficulty = idDifficulty, Id = preferencesId });
         }
 
     }

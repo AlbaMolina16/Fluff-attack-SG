@@ -17,7 +17,7 @@ namespace FluffGameApi.Services
         /// Obtiene todos los usuarios registrados en la base de datos. Devuelve un mensaje ok si los obtuvo correctamente o un ko si no pudo realizar la operación.
         /// </summary>
         /// <returns></returns>
-        public async Task<(bool success, string message, List<User> users)> GetAllUsers()
+        public async Task<(bool success, string message, List<User> users)> GetAll()
         {
             try
             {
@@ -38,11 +38,10 @@ namespace FluffGameApi.Services
         /// <returns>(success = bool, message = string, userId = int)</returns>
         public async Task<(bool success, string message, UserLoginDto? user)> Login(LoginDto loginInfoDto)
         {
-            var user = await _userRepository.GetByUsername(loginInfoDto.Username);
+            var (user, preferences) = await _userRepository.GetByUsernameWithPreferences(loginInfoDto.Username);
 
             if (user == null)
                 return (false, "Usuario no existe", null);
-
 
             bool match = BCrypt.Net.BCrypt.Verify(loginInfoDto.Password, user.PasswordHash);
 
@@ -55,7 +54,8 @@ namespace FluffGameApi.Services
                 Nickname = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Birthday = user.BirthDate
+                Birthday = user.BirthDate,
+                Preferences = preferences ?? new() { Id = 0, IdDifficulty = 0, DifficultyName = string.Empty }
             };
 
             return (true, "Login correcto", userLoginDto);
@@ -66,6 +66,19 @@ namespace FluffGameApi.Services
         /// </summary>
         /// <param name="newUserDto"></param>
         /// <returns>Si es satisfactorio, de devuelve el id del usuario creado</returns>
+        public async Task<(bool success, string message)> UpdatePreferences(int preferencesId, int idDifficulty)
+        {
+            try
+            {
+                await _userRepository.UpdatePreferences(preferencesId, idDifficulty);
+                return (true, "Preferencias actualizadas correctamente");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error actualizando preferencias: {ex.Message}");
+            }
+        }
+
         public async Task<(bool success, string message, int idUsuario)> Register(RegisterDto newUserDto)
         {
             var existing = await _userRepository.GetByUsername(newUserDto.Username);

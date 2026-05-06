@@ -1,10 +1,12 @@
 ﻿using FluffGameApi.Entities.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FluffGameApi.Entities
 {
     /// <summary>
     /// scores db table
     /// </summary>
+    [Table("scores")]
     public class Score : BaseEntity
     {
         public int IdUser { get; set; }

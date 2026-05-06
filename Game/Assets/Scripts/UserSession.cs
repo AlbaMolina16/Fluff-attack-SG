@@ -11,6 +11,7 @@ public class UserSession : MonoBehaviour
     public static UserSession Instance { get; private set; }
 
     public UserLoginResponse User { get; private set; }
+    public DifficultyOption[] Difficulties { get; private set; }
 
     /// <summary>
     /// Asegura que solo exista una instancia de UserSession y que persista entre escenas.
@@ -34,6 +35,17 @@ public class UserSession : MonoBehaviour
     public void SetUser(UserLoginResponse user)
     {
         User = user;
+    }
+
+    public void UpdateUserPreferences(int idDifficulty, string difficultyName)
+    {
+        User.preferences.difficultyName = difficultyName;
+        User.preferences.idDifficulty = idDifficulty;
+    }
+
+    public void SetDifficulties(DifficultyOption[] difficulties)
+    {
+        Difficulties = difficulties;
     }
 
     /// <summary>

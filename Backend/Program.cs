@@ -20,6 +20,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
 builder.Services.AddScoped<ScoreService>();
+builder.Services.AddScoped<IDifficultyRepository, DifficultyRepository>();
+builder.Services.AddScoped<DifficultyService>();
 #endregion
 
 var app = builder.Build();

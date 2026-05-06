@@ -18,7 +18,7 @@ public class LoginResponse
 }
 
 /// <summary>
-/// Dto para mapear la información del usuario obtenida del API /login
+/// Dto para mapear la información del usuario obtenida del API /auth/login
 /// </summary>
 [Serializable]
 public class UserLoginResponse
@@ -28,4 +28,36 @@ public class UserLoginResponse
     public string firstName;
     public string lastName;
     public DateTime birthday;
+    public UserPreferences preferences;
+}
+
+/// <summary>
+/// Dto para mapear las preferencias del usuario obtenidas del API /auth/login
+/// </summary>
+[Serializable]
+public class UserPreferences
+{
+    public int id;
+    public int idDifficulty;
+    public string difficultyName;
+}
+
+[Serializable]
+public class UpdatePreferencesRequest
+{
+    public int idDifficulty;
+}
+
+[Serializable]
+public class DifficultyOption
+{
+    public int id;
+    public string name;
+}
+
+[Serializable]
+public class DifficultiesResponse
+{
+    public string message;
+    public DifficultyOption[] difficulties;
 }
