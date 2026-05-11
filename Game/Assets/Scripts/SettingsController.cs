@@ -45,7 +45,10 @@ public class SettingsController : MonoBehaviour
             // 1.1 Si no las hubiera, va a la API para obtenerlas de BBDD.
             // Si no obtiene nada deja el dropdown vacio.
             // Si las obtiene, las guarda en sesión para futuras consultas.
+            loadingSpinner.SetActive(true);
             _difficulties = await FetchDifficulties();
+            loadingSpinner.SetActive(false);
+
             if (_difficulties == null || _difficulties.Length == 0) return;
             UserSession.Instance.SetDifficulties(_difficulties);
         }

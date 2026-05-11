@@ -23,8 +23,17 @@ public class LoginController : MonoBehaviour
     public Button submitButton;
     public Button signUpButton;
 
+    public Button logoutButton;
     public GameObject loadingSpinner;
 
+    /// <summary>
+    /// Al iniciar la escena, se comprueba si ya hay información del usuario en sesión, porque podría venir de la escena de puntuaciones.
+    /// </summary>
+    private void Start()
+    {
+        if (UserSession.Instance.User != null)
+            OnLoginSuccess(true);
+    }
 
     /// <summary>
     /// Realiza la validación de los campos de usuario y contraseña y, si son correctos, intenta iniciar sesión.
@@ -54,8 +63,16 @@ public class LoginController : MonoBehaviour
     /// <summary>
     /// Muestra los botones de acciones permitidos al usuario, oculta el botón de Login y deshabilita los input de user y password
     /// </summary>
-    private void OnLoginSuccess()
+    private void OnLoginSuccess(bool onStart = false)
     {
+        if(onStart)
+        {
+            SetFieldsStatus(false);
+            // Informamos el username y la password en los campos de la UI
+            username.text = UserSession.Instance.User?.nickname;
+            password.text = "********"; // Como ya ha iniciado sesión, no hace falta incluir el valor de la contraseña
+        }
+        
         // Mostramos botones de acción
         foreach (GameObject button in buttonsToActivate)
         {
@@ -66,6 +83,8 @@ public class LoginController : MonoBehaviour
         submitButton.gameObject.SetActive(false);
         // Ocultamos el botón de registro
         signUpButton.gameObject.SetActive(false);
+        // Mostramos el botón de desconexión
+        logoutButton.gameObject.SetActive(true);
         // Mostramos mensaje de bienvenida
         errorMessage.color = Color.white;
         errorMessage.text = "Welcome, " + UserSession.Instance.User.firstName + "!";
@@ -110,6 +129,27 @@ public class LoginController : MonoBehaviour
         }
 
         return (false, "No se pudo iniciar sesión. Inténtalo de nuevo.");
+    }
+
+    /// <summary>
+    /// Cierra la sesión del usuario, limpia los campos y restaura la UI al estado inicial.
+    /// </summary>
+    public void Logout()
+    {
+        UserSession.Instance.Clear();
+
+        foreach (GameObject button in buttonsToActivate)
+            button.SetActive(false);
+
+        logoutButton.gameObject.SetActive(false);
+        submitButton.gameObject.SetActive(true);
+        signUpButton.gameObject.SetActive(true);
+
+        username.text = string.Empty;
+        password.text = string.Empty;
+        SetFieldsStatus(true);
+
+        errorMessage.gameObject.SetActive(false);
     }
 
     /// <summary>
