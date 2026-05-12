@@ -51,6 +51,7 @@ public class LoginController : MonoBehaviour
         if (!loginResponse.success)
         {
             errorMessage.text = loginResponse.errorMessage;
+            errorMessage.color = Color.red;
             errorMessage.gameObject.SetActive(true);
 
             SetFieldsStatus(true);
@@ -65,14 +66,14 @@ public class LoginController : MonoBehaviour
     /// </summary>
     private void OnLoginSuccess(bool onStart = false)
     {
-        if(onStart)
+        if (onStart)
         {
             SetFieldsStatus(false);
             // Informamos el username y la password en los campos de la UI
             username.text = UserSession.Instance.User?.nickname;
             password.text = "********"; // Como ya ha iniciado sesión, no hace falta incluir el valor de la contraseña
         }
-        
+
         // Mostramos botones de acción
         foreach (GameObject button in buttonsToActivate)
         {

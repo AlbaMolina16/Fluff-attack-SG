@@ -11,10 +11,11 @@ namespace FluffGameApi.Entities
     {
         public int IdUser { get; set; }
         public int IdDifficulty { get; set; }
-        public int TotalPoints { get; set; }
         public int RedPoints { get; set; }
         public int BluePoints { get; set; }
-        public int YellowPoints { get; set; }
         public int GreenPoints { get; set; }
+        public int YellowPoints { get; set; }
+        public int MissingPoints { get; set; }
+        public int TotalPoints { get; set; }
     }
 }

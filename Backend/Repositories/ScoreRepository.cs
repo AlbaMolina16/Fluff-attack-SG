@@ -29,8 +29,8 @@ namespace FluffGameApi.Repositories
                 FROM scores s
                 JOIN difficulties d ON s.IdDifficulty = d.Id
                 WHERE s.IdUser = @UserId
-                ORDER BY s.TotalPoints DESC
-                LIMIT @Limit";
+                ORDER BY s.LogTimestamp DESC, s.Id DESC
+                LIMIT @Limit OFFSET 1";
 
             var scores = await Connection.QueryAsync<RecentScoreDto>(sql, new { UserId = userId, Limit = limit });
             return scores.ToList();
@@ -44,7 +44,7 @@ namespace FluffGameApi.Repositories
         public async Task<LastScoreDto?> GetLastScoreByUserId(int userId)
         {
             string sql = @"
-                SELECT s.TotalPoints, s.RedPoints, s.BluePoints, s.GreenPoints, s.YellowPoints, d.Name AS DifficultyName
+                SELECT s.TotalPoints, s.RedPoints, s.BluePoints, s.GreenPoints, s.YellowPoints, s.MissingPoints, d.Name AS DifficultyName
                 FROM scores s
                 JOIN difficulties d ON s.IdDifficulty = d.Id
                 WHERE s.IdUser = @UserId

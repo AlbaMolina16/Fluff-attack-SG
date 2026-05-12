@@ -113,7 +113,7 @@ public class SignUpController : MonoBehaviour
         if (panelManager != null)
         {
             panelManager.ShowLogin();
-            panelManager.ShowToast();
+            panelManager.ShowToast("¡Registro completado!", "El usuario se ha creado correctamente.");
         }
 
         SetFieldsInteractable(true);

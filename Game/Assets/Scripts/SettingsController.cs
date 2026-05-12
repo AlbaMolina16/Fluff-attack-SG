@@ -11,6 +11,7 @@ public class SettingsController : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown difficultyDropdown; // Dropdown de seleccion de dificultad
     [SerializeField] private Button saveButton; // Botón de guardado de preferencias
+    [SerializeField] private PanelManager panelManager;
 
     public List<Selectable> _formFields; // Almaceno los gameObjects que quiero deshabilitar durante la actualización de los ajustes del usuario
     public GameObject loadingSpinner;
@@ -97,7 +98,7 @@ public class SettingsController : MonoBehaviour
 
         if (!success) return;
 
-        // _savedDifficultyId = selectedId;
+        panelManager.ShowToast("¡Preferencias actualizadas!", "Tus ajustes se han guardado correctamente.");
         UserSession.Instance.UpdateUserPreferences(selectedId, _difficulties[difficultyDropdown.value].name);
     }
 

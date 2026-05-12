@@ -7,6 +7,7 @@ namespace FluffGameApi.Dtos
         public int BluePoints { get; set; }
         public int GreenPoints { get; set; }
         public int YellowPoints { get; set; }
+        public int MissingPoints { get; set; }
         public string DifficultyName { get; set; }
     }
 }
