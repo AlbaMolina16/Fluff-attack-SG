@@ -25,6 +25,8 @@ public class ScoreController : MonoBehaviour
     public TMP_Text bluePointsText;
     public TMP_Text greenPointsText;
     public TMP_Text yellowPointsText;
+    public TMP_Text missingPointsText;
+
 
     [System.Serializable]
     private class ScoreItem
@@ -49,6 +51,7 @@ public class ScoreController : MonoBehaviour
         public int bluePoints;
         public int greenPoints;
         public int yellowPoints;
+        public int missingPoints;
     }
 
     [System.Serializable]
@@ -110,5 +113,6 @@ public class ScoreController : MonoBehaviour
         if (bluePointsText) bluePointsText.text = lastScore.bluePoints.ToString("N0");
         if (greenPointsText) greenPointsText.text = lastScore.greenPoints.ToString("N0");
         if (yellowPointsText) yellowPointsText.text = lastScore.yellowPoints.ToString("N0");
+        if (missingPointsText) missingPointsText.text = lastScore.missingPoints.ToString("N0");
     }
 }

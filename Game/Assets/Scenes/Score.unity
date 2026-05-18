@@ -881,7 +881,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RECENT
+  m_text: RECENT SCORES!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 749b9069dc4742c5bfa5c74644049926, type: 2}
@@ -908,8 +908,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1591,7 +1591,7 @@ PrefabInstance:
       objectReference: {fileID: 173361158}
     - target: {fileID: 8173001973296309717, guid: 65bd8db737a530348bcd47834659c244, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadSceneByIndex
+      value: LoadSceneAsyncByIndex
       objectReference: {fileID: 0}
     - target: {fileID: 8173001973296309717, guid: 65bd8db737a530348bcd47834659c244, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2063,6 +2063,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FluffScore
       objectReference: {fileID: 0}
+    - target: {fileID: 9175816591940840207, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+      propertyPath: m_Name
+      value: MissingScore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2073,6 +2077,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7943670785830766620, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
   m_PrefabInstance: {fileID: 1655860745}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1655860747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7314277522131072621, guid: a887c6572291ffc4789030d51fc67c39, type: 3}
+  m_PrefabInstance: {fileID: 1655860745}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1662047455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2497,6 +2512,7 @@ MonoBehaviour:
   bluePointsText: {fileID: 1782930561}
   greenPointsText: {fileID: 63095711}
   yellowPointsText: {fileID: 1662047457}
+  missingPointsText: {fileID: 1655860747}
 --- !u!1 &1974704683
 GameObject:
   m_ObjectHideFlags: 0
