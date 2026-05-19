@@ -9,12 +9,14 @@ using UnityEngine.UI;
 
 public class SignUpController : MonoBehaviour
 {
-    [Header("Input Fields to Send")]
+    [Header("Campos de entrada a enviar")]
     [SerializeField] private TMP_InputField nicknameField;
     [SerializeField] private TMP_InputField firstNameField;
     [SerializeField] private TMP_InputField lastNameField;
     [SerializeField] private TMP_InputField passwordField;
     [SerializeField] private DateInputField dateField;
+
+    [Header("Mensaje de error")]
     [SerializeField] private TMP_Text errorMessageText;
     [SerializeField] private PanelManager panelManager;
 

@@ -9,13 +9,13 @@ public class InputFieldNavigation : MonoBehaviour
     /// </summary>
     [SerializeField] private TMP_InputField[] inputFields;
 
-    [Header("Submit Button")]
+    [Header("Boton de submit")]
     /// <summary>
     /// Botón submit del panel SignUp
     /// </summary>
     [SerializeField] private Button submitButton;
 
-    [Header("Password Validation")]
+    [Header("Campo de contraseña")]
     /// <summary>
     /// Campo de la contraseña
     /// </summary>
@@ -25,7 +25,7 @@ public class InputFieldNavigation : MonoBehaviour
     /// </summary>
     [SerializeField] private TMP_InputField confirmPasswordField;
 
-    [Header("Date Validation")]
+    [Header("Campo de fecha")]
     /// <summary>
     /// Campo de la fecha de cumpleaños
     /// </summary>

@@ -14,11 +14,9 @@ public class DateInputField : MonoBehaviour
 
         if (dateField == null)
         {
-            // Debug.LogError("No se encontró TMP_InputField en este GameObject");
             return;
         }
 
-        // Debug.Log("InputField encontrado correctamente");
         dateField.onValueChanged.AddListener(OnValueChanged);
     }
 
@@ -60,7 +58,6 @@ public class DateInputField : MonoBehaviour
     {
         if (dateField == null)
         {
-            // Debug.LogError("No se encontró TMP_InputField en este GameObject");
             return false;
         }
 

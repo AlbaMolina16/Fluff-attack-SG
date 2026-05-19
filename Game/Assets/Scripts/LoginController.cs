@@ -71,7 +71,7 @@ public class LoginController : MonoBehaviour
             SetFieldsStatus(false);
             // Informamos el username y la password en los campos de la UI
             username.text = UserSession.Instance.User?.nickname;
-            password.text = "********"; // Como ya ha iniciado sesión, no hace falta incluir el valor de la contraseña
+            password.text = "********"; // Como ya ha iniciado sesion, no hace falta incluir el valor de la contraseña
         }
 
         // Mostramos botones de acción
@@ -84,7 +84,7 @@ public class LoginController : MonoBehaviour
         submitButton.gameObject.SetActive(false);
         // Ocultamos el botón de registro
         signUpButton.gameObject.SetActive(false);
-        // Mostramos el botón de desconexión
+        // Mostramos el botón de desconexion
         logoutButton.gameObject.SetActive(true);
         // Mostramos mensaje de bienvenida
         errorMessage.color = Color.white;
@@ -118,7 +118,7 @@ public class LoginController : MonoBehaviour
         if (req.result == UnityWebRequest.Result.Success)
         {
             var response = JsonUtility.FromJson<LoginResponse>(req.downloadHandler.text);
-            // Alamacenamos en sesión el id y nickname del usuario para poder acceder a ello desde otras escenas
+            // Almacenamos en sesion el id y nickname del usuario para poder acceder a ello desde otras escenas
             UserSession.Instance.SetUser(response.user);
             return (true, string.Empty);
         }
@@ -133,7 +133,7 @@ public class LoginController : MonoBehaviour
     }
 
     /// <summary>
-    /// Cierra la sesión del usuario, limpia los campos y restaura la UI al estado inicial.
+    /// Cierra la sesion del usuario, limpia los campos y restaura la UI al estado inicial.
     /// </summary>
     public void Logout()
     {

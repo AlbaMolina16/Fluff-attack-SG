@@ -8,8 +8,10 @@ using UnityEngine;
 /// </summary>
 public class ToastPanel : MonoBehaviour
 {
+    [Header("Textos")]
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI messageText;
+
     [SerializeField] private float duration = 3f;
 
     private Coroutine _hideCoroutine;

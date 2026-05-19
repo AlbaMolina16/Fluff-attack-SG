@@ -10,7 +10,7 @@ public class LoadRecentScoresContainer : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private TextMeshProUGUI scorePrefab; // Prefab para crear cada registro de puntuación
-    [SerializeField] private Transform container; // Contenedor donde se instanciarán los prebas de puntuación
+    [SerializeField] private Transform container; // Contenedor donde se instanciarán los prefabs de puntuación
 
     [Header("Configuración")]
     [SerializeField] private int maxScores = 4; // Cantidad de registros de puntuación que se van a mostrar

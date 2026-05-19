@@ -7,16 +7,16 @@ using UnityEngine;
 /// </summary>
 public class PanelManager : MonoBehaviour
 {
-    [Header("Panels")]
+    [Header("Paneles")]
     [SerializeField] private GameObject loginPanel; // Panel de login con usuario, contraseña, botón de login y botón de resgistro
     [SerializeField] private GameObject signUpPanel; // Panel de registro de usuario nuevo
     [SerializeField] private GameObject settingsPanel; // Panel de ajustes del usuario
 
-    [Header("Toast")]
+    [Header("Panel Informativo")]
     [SerializeField] private ToastPanel toastPanel; // Componente del prefab toast
 
     // Referencia al script que gestiona la navegación entre los campos de entrada del panel para resetearlos
-    [Header("Input Navigation")]
+    [Header("Panel de navegación")]
     [SerializeField] private InputFieldNavigation loginNavigation;
     [SerializeField] private InputFieldNavigation signUpNavigator;
 

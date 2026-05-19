@@ -1,5 +1,5 @@
 /// <summary>
-/// Clase estática que almacena las uris de los endpoints del Api Rest
+/// Clase estática que almacena las URLS de los endpoints del Api Rest
 /// </summary>
 public static class ApiConfig
 {
