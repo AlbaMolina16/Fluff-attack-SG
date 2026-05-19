@@ -4,12 +4,20 @@ USE fluff_unity_db;
 CREATE TABLE difficulties (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico de la dificultad',
     Name VARCHAR(20) NOT NULL UNIQUE COMMENT 'Nombre dificultad',
+	EnemySpeed FLOAT NOT NULL COMMENT 'Velocidad de movimiento de las pelusas',
+	EnemyLifeTime FLOAT NOT NULL COMMENT 'Tiempo de vida de la pelusa en pantalla. Pasado ese tiempo desaparecerá',
+	SpawnRate FLOAT NOT NULL COMMENT 'Frecuencia con la que irán apareciendo pelusas en pantalla por segundo',
+	AmountEnemies INT NOT NULL COMMENT 'Cantidad máxima de pelusas en pantalla a la vez',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) COMMENT 'Dificultades del juego';
 
 -- Insertamos niveles por defecto
-INSERT INTO difficulties (NAME) VALUES ('easy'), ('medium'), ('advanced');
-
+-- INSERT INTO difficulties (NAME) VALUES ('easy'), ('medium'), ('advanced');
+INSERT INTO `fluff_unity_db`.`difficulties` (`Name`, `EnemySpeed`, `EnemyLifeTime`, `SpawnRate`, `AmountEnemies`) VALUES 
+	('easy', 3.0, 10.0, 0.1667, 5),
+	('medium', 6.0, 7.0, 0.3334, 8),
+	('advanced', 12.0, 2.0, 0.6667, 12);
+    
 CREATE TABLE users (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del usuario',
     Username VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre de usuario',

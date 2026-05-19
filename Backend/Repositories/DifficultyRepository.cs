@@ -18,7 +18,13 @@ namespace FluffGameApi.Repositories
 
         public async Task<List<DifficultyDto>> GetAll()
         {
-            var result = await Connection.QueryAsync<DifficultyDto>("SELECT Id, Name FROM difficulties ORDER BY Id");
+            string sql = @"
+                SELECT Id, Name, EnemySpeed, EnemyLifeTime, SpawnRate, AmountEnemies
+                FROM difficulties
+                ORDER BY Id";
+
+            var result = await Connection.QueryAsync<DifficultyDto>(sql);
+
             return result.ToList();
         }
     }

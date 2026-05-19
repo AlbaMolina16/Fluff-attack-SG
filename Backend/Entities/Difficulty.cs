@@ -10,5 +10,10 @@ namespace FluffGameApi.Entities
     public class Difficulty : BaseEntity
     {
         public required string Name { get; set; }
+        public required decimal EnemySpeed { get; set; }
+        public required decimal EnemyLifeTime { get; set; }
+        public required decimal SpawnRate { get; set; }
+        public required int AmountEnemies { get; set; }
+
     }
 }

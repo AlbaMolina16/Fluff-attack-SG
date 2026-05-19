@@ -53,6 +53,10 @@ public class DifficultyOption
 {
     public int id;
     public string name;
+    public float enemySpeed;
+    public float spawnRate; // Enemigos por segundo -> enemy/seg
+    public float enemyLifeTime;
+    public int amountEnemies;
 }
 
 [Serializable]
