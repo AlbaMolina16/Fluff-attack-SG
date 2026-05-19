@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Este scrip controla el temporizado del tiempo de la cabecera del juego para informar al usuario del tiempo restante para jugar.
+/// </summary>
 public class TimerManager : MonoBehaviour
 {
     public float gameTime = 180f; // Tiempo total del juego = 3 minutos = 180 segundos
     [SerializeField] private TMP_Text timerText;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
 
     // Update is called once per frame
     void Update()

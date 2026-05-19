@@ -47,7 +47,7 @@ public class SettingsController : MonoBehaviour
             // Si no obtiene nada deja el dropdown vacio.
             // Si las obtiene, las guarda en sesión para futuras consultas.
             loadingSpinner.SetActive(true);
-            _difficulties = await FetchDifficulties();
+            _difficulties = await UserSession.Instance.FetchDifficulties();
             loadingSpinner.SetActive(false);
 
             if (_difficulties == null || _difficulties.Length == 0) return;
@@ -102,21 +102,21 @@ public class SettingsController : MonoBehaviour
         UserSession.Instance.UpdateUserPreferences(selectedId, _difficulties[difficultyDropdown.value].name);
     }
 
-    /// <summary>
-    /// Obtiene la lista de dificultades desde el API. Si la llamada falla, devuelve null.
-    /// </summary>
-    /// <returns>Niveles de dificultad obtenidos</returns>
-    private async Task<DifficultyOption[]> FetchDifficulties()
-    {
-        using var req = UnityWebRequest.Get(ApiConfig.Difficulty.GetAll);
-        var op = req.SendWebRequest();
-        while (!op.isDone) await Task.Yield();
+    // /// <summary>
+    // /// Obtiene la lista de dificultades desde el API. Si la llamada falla, devuelve null.
+    // /// </summary>
+    // /// <returns>Niveles de dificultad obtenidos</returns>
+    // private async Task<DifficultyOption[]> FetchDifficulties()
+    // {
+    //     using var req = UnityWebRequest.Get(ApiConfig.Difficulty.GetAll);
+    //     var op = req.SendWebRequest();
+    //     while (!op.isDone) await Task.Yield();
 
-        if (req.result != UnityWebRequest.Result.Success) return null;
+    //     if (req.result != UnityWebRequest.Result.Success) return null;
 
-        var response = JsonUtility.FromJson<DifficultiesResponse>(req.downloadHandler.text);
-        return response?.difficulties;
-    }
+    //     var response = JsonUtility.FromJson<DifficultiesResponse>(req.downloadHandler.text);
+    //     return response?.difficulties;
+    // }
 
     private async Task<bool> UpdatePreferences(int preferencesId, int idDifficulty)
     {
