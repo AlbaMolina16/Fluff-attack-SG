@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Este script controla el movimiento de la mirilla en el juego
+/// </summary>
 public class PointerController : MonoBehaviour
 {
     // Public variables

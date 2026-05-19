@@ -1229,6 +1229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1213571498}
   - component: {fileID: 1213571499}
+  - component: {fileID: 1213571500}
   m_Layer: 5
   m_Name: TimerContainer
   m_TagString: Untagged
@@ -1283,6 +1284,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &1213571500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213571497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1112dcabf70eb44438b4500a5d2b1b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameTime: 180
+  timerText: {fileID: 1535209511}
 --- !u!1001 &1263246092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1497,7 +1512,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 8
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1738,7 +1753,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.56
+  m_Radius: 2.5599997
 --- !u!114 &1701942260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1754,7 +1769,8 @@ MonoBehaviour:
   detectionRadius: 0.5
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
+  pointsText: {fileID: 1192554603}
 --- !u!1 &1820096092
 GameObject:
   m_ObjectHideFlags: 0
