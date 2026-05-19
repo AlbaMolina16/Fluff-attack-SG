@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -5,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class PointerController : MonoBehaviour
 {
+        
+    [Header("Velocidad de movimiento del puntero")]
     // Public variables
     public float speed = 5f; // The speed at which the player moves
 
@@ -28,6 +31,19 @@ public class PointerController : MonoBehaviour
 
         // Set movement direction based on input
         movement = new Vector2(horizontalInput, verticalInput);
+
+        LimitPosition();
+    }
+    private void LimitPosition()
+    {
+        // Obtiene la posición del puntero
+        Vector3 pos = transform.position;
+
+        // Limitar posición del puntero
+        pos.x = Mathf.Clamp(pos.x, LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
+        pos.y = Mathf.Clamp(pos.y, LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
+
+        transform.position = pos;
     }
 
     void FixedUpdate()
