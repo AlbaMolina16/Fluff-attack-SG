@@ -18,6 +18,33 @@ INSERT INTO `fluff_unity_db`.`difficulties` (`Name`, `EnemySpeed`, `EnemyLifeTim
 	('medium', 6.0, 7.0, 0.3334, 8),
 	('advanced', 12.0, 2.0, 0.6667, 12);
     
+CREATE TABLE movement_type (
+    Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del tipo de movimiento',
+    Name VARCHAR(20) NOT NULL UNIQUE COMMENT 'Nombre del tipo de movimiento',
+    LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) COMMENT 'Patron de movimiento que puede seguir una pelusa';
+INSERT INTO `fluff_unity_db`.`movement_type` (`Name`) VALUES 
+	('none'),
+	('lineal'),
+	('zigzag'),
+    ('erratic');
+    
+CREATE TABLE difficulty_movementType (
+    Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico de la dificultad vs tipo de movimiento',
+    IdDifficulty INT NOT NULL COMMENT 'Id del registro en la tabla difficulties',
+    IdMovementType INT NOT NULL COMMENT 'Id del registro en la tabla movement_type',
+    LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id) ON DELETE CASCADE,
+    FOREIGN KEY (IdMovementType) REFERENCES movement_type(Id) ON DELETE CASCADE
+) COMMENT 'Tabla que indica los tipos de movimiento que tiene asignados una dificultad';
+ALTER TABLE difficulty_movementType ADD UNIQUE `unique_difficulty_movementType` (IdDifficulty, IdMovementType);
+INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`) VALUES 
+	(1, 1),
+	(2, 1),
+	(2, 2),
+    (3, 2),
+    (3, 3);
+    
 CREATE TABLE users (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del usuario',
     Username VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre de usuario',
