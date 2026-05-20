@@ -25,7 +25,8 @@ public class Fluff : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         fluffColor = sr.color;
-        if (UserSession.Instance.UserDifficulty != null)
+        // Comprobamos si hay configurado un tiempo de vida para las pelusas
+        if (UserSession.Instance.UserDifficulty != null && UserSession.Instance.UserDifficulty.enemyLifeTime > 0)
             StartCoroutine(FadeOut());
     }
 
