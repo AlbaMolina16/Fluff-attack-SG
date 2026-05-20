@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Fluff;
@@ -10,31 +11,55 @@ public class PointerShooter : MonoBehaviour
 {
     [SerializeField] private TMP_Text pointsText;
     private float points = 0f;
-    private Fluff actualEnemy;
+    // private Fluff actualEnemy;
+
+    private HashSet<Collider2D> fluffsInPointer = new HashSet<Collider2D>(); // Lista de pelusas que almacenamos cuando estan en el area del puntero
 
     void OnTriggerEnter2D(Collider2D enemy)
     {
-        actualEnemy = enemy.GetComponent<Fluff>();
+        // Detectamos la pelusa que ha entrado en el area del puntero
+        // var fluff = enemy.GetComponent<Fluff>();
+        fluffsInPointer.Add(enemy);
+        // actualEnemy = enemy.GetComponent<Fluff>();
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D outEnemy)
     {
-        actualEnemy = null;
+        // Detectamos la pelusa que se está saliendo del area del puntero para eliminarla de la lista
+        // var outFluff = outEnemy.GetComponent<Fluff>();
+        fluffsInPointer.Remove(outEnemy);
+        // actualEnemy = null;
     }
 
     void Update()
     {
-        // Si estamos sobre una pelusa enemiga y se pulsa la tecla correcta, la eliminamos y sumamos puntos
-        if (actualEnemy != null &&
-            ((Input.GetKeyDown(KeyCode.H) && actualEnemy.type == EnemyType.Red)
-            || (Input.GetKeyDown(KeyCode.J) && actualEnemy.type == EnemyType.Yellow)
-            || (Input.GetKeyDown(KeyCode.K) && actualEnemy.type == EnemyType.Green)
-            || (Input.GetKeyDown(KeyCode.L) && actualEnemy.type == EnemyType.Blue)))
+        // Comprobamos si se está elimando una pelusa que se encuentra en el área de acción del puntero
+        if (fluffsInPointer != null && fluffsInPointer.Count > 0)
         {
-            Destroy(actualEnemy.gameObject);
-            points += 1;
-        }
+            List<Collider2D> toRemove = new List<Collider2D>();
+            
+            // Primero comprobamos si se ha pulsado la tecla correcta para eliminar la pelusa y la almacenamos
+            foreach (Collider2D fluffCollider in fluffsInPointer)
+            {
+                Fluff fluff = fluffCollider.GetComponent<Fluff>();
+                if ((Input.GetKeyDown(KeyCode.H) && fluff.type == EnemyType.Red)
+                    || (Input.GetKeyDown(KeyCode.J) && fluff.type == EnemyType.Yellow)
+                    || (Input.GetKeyDown(KeyCode.K) && fluff.type == EnemyType.Green)
+                    || (Input.GetKeyDown(KeyCode.L) && fluff.type == EnemyType.Blue))
+                {
+                    toRemove.Add(fluffCollider);
+                    // Destroy(fluff.gameObject);
+                    points += 1;
+                    pointsText.text = Mathf.FloorToInt(points).ToString();
+                }
+            }
 
-        pointsText.text = Mathf.FloorToInt(points).ToString();
+            // Eliminamos de HasSet y testruimos el gameObject
+            foreach (Collider2D fluffCollider in toRemove)
+            {
+                fluffsInPointer.Remove(fluffCollider);
+                Destroy(fluffCollider.gameObject);
+            }
+        }
     }
 }
