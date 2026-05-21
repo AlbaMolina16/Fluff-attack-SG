@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using static Fluff;
@@ -9,9 +10,9 @@ using static Fluff;
 /// </summary>
 public class PointerShooter : MonoBehaviour
 {
-    [SerializeField] private TMP_Text pointsText;
-    private float points = 0f;
-    // private Fluff actualEnemy;
+    [Header("Gestor de puntuación")]
+    [SerializeField]
+    private ScoreManager score;
 
     private HashSet<Collider2D> fluffsInPointer = new HashSet<Collider2D>(); // Lista de pelusas que almacenamos cuando estan en el area del puntero
 
@@ -29,31 +30,34 @@ public class PointerShooter : MonoBehaviour
 
     void Update()
     {
-        // Comprobamos si se está elimando una pelusa que se encuentra en el área de acción del puntero
-        if (fluffsInPointer != null && fluffsInPointer.Count > 0)
+        // Primero comprobamos si se ha pulsado alguna de las teclas con las que se puede eliminar una pelusa
+        if (Input.GetKeyDown(KeyCode.H) || Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L))
         {
-            List<Collider2D> toRemove = new List<Collider2D>();
-            
-            // Primero comprobamos si se ha pulsado la tecla correcta para eliminar la pelusa y la almacenamos
-            foreach (Collider2D fluffCollider in fluffsInPointer)
+            // Si se ha pulsado alguna de las teclas, probamos si hay alguna pelusa en el área para ese color
+            if (fluffsInPointer != null && fluffsInPointer.Count > 0)
             {
-                Fluff fluff = fluffCollider.GetComponent<Fluff>();
-                if ((Input.GetKeyDown(KeyCode.H) && fluff.type == EnemyType.Red)
-                    || (Input.GetKeyDown(KeyCode.J) && fluff.type == EnemyType.Yellow)
-                    || (Input.GetKeyDown(KeyCode.K) && fluff.type == EnemyType.Green)
-                    || (Input.GetKeyDown(KeyCode.L) && fluff.type == EnemyType.Blue))
-                {
-                    toRemove.Add(fluffCollider);
-                    points += 1;
-                    pointsText.text = Mathf.FloorToInt(points).ToString();
-                }
-            }
+                Collider2D find = null;
 
-            // Eliminamos de HasSet y testruimos el gameObject
-            foreach (Collider2D fluffCollider in toRemove)
-            {
-                fluffsInPointer.Remove(fluffCollider);
-                Destroy(fluffCollider.gameObject);
+                if (Input.GetKeyDown(KeyCode.H))
+                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Red);
+                else if (Input.GetKeyDown(KeyCode.J))
+                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Yellow);
+                else if (Input.GetKeyDown(KeyCode.K))
+                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Green);
+                else if (Input.GetKeyDown(KeyCode.L))
+                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Blue);
+
+                if (find != null)
+                {
+                    fluffsInPointer.Remove(find);
+                    Destroy(find.gameObject);
+                    score.AddPoints(10);
+                }
+                else
+                {
+                    // Si se ha pulsado una tecla pero no es la correcta, se penaliza con puntuación
+                    score.SubstractPoints(5);
+                }
             }
         }
     }

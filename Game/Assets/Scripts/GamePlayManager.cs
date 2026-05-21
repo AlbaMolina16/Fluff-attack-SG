@@ -6,29 +6,48 @@ using UnityEngine;
 public class GamePlayManager : MonoBehaviour
 {
     [Header("Lista de prefabs de pelusas")]
-    [SerializeField] private GameObject[] fluffPrefabs; // Array de prefab que se van a poner instanciar durante el juego
+    [Tooltip("Indica los tipos de pelusas que se pueden ir generando.")]
+    [SerializeField]
+    private GameObject[] fluffPrefabs;
+
     [Header("Contenedor de pelusas")]
-    [SerializeField] private Transform fluffsContainer; // Contenedor donde se instanciarán los prefabs de pelusas
-    private float frequencyCount = 1f;
-    private float secondsTimer = 0f;
+    [Tooltip("Es el contenedor donde se iran creado lo objetos de las pelusas.")]
+    [SerializeField]
+    private Transform fluffsContainer; // Contenedor donde se instanciarán los prefabs de pelusas
+
+    [Header("Gestor del contador de tiempo")]
+    [SerializeField]
+    private TimerManager timer;
+
+    private float frequencyCount = 1f; // Contabilidad la cantidad de pelusas por segundo
+    private float secondsTimer = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
 
     // Start is called before the first frame update
     void Start()
     {
-        SpawnFluff();
+        //SpawnFluff();
     }
 
     // Update is called once per frame
     void Update()
     {
-        secondsTimer += Time.deltaTime;
-
-        // Si ha pasado un segundo, comprobaremos si hay que mostrar pelusas en función del spawnRate
-        if (secondsTimer >= 1f)
+        // Comprobamos que el temporizador esté corriendo para empezar a generar pelusas si aplica
+        if (timer.IsRunning())
         {
-            secondsTimer = 0f;
-            frequencyCount += UserSession.Instance.UserDifficulty.spawnRate;
-            SpawnFluff();
+            secondsTimer += Time.deltaTime; // Contabilizamos el tiempo transcurrido
+
+            // Si ha pasado un segundo, comprobaremos si hay que mostrar pelusas en función del spawnRate
+            if (secondsTimer >= 1f)
+            {
+                secondsTimer -= 1f;
+                frequencyCount += UserSession.Instance.UserDifficulty.spawnRate;
+                SpawnFluff();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
+        {
+            timer.StartTimer();
         }
     }
 

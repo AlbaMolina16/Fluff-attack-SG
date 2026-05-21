@@ -5,7 +5,8 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Este script controla el temporizado del tiempo de la cabecera del juego para informar al usuario del tiempo restante para jugar.
+/// Este script controla el temporizador de la partida.
+/// Se encarga de actualizar el tiempo restante en la cabecera del juego para informar al usuario del tiempo restante para jugar.
 /// </summary>
 public class TimerManager : MonoBehaviour
 {
