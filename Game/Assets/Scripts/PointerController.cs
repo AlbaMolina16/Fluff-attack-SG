@@ -34,6 +34,11 @@ public class PointerController : MonoBehaviour
 
         LimitPosition();
     }
+
+    /// <summary>
+    /// Función para limitar la posición del puntero, ya que al estar el Collider como Istrigger para la detección de pelusas,
+    /// no estaba colisionando con las paredes que habían incluido. Así que hay que limitarlo en función de los límites de la pantalla.
+    /// </summary>
     private void LimitPosition()
     {
         // Obtiene la posición del puntero

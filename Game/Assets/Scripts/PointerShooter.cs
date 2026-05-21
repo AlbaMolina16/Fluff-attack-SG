@@ -18,17 +18,13 @@ public class PointerShooter : MonoBehaviour
     void OnTriggerEnter2D(Collider2D enemy)
     {
         // Detectamos la pelusa que ha entrado en el area del puntero
-        // var fluff = enemy.GetComponent<Fluff>();
         fluffsInPointer.Add(enemy);
-        // actualEnemy = enemy.GetComponent<Fluff>();
     }
 
     void OnTriggerExit2D(Collider2D outEnemy)
     {
         // Detectamos la pelusa que se está saliendo del area del puntero para eliminarla de la lista
-        // var outFluff = outEnemy.GetComponent<Fluff>();
         fluffsInPointer.Remove(outEnemy);
-        // actualEnemy = null;
     }
 
     void Update()
@@ -48,7 +44,6 @@ public class PointerShooter : MonoBehaviour
                     || (Input.GetKeyDown(KeyCode.L) && fluff.type == EnemyType.Blue))
                 {
                     toRemove.Add(fluffCollider);
-                    // Destroy(fluff.gameObject);
                     points += 1;
                     pointsText.text = Mathf.FloorToInt(points).ToString();
                 }
