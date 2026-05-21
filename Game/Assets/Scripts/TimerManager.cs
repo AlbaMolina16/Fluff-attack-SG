@@ -5,22 +5,102 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Este scrip controla el temporizado del tiempo de la cabecera del juego para informar al usuario del tiempo restante para jugar.
+/// Este script controla el temporizado del tiempo de la cabecera del juego para informar al usuario del tiempo restante para jugar.
 /// </summary>
 public class TimerManager : MonoBehaviour
 {
-    public float gameTime = 180f; // Tiempo total del juego = 3 minutos = 180 segundos
-    [SerializeField] private TMP_Text timerText;
+    public float remainingTime = 180f; // Tiempo restante para jugar en segundos. Por defecto, 3 minutos.
+    [SerializeField] private TMP_Text timerText; //GameObject de tipo texto donde se muestra la cuenta atrás.
 
+    private bool running = false;
+    private float elapsedTime = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
+    private int secondsCount = 0; // Contrador de segundos enteros transcurridos.
+
+    void Start()
+    {
+        // Inicalizamos el texto con color rojo para indicar que no se ha iniciado el juego.
+        timerText.color = Color.red;
+    }
+
+    // Time.deltaTime es el tiempo en segundo que ha tardado en renderizarse el último frame
     // Update is called once per frame
     void Update()
     {
-        gameTime -= Time.deltaTime; // Vamos restando segundos
-        UpdateTimerText();
+        if (running)
+        {
+            if (remainingTime > 0f)
+            {
+                remainingTime -= Time.deltaTime; // Vamos restando tiempo al contador
+                elapsedTime += Time.deltaTime; // Vamos sumando tiempo transcurrido por framwe
+
+                if (DoSomethingWhenCheckSecond(elapsedTime))
+                {
+                    timerText.text = GetRemainingTimeSring();
+                }
+            }
+            else
+            {
+                StopTimer();
+            }
+        }
     }
 
-    void UpdateTimerText()
+    /// <summary>
+    /// Inicia la cuenta atrás.
+    /// </summary>
+    public void StartTimer()
     {
-        timerText.text = Mathf.FloorToInt(gameTime).ToString() + " seg";
+        running = true;
+        timerText.color = new Color32(0, 245, 255, 255);
+        timerText.text = GetRemainingTimeSring();
+    }
+
+    /// <summary>
+    /// Paraliza la cuenta atrás.
+    /// </summary>
+    public void StopTimer()
+    {
+        running = false;
+        remainingTime = 0f;
+        timerText.color = Color.red;
+    }
+
+    public string GetRemainingTimeSring()
+    {
+        return Mathf.CeilToInt(remainingTime).ToString() + " seg";
+    }
+
+    /// <summary>
+    /// Devuelve la cuenta de los segundos transcurridos desde que se inició la cuenta atrás.
+    /// </summary>
+    /// <returns></returns>
+    public int GetSecondsCount()
+    {
+        return secondsCount;
+    }
+
+    /// <summary>
+    /// Devuelve el estado del temporizador, si está corriendo o no.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRunning()
+    {
+        return running;
+    }
+
+    /// <summary>
+    /// Función que indica si ha pasado un segundo entero desde la última vez que se comprobó.
+    /// </summary>
+    /// <returns></returns>
+    public bool DoSomethingWhenCheckSecond(float timeToCheck)
+    {
+        int actualSeconds = (int)timeToCheck;
+        if (actualSeconds != secondsCount)
+        {
+            secondsCount = actualSeconds;
+            return true;
+        }
+        else
+            return false;
     }
 }
