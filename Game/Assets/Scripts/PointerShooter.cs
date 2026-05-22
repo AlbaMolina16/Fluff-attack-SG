@@ -14,6 +14,10 @@ public class PointerShooter : MonoBehaviour
     [SerializeField]
     private ScoreManager score;
 
+    [Header("Clips de audio")]
+    [SerializeField] private AudioClip shootAudio;
+    [SerializeField] private AudioClip shootFailAudio;
+
     private HashSet<Collider2D> fluffsInPointer = new HashSet<Collider2D>(); // Lista de pelusas que almacenamos cuando estan en el area del puntero
 
     void OnTriggerEnter2D(Collider2D enemy)
@@ -52,11 +56,13 @@ public class PointerShooter : MonoBehaviour
                     fluffsInPointer.Remove(find);
                     Destroy(find.gameObject);
                     score.AddPoints(10);
+                    SoundManager.Instance.PlaySound(shootAudio);
                 }
                 else
                 {
                     // Si se ha pulsado una tecla pero no es la correcta, se penaliza con puntuación
                     score.SubstractPoints(5);
+                    SoundManager.Instance.PlaySound(shootFailAudio);
                 }
             }
         }
