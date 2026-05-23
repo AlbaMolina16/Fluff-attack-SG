@@ -23,11 +23,11 @@ namespace FluffGameApi.Services
             try
             {
                 var scores = await _scoreRepository.GetRecentScoresByUserId(userId, limit);
-                return (true, "Scores retrieved successfully", scores);
+                return (true, "Puntuaciones obtenidas correctamente", scores);
             }
             catch (Exception ex)
             {
-                return (false, $"Error retrieving scores: {ex.Message}", []);
+                return (false, $"Error obteniendo las puntuaciones: {ex.Message}", []);
             }
         }
 
@@ -41,11 +41,11 @@ namespace FluffGameApi.Services
             try
             {
                 var score = await _scoreRepository.GetLastScoreByUserId(userId);
-                return (true, "Score retrieved successfully", score);
+                return (true, "Última puntuación obtenida correctamente", score);
             }
             catch (Exception ex)
             {
-                return (false, $"Error retrieving score: {ex.Message}", null);
+                return (false, $"Error al obtener la última puntuación: {ex.Message}", null);
             }
         }
     }

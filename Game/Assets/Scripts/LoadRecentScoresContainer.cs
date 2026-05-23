@@ -24,7 +24,7 @@ public class LoadRecentScoresContainer : MonoBehaviour
         if (scores.Count() == 0)
         {
             TextMeshProUGUI instance = Instantiate(scorePrefab, container);
-            instance.text = "No ratings yet.";
+            instance.text = "No hay puntuaciones.";
             _scoreTexts.Add(instance);
             return;
         }

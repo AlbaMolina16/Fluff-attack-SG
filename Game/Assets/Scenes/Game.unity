@@ -588,7 +588,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SCORE: '
+  m_text: 'PUNTUACION: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -811,7 +811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7586880372032050002, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
       propertyPath: m_text
-      value: ARE YOU READY?
+      value: ESTAS PREPARAD@?
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3935310109311468322, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
@@ -1077,8 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577fddcf52b0c7b4686f40092e7af085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalScoreText: {fileID: 1192554603}
-  lastScoreText: {fileID: 1701811035}
 --- !u!4 &1050000414
 Transform:
   m_ObjectHideFlags: 0
@@ -1479,6 +1477,8 @@ MonoBehaviour:
   - {fileID: 1892771994339415330, guid: 52c99525f3daf974a8b4126e82568ceb, type: 3}
   fluffsContainer: {fileID: 329174239}
   timer: {fileID: 1841228321}
+  titleText: {fileID: 0}
+  messageText: {fileID: 0}
 --- !u!4 &1289130919
 Transform:
   m_ObjectHideFlags: 0
@@ -1613,7 +1613,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: (PRESS SPACE KEY TO START GAME)
+  m_text: (PULSA LA BARRA ESPACIADORA PARA COMENZAR LA PARTIDA)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -2034,7 +2034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9147d5cfdfeaa04abe194796b2aa2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: {fileID: 1050000413}
+  totalScoreText: {fileID: 1192554603}
+  lastScoreText: {fileID: 1701811035}
   shootAudio: {fileID: 8300000, guid: ae55b286630306247b1c5ec1276b91de, type: 3}
   shootFailAudio: {fileID: 8300000, guid: 56c911115ee3140448fd57ccd42a970c, type: 3}
 --- !u!1001 &1736369622
@@ -2658,6 +2659,10 @@ PrefabInstance:
     - target: {fileID: 6744981770381332560, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
       propertyPath: m_Name
       value: TimerContainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586880372032050002, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
+      propertyPath: m_text
+      value: 'TIEMPO: '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

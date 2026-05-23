@@ -24,7 +24,6 @@ public class SignUpController : MonoBehaviour
 
     public List<Selectable> _formFields; // Almaceno los elementos de tipo texto o botón para habilitarnos o no en función del estado de la llamada
 
-
     [Serializable]
     private class RegisterRequest
     {
@@ -100,7 +99,7 @@ public class SignUpController : MonoBehaviour
         if (req.responseCode == 409)
         {
             var error = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
-            return (false, error?.message ?? "El nickname ya está registrado.");
+            return (false, error?.message ?? "El usuario ya está registrado.");
         }
 
         return (false, "No se pudo completar el registro. Inténtalo de nuevo.");

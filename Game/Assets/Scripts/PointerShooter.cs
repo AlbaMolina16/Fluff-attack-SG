@@ -10,9 +10,9 @@ using static Fluff;
 /// </summary>
 public class PointerShooter : MonoBehaviour
 {
-    [Header("Gestor de puntuación")]
-    [SerializeField]
-    private ScoreManager score;
+    [Header("Textos de puntuación")]
+    [SerializeField] private TMP_Text totalScoreText; //GameObject de tipo texto donde se muestra la puntuación obtenida.
+    [SerializeField] private TMP_Text lastScoreText; // Indicará si el último disparo ha sido bueno o no
 
     [Header("Clips de audio")]
     [SerializeField] private AudioClip shootAudio;
@@ -55,16 +55,32 @@ public class PointerShooter : MonoBehaviour
                 {
                     fluffsInPointer.Remove(find);
                     Destroy(find.gameObject);
-                    score.AddPoints(10);
+                    ScoreManager.Instance.AddOrSubstractPoints(10, find.GetComponent<Fluff>().type);
                     SoundManager.Instance.PlaySound(shootAudio);
                 }
                 else
                 {
                     // Si se ha pulsado una tecla pero no es la correcta, se penaliza con puntuación
-                    score.SubstractPoints(5);
+                    ScoreManager.Instance.AddOrSubstractPoints(-5); // Puedes cambiar el tipo de enemigo según tu lógica
                     SoundManager.Instance.PlaySound(shootFailAudio);
                 }
+
+                UpdateTexts();
             }
+        }
+    }
+
+    /// <summary>
+    /// Actualiza textos de puntuación
+    /// </summary>
+    private void UpdateTexts()
+    {
+        if (totalScoreText != null)
+            totalScoreText.text = Mathf.FloorToInt(ScoreManager.Instance.totalScore).ToString();
+        if (lastScoreText != null)
+        {
+            lastScoreText.color = ScoreManager.Instance.lastScore > 0 ? Color.green : Color.red;
+            lastScoreText.text = (ScoreManager.Instance.lastScore >= 0 ? "( + " : "( - ") + ScoreManager.Instance.lastScore + " )";
         }
     }
 }

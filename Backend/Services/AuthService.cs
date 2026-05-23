@@ -83,7 +83,7 @@ namespace FluffGameApi.Services
         {
             var existing = await _userRepository.GetByUsername(newUserDto.Username);
             if (existing != null)
-                return (false, "El nickname ya está en uso", 0);
+                return (false, "Ya existe el usuario", 0);
 
             var user = new User
             {

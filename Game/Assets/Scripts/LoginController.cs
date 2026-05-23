@@ -88,7 +88,7 @@ public class LoginController : MonoBehaviour
         logoutButton.gameObject.SetActive(true);
         // Mostramos mensaje de bienvenida
         errorMessage.color = Color.white;
-        errorMessage.text = "Welcome, " + UserSession.Instance.User.firstName + "!";
+        errorMessage.text = "¡Bienvenid@, " + UserSession.Instance.User.firstName + "!";
         errorMessage.gameObject.SetActive(true);
     }
 

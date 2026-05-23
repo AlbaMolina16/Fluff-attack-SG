@@ -19,8 +19,13 @@ public class GamePlayManager : MonoBehaviour
     [SerializeField]
     private TimerManager timer;
 
+    [Header("Textos de la cabecera")]
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private TextMeshProUGUI messageText;
+
     private float frequencyCount = 1f; // Contabilidad la cantidad de pelusas por segundo
     private float secondsTimer = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
+    private bool gameStarted = false; // Indica si el juego a comenzado.
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +53,17 @@ public class GamePlayManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
         {
             timer.StartTimer();
+            gameStarted = true;
+            titleText.text = "¡Vamos!";
+            messageText.gameObject.SetActive(false);
+        } else if(gameStarted && !timer.IsRunning())
+        {
+            titleText.text = "¡Se acabo!";
+            // messageText.text = "Pulsa espacio para volver a jugar.";
+            // if (Input.GetKeyDown(KeyCode.Space))
+            // {
+            //     UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            // }
         }
     }
 
