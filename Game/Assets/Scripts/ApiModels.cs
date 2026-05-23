@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class ErrorResponse
 {
     public string message;
 }
+
+#region LOGIN Y USUARIO
 
 /// <summary>
 /// Dto para mapear la respuesta del API /login
@@ -31,6 +34,10 @@ public class UserLoginResponse
     public UserPreferences preferences;
 }
 
+#endregion
+
+#region PREFERENCIAS DEL USUARIO
+
 /// <summary>
 /// Dto para mapear las preferencias del usuario obtenidas del API /auth/login
 /// </summary>
@@ -47,6 +54,10 @@ public class UpdatePreferencesRequest
 {
     public int idDifficulty;
 }
+
+#endregion
+
+#region DIFICULTAD
 
 [Serializable]
 public class DifficultyOption
@@ -65,3 +76,55 @@ public class DifficultiesResponse
     public string message;
     public DifficultyOption[] difficulties;
 }
+
+#endregion
+
+#region PUNTUACIONES
+
+[System.Serializable]
+public class RecentScoreItem
+{
+    public int totalPoints;
+    public int idDifficulty;
+    public string difficultyName;
+}
+
+[System.Serializable]
+public class RecentScoresResponse
+{
+    public string message;
+    public List<RecentScoreItem> scores;
+}
+
+[System.Serializable]
+public class LastScoreItem
+{
+    public int totalPoints;
+    public int redPoints;
+    public int bluePoints;
+    public int greenPoints;
+    public int yellowPoints;
+    public int missingPoints;
+}
+
+[System.Serializable]
+public class LastScoreResponse
+{
+    public string message;
+    public LastScoreItem score;
+}
+
+[System.Serializable]
+public class NewScoreRequest
+{
+    public int idUser;
+    public int idDifficulty;
+    public int redPoints;
+    public int bluePoints;
+    public int greenPoints;
+    public int yellowPoints;
+    public int? missingPoints; // TODO No está implementado la contabilización de puntos que se han perdido porque no se llegó a disparar a una pelusa
+    public int totalPoints;
+}
+
+#endregion

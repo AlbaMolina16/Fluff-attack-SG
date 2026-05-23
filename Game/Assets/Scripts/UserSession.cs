@@ -17,6 +17,9 @@ public class UserSession : MonoBehaviour
     public static UserSession Instance { get; private set; }
 
     public UserLoginResponse User { get; private set; }
+    /// <summary>
+    /// Indica las diferentes dificultades que se pueden elegir en el juego.
+    /// </summary>
     public DifficultyOption[] Difficulties { get; private set; }
     public DifficultyOption UserDifficulty { get; private set; }
 

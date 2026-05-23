@@ -80,7 +80,7 @@ public class PointerShooter : MonoBehaviour
         if (lastScoreText != null)
         {
             lastScoreText.color = ScoreManager.Instance.lastScore > 0 ? Color.green : Color.red;
-            lastScoreText.text = (ScoreManager.Instance.lastScore >= 0 ? "( + " : "( - ") + ScoreManager.Instance.lastScore + " )";
+            lastScoreText.text = (ScoreManager.Instance.lastScore >= 0 ? "(+" : "(") + ScoreManager.Instance.lastScore + ")";
         }
     }
 }

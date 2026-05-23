@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class GamePlayManager : MonoBehaviour
 {
@@ -23,6 +27,15 @@ public class GamePlayManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI messageText;
 
+    [Header("Botonera final")]
+    [SerializeField] private GameObject buttonsContainer;
+
+    // [SerializeField] private Button scoreButton;
+    // [SerializeField] private Button homeButton;
+
+
+
+
     private float frequencyCount = 1f; // Contabilidad la cantidad de pelusas por segundo
     private float secondsTimer = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
     private bool gameStarted = false; // Indica si el juego a comenzado.
@@ -31,10 +44,12 @@ public class GamePlayManager : MonoBehaviour
     void Start()
     {
         //SpawnFluff();
+        // buttonsContainer.SetActive(true);
+
     }
 
     // Update is called once per frame
-    void Update()
+    async void Update()
     {
         // Comprobamos que el temporizador esté corriendo para empezar a generar pelusas si aplica
         if (timer.IsRunning())
@@ -54,11 +69,29 @@ public class GamePlayManager : MonoBehaviour
         {
             timer.StartTimer();
             gameStarted = true;
-            titleText.text = "¡Vamos!";
+            titleText.text = "3, 2, 1... Vamos!";
             messageText.gameObject.SetActive(false);
-        } else if(gameStarted && !timer.IsRunning())
+        }
+        else if (gameStarted && !timer.IsRunning())
         {
-            titleText.text = "¡Se acabo!";
+            titleText.text = "Se acabo!";
+            gameStarted = false;
+            // Hay que guardar la puntuación en BBDD.
+
+            var result = await SaveScore();
+            // homeButton.gameObject.SetActive(true);
+            // scoreButton.gameObject.SetActive(true);
+            buttonsContainer.SetActive(true);
+            if (result.Item1)
+            {
+                messageText.text = "Puntuación guardada correctamente.";
+            }
+            else
+            {
+                messageText.text = result.Item2;
+            }
+
+            messageText.gameObject.SetActive(true);
             // messageText.text = "Pulsa espacio para volver a jugar.";
             // if (Input.GetKeyDown(KeyCode.Space))
             // {
@@ -93,5 +126,36 @@ public class GamePlayManager : MonoBehaviour
     {
         x = Random.Range(LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
         y = Random.Range(LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
+    }
+
+    private async Task<(bool, string)> SaveScore()
+    {
+        NewScoreRequest newScore = new()
+        {
+            idUser = UserSession.Instance.User.id,
+            idDifficulty = UserSession.Instance.UserDifficulty.id,
+            redPoints = ScoreManager.Instance.redPoints,
+            bluePoints = ScoreManager.Instance.bluePoints,
+            greenPoints = ScoreManager.Instance.greenPoints,
+            yellowPoints = ScoreManager.Instance.yellowPoints,
+            missingPoints = null,
+            totalPoints = ScoreManager.Instance.totalScore
+        };
+
+        var json = JsonUtility.ToJson(newScore);
+
+        using var req = new UnityWebRequest(ApiConfig.Scores.New, "POST");
+        byte[] body = Encoding.UTF8.GetBytes(json);
+        req.uploadHandler = new UploadHandlerRaw(body);
+        req.downloadHandler = new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        var operation = req.SendWebRequest();
+
+        while (!operation.isDone)
+            await Task.Yield();
+
+        var textMessage = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
+        return (req.result == UnityWebRequest.Result.Success, textMessage.message);
     }
 }

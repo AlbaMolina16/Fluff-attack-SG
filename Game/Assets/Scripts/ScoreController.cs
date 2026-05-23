@@ -27,40 +27,6 @@ public class ScoreController : MonoBehaviour
     public TMP_Text yellowPointsText;
     public TMP_Text missingPointsText;
 
-
-    [System.Serializable]
-    private class ScoreItem
-    {
-        public int totalPoints;
-        public int idDifficulty;
-        public string difficultyName;
-    }
-
-    [System.Serializable]
-    private class RecentScoresResponse
-    {
-        public string message;
-        public List<ScoreItem> scores;
-    }
-
-    [System.Serializable]
-    private class LastScoreItem
-    {
-        public int totalPoints;
-        public int redPoints;
-        public int bluePoints;
-        public int greenPoints;
-        public int yellowPoints;
-        public int missingPoints;
-    }
-
-    [System.Serializable]
-    private class LastScoreResponse
-    {
-        public string message;
-        public LastScoreItem score;
-    }
-
     /// <summary>
     /// Al iniciar la escena, se cargan las puntuaciones más recientes y la última puntuación del usuario.
     /// </summary>

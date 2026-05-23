@@ -813,8 +813,7 @@ PrefabInstance:
       propertyPath: m_text
       value: ESTAS PREPARAD@?
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3935310109311468322, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2759640507796181754, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
     m_AddedGameObjects:
@@ -862,6 +861,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &417050848 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7586880372032050002, guid: 4c4c342d62b10954994d9bdf255faf14, type: 3}
+  m_PrefabInstance: {fileID: 417050844}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &454098538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,7 +1393,7 @@ GameObject:
   - component: {fileID: 1208824784}
   - component: {fileID: 1208824785}
   m_Layer: 5
-  m_Name: AcionButtonsContainer
+  m_Name: ActionButtonsContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1407,8 +1417,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1319.1877, y: -40}
-  m_SizeDelta: {x: 300.28714, y: 80}
+  m_AnchoredPosition: {x: 1487.0868, y: -40}
+  m_SizeDelta: {x: 145.54272, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1208824785
 MonoBehaviour:
@@ -1477,8 +1487,9 @@ MonoBehaviour:
   - {fileID: 1892771994339415330, guid: 52c99525f3daf974a8b4126e82568ceb, type: 3}
   fluffsContainer: {fileID: 329174239}
   timer: {fileID: 1841228321}
-  titleText: {fileID: 0}
-  messageText: {fileID: 0}
+  titleText: {fileID: 417050848}
+  messageText: {fileID: 1548068599}
+  buttonsContainer: {fileID: 1208824783}
 --- !u!4 &1289130919
 Transform:
   m_ObjectHideFlags: 0
@@ -2069,7 +2080,7 @@ PrefabInstance:
     - target: {fileID: 673340729623360407, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 67979a4199e17864e9977d9ab075f79d, type: 3}
+      objectReference: {fileID: 21300000, guid: 6231249001a5afb49b56ea5c83d80e1d, type: 3}
     - target: {fileID: 822630912722809395, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2156,7 +2167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6715426611004412459, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7777840262880169699, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Name
@@ -2417,7 +2428,7 @@ PrefabInstance:
     - target: {fileID: 673340729623360407, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c8db0d1ff20e424439a4fecf49fb2d46, type: 3}
+      objectReference: {fileID: 21300000, guid: fc3f2b0241ffbe644afbe1f3d2368503, type: 3}
     - target: {fileID: 822630912722809395, guid: 768e6fcd072265743b863df3b5a27353, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

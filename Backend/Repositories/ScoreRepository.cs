@@ -1,5 +1,6 @@
 using Dapper;
 using FluffGameApi.Dtos;
+using FluffGameApi.Entities;
 using MySql.Data.MySqlClient;
 using System.Data;
 
@@ -52,6 +53,49 @@ namespace FluffGameApi.Repositories
                 LIMIT 1";
 
             return await Connection.QueryFirstOrDefaultAsync<LastScoreDto>(sql, new { UserId = userId });
+        }
+
+        public async Task<int> CreateScore(Score score)
+        {
+            using var connection = new MySqlConnection(_configuration.GetConnectionString("MySqlConnection"));
+            await connection.OpenAsync();
+
+            // Se inicia una transaccion para escribir registros en las dos tablas. En caso de fallar en la ejecucion de alguno de ellos
+            // hara Rollback y no se informara ningun dato en la bbdd
+            //using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                string insertScore = @"
+                    INSERT INTO scores (IdUser, IdDifficulty, RedPoints, BluePoints, GreenPoints, YellowPoints, MissingPoints, TotalPoints)
+                    VALUES (@IdUser, @IdDifficulty, @RedPoints, @BluePoints, @GreenPoints, @YellowPoints, @MissingPoints, @TotalPoints);
+                    SELECT LAST_INSERT_ID();";
+
+                int newScoreId = await connection.ExecuteScalarAsync<int>(insertScore, score);
+
+                //int easyDifficultyId = await connection.ExecuteScalarAsync<int>(
+                //    "SELECT Id FROM difficulties WHERE Name = 'easy'",
+                //    transaction: transaction);
+
+                //string insertPreferences = @"
+                //    INSERT INTO user_preferences (IdUser, IdDifficulty, LogTimestamp)
+                //    VALUES (@IdUser, @IdDifficulty, @LogTimestamp)";
+
+                //await connection.ExecuteAsync(insertPreferences, new
+                //{
+                //    IdUser = newUserId,
+                //    IdDifficulty = easyDifficultyId,
+                //    LogTimestamp = DateTime.UtcNow
+                //});
+
+                //transaction.Commit();
+                return newScoreId;
+            }
+            catch
+            {
+                //transaction.Rollback();
+                throw;
+            }
         }
     }
 }

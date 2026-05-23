@@ -1,4 +1,5 @@
 using FluffGameApi.Dtos;
+using FluffGameApi.Entities;
 using FluffGameApi.Repositories;
 
 namespace FluffGameApi.Services
@@ -46,6 +47,19 @@ namespace FluffGameApi.Services
             catch (Exception ex)
             {
                 return (false, $"Error al obtener la última puntuación: {ex.Message}", null);
+            }
+        }
+
+        public async Task<(bool success, string message)> SaveNewScore(Score newScore)
+        {
+            try
+            {
+                var score = await _scoreRepository.CreateScore(newScore);
+                return (true, "Puntuación añadida correctamente");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error al añadir la nueva puntuación: {ex.Message}");
             }
         }
     }

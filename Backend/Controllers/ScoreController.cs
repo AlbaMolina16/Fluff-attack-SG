@@ -1,3 +1,4 @@
+using FluffGameApi.Entities;
 using FluffGameApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,17 @@ namespace FluffGameApi.Controllers
 
             if (success)
                 return Ok(new { message, score });
+
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message });
+        }
+
+        [HttpPost("new")]
+        public async Task<IActionResult> NewScore([FromBody] Score newScore)
+        {
+            var (success, message) = await _scoreService.SaveNewScore(newScore);
+
+            if (success)
+                return Ok(new { message });
 
             return StatusCode(StatusCodes.Status500InternalServerError, new { message });
         }
