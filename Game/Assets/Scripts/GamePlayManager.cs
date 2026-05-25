@@ -30,12 +30,6 @@ public class GamePlayManager : MonoBehaviour
     [Header("Botonera final")]
     [SerializeField] private GameObject buttonsContainer;
 
-    // [SerializeField] private Button scoreButton;
-    // [SerializeField] private Button homeButton;
-
-
-
-
     private float frequencyCount = 1f; // Contabilidad la cantidad de pelusas por segundo
     private float secondsTimer = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
     private bool gameStarted = false; // Indica si el juego a comenzado.
@@ -43,9 +37,7 @@ public class GamePlayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SpawnFluff();
-        // buttonsContainer.SetActive(true);
-
+        ScoreManager.Instance.ClearScore();
     }
 
     // Update is called once per frame
@@ -92,11 +84,6 @@ public class GamePlayManager : MonoBehaviour
             }
 
             messageText.gameObject.SetActive(true);
-            // messageText.text = "Pulsa espacio para volver a jugar.";
-            // if (Input.GetKeyDown(KeyCode.Space))
-            // {
-            //     UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-            // }
         }
     }
 
@@ -138,7 +125,7 @@ public class GamePlayManager : MonoBehaviour
             bluePoints = ScoreManager.Instance.bluePoints,
             greenPoints = ScoreManager.Instance.greenPoints,
             yellowPoints = ScoreManager.Instance.yellowPoints,
-            missingPoints = null,
+            missingPoints = ScoreManager.Instance.missingPoints,
             totalPoints = ScoreManager.Instance.totalScore
         };
 

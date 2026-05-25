@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     #region OLD. Carga de escenas sin animación ni pantalla de carga. Cambio brusco de escena y freezy
-    
+
     /// <summary>
     /// Carga la escena por su índice en el Build Settings
     /// </summary>

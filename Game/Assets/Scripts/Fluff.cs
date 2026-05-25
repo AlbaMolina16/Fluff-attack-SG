@@ -44,7 +44,9 @@ public class Fluff : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
+        // TODO Si añadieramos la puntuación de las pelusas en una tabla de configuración de bbdd podríamos saber cuantos se han perdido
+        // Lo dejo con 10 porque es lo que se está contabilizando
+        ScoreManager.Instance.AddMissingPoints(10);
         Destroy(gameObject);
     }
 }

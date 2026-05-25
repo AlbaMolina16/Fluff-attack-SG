@@ -123,7 +123,7 @@ public class NewScoreRequest
     public int bluePoints;
     public int greenPoints;
     public int yellowPoints;
-    public int? missingPoints; // TODO No está implementado la contabilización de puntos que se han perdido porque no se llegó a disparar a una pelusa
+    public int missingPoints; // TODO No está implementado la contabilización de puntos que se han perdido porque no se llegó a disparar a una pelusa
     public int totalPoints;
 }
 
