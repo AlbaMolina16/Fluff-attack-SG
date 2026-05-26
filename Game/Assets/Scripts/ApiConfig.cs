@@ -3,8 +3,8 @@
 /// </summary>
 public static class ApiConfig
 {
-    private const string BASE_URL = "https://localhost:44356/api";
-    // private const string BASE_URL = "https://fluffgame.azurewebsites.net/api";
+    // private const string BASE_URL = "https://localhost:44356/api";
+    private const string BASE_URL = "https://fluffgame.azurewebsites.net/api";
 
     public static class Auth
     {

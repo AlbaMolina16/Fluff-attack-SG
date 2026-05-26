@@ -12,7 +12,7 @@ public class ToastPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI messageText;
 
-    [SerializeField] private float duration = 3f;
+    [SerializeField] private float duration = 10f;
 
     private Coroutine _hideCoroutine;
 

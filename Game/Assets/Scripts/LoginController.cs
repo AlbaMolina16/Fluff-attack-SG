@@ -14,17 +14,31 @@ public class LoginController : MonoBehaviour
         public string password;
     }
 
-    // Input fields and message
-    public TMP_InputField username;
-    public TMP_InputField password;
-    public TMP_Text errorMessage;
-    // Buttons to activate after successful login
-    public GameObject[] buttonsToActivate;
-    public Button submitButton;
-    public Button signUpButton;
+    [Header("Campos de entrada de usuario y contraseña")]
+    [SerializeField]
+    private TMP_InputField username;
+    [SerializeField]
+    private TMP_InputField password;
 
-    public Button logoutButton;
-    public GameObject loadingSpinner;
+    [Header("Mensaje informativo")]
+    [SerializeField]
+    private TMP_Text messageText;
+
+    [Header("Botonera del jugador logeado")]
+    [SerializeField]
+    private GameObject playerButtonsContainer; // Se activan cuando el login del usuario sea correcto
+    [SerializeField]
+    private GameObject logoutButtonContainer;
+
+    [Header("Botones de sesión y registro")]
+    [SerializeField]
+    private Button submitButton;
+    [SerializeField]
+    private Button signUpButton;
+
+    [Header("Loading")]
+    [SerializeField]
+    private GameObject loadingSpinner;
 
     /// <summary>
     /// Al iniciar la escena, se comprueba si ya hay información del usuario en sesión, porque podría venir de la escena de puntuaciones.
@@ -40,7 +54,7 @@ public class LoginController : MonoBehaviour
     /// </summary>
     public async void ValidateInputs()
     {
-        errorMessage.gameObject.SetActive(false);
+        messageText.gameObject.SetActive(false);
 
         loadingSpinner.SetActive(true);
         SetFieldsStatus(false);
@@ -50,9 +64,9 @@ public class LoginController : MonoBehaviour
 
         if (!loginResponse.success)
         {
-            errorMessage.text = loginResponse.errorMessage;
-            errorMessage.color = Color.red;
-            errorMessage.gameObject.SetActive(true);
+            messageText.text = loginResponse.errorMessage;
+            messageText.color = Color.red;
+            messageText.gameObject.SetActive(true);
 
             SetFieldsStatus(true);
             return;
@@ -75,21 +89,18 @@ public class LoginController : MonoBehaviour
         }
 
         // Mostramos botones de acción
-        foreach (GameObject button in buttonsToActivate)
-        {
-            button.SetActive(true);
-        }
+        playerButtonsContainer.SetActive(true);
 
         // Ocultamos el botón de login
         submitButton.gameObject.SetActive(false);
         // Ocultamos el botón de registro
         signUpButton.gameObject.SetActive(false);
         // Mostramos el botón de desconexion
-        logoutButton.gameObject.SetActive(true);
+        logoutButtonContainer.gameObject.SetActive(true);
         // Mostramos mensaje de bienvenida
-        errorMessage.color = Color.white;
-        errorMessage.text = "¡Bienvenid@, " + UserSession.Instance.User.firstName + "!";
-        errorMessage.gameObject.SetActive(true);
+        messageText.color = Color.white;
+        messageText.text = "¡Bienvenid@, " + UserSession.Instance.User.firstName + "!";
+        messageText.gameObject.SetActive(true);
     }
 
     public async Task<(bool success, string errorMessage)> Login(string username, string password)
@@ -139,10 +150,9 @@ public class LoginController : MonoBehaviour
     {
         UserSession.Instance.Clear();
 
-        foreach (GameObject button in buttonsToActivate)
-            button.SetActive(false);
+        playerButtonsContainer.SetActive(false);
 
-        logoutButton.gameObject.SetActive(false);
+        logoutButtonContainer.gameObject.SetActive(false);
         submitButton.gameObject.SetActive(true);
         signUpButton.gameObject.SetActive(true);
 
@@ -150,7 +160,7 @@ public class LoginController : MonoBehaviour
         password.text = string.Empty;
         SetFieldsStatus(true);
 
-        errorMessage.gameObject.SetActive(false);
+        messageText.gameObject.SetActive(false);
     }
 
     /// <summary>

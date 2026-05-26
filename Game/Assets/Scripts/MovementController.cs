@@ -21,7 +21,7 @@ public class MovementController : MonoBehaviour
 
     #region zigzag momvement
     private float zigzagTimer;
-    private float zigzagInterval = 2f;
+    private float zigzagInterval = 3f;
     #endregion
 
     /// <summary>
