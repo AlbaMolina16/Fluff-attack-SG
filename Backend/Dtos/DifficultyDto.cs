@@ -8,5 +8,6 @@ namespace FluffGameApi.Dtos
         public decimal EnemyLifeTime { get; set; }
         public decimal SpawnRate { get; set; }
         public int AmountEnemies { get; set; }
+        public List<DifficultyMovementTypeDto> Movements { get; set; } = [];
     }
 }

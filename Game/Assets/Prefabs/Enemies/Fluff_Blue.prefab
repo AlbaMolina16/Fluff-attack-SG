@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5302226553974348749}
   - component: {fileID: -2433794972563560487}
   - component: {fileID: 3505071050991420727}
+  - component: {fileID: 984136441422084616}
   m_Layer: 0
   m_Name: Fluff_Blue
   m_TagString: Enemy
@@ -291,3 +292,15 @@ PolygonCollider2D:
       - {x: -0.083333336, y: -0.90333337}
       - {x: -0.053333335, y: -0.8833333}
   m_UseDelaunayMesh: 0
+--- !u!114 &984136441422084616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182666498007011530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17394ea7531c76f4ebc18700e0ff2ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

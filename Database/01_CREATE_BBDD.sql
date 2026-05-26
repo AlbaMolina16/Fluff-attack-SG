@@ -14,9 +14,9 @@ CREATE TABLE difficulties (
 -- Insertamos niveles por defecto
 -- INSERT INTO difficulties (NAME) VALUES ('easy'), ('medium'), ('advanced');
 INSERT INTO `fluff_unity_db`.`difficulties` (`Name`, `EnemySpeed`, `EnemyLifeTime`, `SpawnRate`, `AmountEnemies`) VALUES 
-	('easy', 0, 0, 0.2, 8),
-	('medium', 6.0, 7.0, 0.5, 12),
-	('advanced', 12.0, 2, 1, 20);
+	('easy', 0, 0, 0.3334, 8),
+	('medium', 6.0, 10, 0.5, 12),
+	('advanced', 12.0, 5, 1, 20);
     
 CREATE TABLE movement_type (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del tipo de movimiento',
@@ -33,17 +33,21 @@ CREATE TABLE difficulty_movementType (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico de la dificultad vs tipo de movimiento',
     IdDifficulty INT NOT NULL COMMENT 'Id del registro en la tabla difficulties',
     IdMovementType INT NOT NULL COMMENT 'Id del registro en la tabla movement_type',
+    Probability FLOAT NOT NULL DEFAULT 0 COMMENT 'Porcentaje de probabilidad de que se de este tipo de movimiento en la pelusa',
+    MinSpeed FLOAT NOT NULL DEFAULT 0 COMMENT 'Velocidad mínima que se le aplica al movimiento',
+    MaxSpeed FLOAT NOT NULL DEFAULT 0 COMMENT 'Valocidad máxima que se le aplica al movimiento',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdMovementType) REFERENCES movement_type(Id) ON DELETE CASCADE
 ) COMMENT 'Tabla que indica los tipos de movimiento que tiene asignados una dificultad';
 ALTER TABLE difficulty_movementType ADD UNIQUE `unique_difficulty_movementType` (IdDifficulty, IdMovementType);
-INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`) VALUES 
-	(1, 1),
-	(2, 1),
-	(2, 2),
-    (3, 2),
-    (3, 3);
+INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`, `Probability`, `MinSpeed`, `MaxSpeed`) VALUES 
+	(1, 1, 1, 0, 0),
+	(2, 1, 0.4, 0, 0),
+	(2, 2, 0.6, 2, 4),
+    (3, 1, 0.1, 0, 0),
+    (3, 2, 0.5, 3, 5),
+    (3, 3, 0.4, 2, 4);
     
 CREATE TABLE users (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del usuario',

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7641496240618843260}
   - component: {fileID: -1082064258076002842}
   - component: {fileID: 1296970255572731522}
+  - component: {fileID: 4568026537621819691}
   m_Layer: 0
   m_Name: Fluff_Red
   m_TagString: Enemy
@@ -294,3 +295,15 @@ PolygonCollider2D:
       - {x: -0.060000002, y: -0.9533334}
       - {x: -0.04, y: -0.94}
   m_UseDelaunayMesh: 0
+--- !u!114 &4568026537621819691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579664883539111041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17394ea7531c76f4ebc18700e0ff2ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

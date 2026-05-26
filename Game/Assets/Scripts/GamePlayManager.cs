@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
@@ -63,6 +64,7 @@ public class GamePlayManager : MonoBehaviour
             gameStarted = true;
             titleText.text = "3, 2, 1... Vamos!";
             messageText.gameObject.SetActive(false);
+            SpawnFluff();
         }
         else if (gameStarted && !timer.IsRunning())
         {
@@ -71,12 +73,11 @@ public class GamePlayManager : MonoBehaviour
             // Hay que guardar la puntuación en BBDD.
 
             var result = await SaveScore();
-            // homeButton.gameObject.SetActive(true);
-            // scoreButton.gameObject.SetActive(true);
+
             buttonsContainer.SetActive(true);
             if (result.Item1)
             {
-                messageText.text = "Puntuación guardada correctamente.";
+                messageText.text = "Puntuacion guardada correctamente.";
             }
             else
             {
@@ -87,6 +88,7 @@ public class GamePlayManager : MonoBehaviour
         }
     }
 
+    #region MANAGE SPAWN
     /// <summary>
     /// Función para generar pelusas en función del spawnRate de la dificultad del usuario que está jugando
     /// y de si no tiene ya el número máximo de pelusas permitidas en la pantalla
@@ -97,11 +99,53 @@ public class GamePlayManager : MonoBehaviour
         {
             frequencyCount = 0f; // Reseteamos el contador de frecuencia de pelusas
 
-            float x, y; // coordenadas x e y dentro de los límites de la pantalla donde se va a mostrar el fluff
-            GetRandomPosition(out x, out y);
+            // Seleccionamos el tipo de movimiento
+            var movement = SelectProbabilityMovement() ?? new DifficultyMovement();
+
+            // Obtenemos una posición aleatoria dentro de los límites de la pantalla para mostrar la pelusa
+            GetRandomPosition(out float x, out float y);
+            // TODO Igual estaría bien tener en cuenta los fallos que ha podido tener a lo largo de una partida sobre un color en concreto
             int randomIndex = Random.Range(0, fluffPrefabs.Length); // Elegimos aleatoriamente un fluff de color
             GameObject fluff = Instantiate(fluffPrefabs[randomIndex], new Vector3(x, y, 0), Quaternion.identity, fluffsContainer);
+
+            var movementController = fluff.GetComponent<MovementController>();
+            if (movementController != null)
+                movementController.InitMovevement(movement);
         }
+    }
+
+    /// <summary>
+    /// Se le asigna a la pelusa un tipo de movimiento en función de la probabilidad configurada
+    /// El movimiento viene dado por el tipo y la velocidad con la que se va realizar
+    /// </summary>
+    private DifficultyMovement SelectProbabilityMovement()
+    {
+        // PROBABILIDAD ACUMULADA
+        // Calculamos la probabilidad total por si no sumaran 1, así generamos el número aleatorio entr 0 y la suma total
+        float totalProbability = 0f;
+        if (UserSession.Instance.UserDifficulty != null && UserSession.Instance.UserDifficulty.movements.Count > 0)
+        {
+            totalProbability = UserSession.Instance.UserDifficulty.movements.Sum(m => m.probability);
+            // Generamos el número aleatorio entre 0 y la probabilidad total
+            float randomValue = Random.Range(0f, totalProbability);
+            // Tenemos que superar con el rango de probabilidad de cada movimiento el número aleatorio generado
+            float cumulativeProbability = 0f;
+
+            foreach (var movement in UserSession.Instance.UserDifficulty.movements)
+            {
+                cumulativeProbability += movement.probability;
+                if (randomValue <= cumulativeProbability)
+                {
+                    // Asignar el tipo de movimiento a la pelusa
+                    return movement;
+                }
+            }
+
+            return null; // Si no se selecciona ningún movimiento, devolvemos null
+        }
+        else
+            return null; // Si no hay movimientos configurados, devolvemos null para que la pelusa no tenga movimiento asignado
+
     }
 
     /// <summary>
@@ -114,7 +158,9 @@ public class GamePlayManager : MonoBehaviour
         x = Random.Range(LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
         y = Random.Range(LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
     }
+    #endregion
 
+    #region MANAGE SCORE
     private async Task<(bool, string)> SaveScore()
     {
         NewScoreRequest newScore = new()
@@ -145,4 +191,5 @@ public class GamePlayManager : MonoBehaviour
         var textMessage = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
         return (req.result == UnityWebRequest.Result.Success, textMessage.message);
     }
+    #endregion
 }

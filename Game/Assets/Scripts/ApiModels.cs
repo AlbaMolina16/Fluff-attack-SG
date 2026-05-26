@@ -68,6 +68,24 @@ public class DifficultyOption
     public float spawnRate; // Enemigos por segundo -> enemy/seg
     public float enemyLifeTime;
     public int amountEnemies;
+    public List<DifficultyMovement> movements;
+}
+
+[Serializable]
+public class DifficultyMovement
+{
+    public string name;
+    public float probability; // Probabilidad del tipo de movimiento que seguirá una pelusa
+    public float minSpeed; // Mínima velocidad de la pelusa
+    public float maxSpeed; // Mácima velocidad de la pelusa
+
+    public DifficultyMovement()
+    {
+        name = "none";
+        probability = 1f;
+        minSpeed = 0f;
+        maxSpeed = 0f;
+    }
 }
 
 [Serializable]
