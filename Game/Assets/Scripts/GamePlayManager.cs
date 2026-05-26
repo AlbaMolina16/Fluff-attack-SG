@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 
 public class GamePlayManager : MonoBehaviour
 {
@@ -34,10 +31,13 @@ public class GamePlayManager : MonoBehaviour
     private float frequencyCount = 1f; // Contabilidad la cantidad de pelusas por segundo
     private float secondsTimer = 0f; // Tiempo transcurrido en segundos desde el inicio del juego
     private bool gameStarted = false; // Indica si el juego a comenzado.
+    private GameObject pointer;
 
     // Start is called before the first frame update
     void Start()
     {
+        pointer = GameObject.FindGameObjectWithTag("Player");
+        EnablePointer(true);
         ScoreManager.Instance.ClearScore();
     }
 
@@ -70,8 +70,8 @@ public class GamePlayManager : MonoBehaviour
         {
             titleText.text = "Se acabo!";
             gameStarted = false;
+            EnablePointer(false);
             // Hay que guardar la puntuación en BBDD.
-
             var result = await SaveScore();
 
             buttonsContainer.SetActive(true);
@@ -192,4 +192,16 @@ public class GamePlayManager : MonoBehaviour
         return (req.result == UnityWebRequest.Result.Success, textMessage.message);
     }
     #endregion
+
+    /// <summary>
+    /// Habilita o deshabilita el sprite del Crosshair
+    /// </summary>
+    /// <param name="enabled"></param>
+    private void EnablePointer(bool enabled)
+    {
+        if (pointer != null)
+        {
+            pointer.GetComponent<SpriteRenderer>().enabled = enabled;
+        }
+    }
 }
