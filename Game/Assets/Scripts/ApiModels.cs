@@ -30,7 +30,7 @@ public class UserLoginResponse
     public string nickname;
     public string firstName;
     public string lastName;
-    public DateTime birthday;
+    public int age;
     public UserPreferences preferences;
 }
 
@@ -76,15 +76,15 @@ public class DifficultyMovement
 {
     public string name;
     public float probability; // Probabilidad del tipo de movimiento que seguirá una pelusa
-    public float minSpeed; // Mínima velocidad de la pelusa
-    public float maxSpeed; // Mácima velocidad de la pelusa
+    // public float minSpeed; // Mínima velocidad de la pelusa
+    // public float maxSpeed; // Mácima velocidad de la pelusa
 
     public DifficultyMovement()
     {
         name = "none";
         probability = 1f;
-        minSpeed = 0f;
-        maxSpeed = 0f;
+        // minSpeed = 0f;
+        // maxSpeed = 0f;
     }
 }
 

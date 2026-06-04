@@ -21,10 +21,16 @@ namespace FluffGameApi.Entities
         /// Last name of the user, can be null if not provided
         /// </summary>
         public string LastName { get; set; }
+
         /// <summary>
-        /// Birthday of the user, can be null if not provided, should be stored in a date format and should not include time information
+        /// Age of the user
         /// </summary>
-        public DateTime? BirthDate { get; set; }
+        public int Age { get; set; }
+        /// <summary>
+        /// Handedness of the user, can be "diestro", "zurdo"
+        /// </summary>
+        public required string Handedness { get; set; }
+
         /// <summary>
         /// Password hash of the user, must be generated using a secure hashing algorithm and should not be stored in plain text
         /// </summary>

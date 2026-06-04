@@ -14,7 +14,8 @@ public class SignUpController : MonoBehaviour
     [SerializeField] private TMP_InputField firstNameField;
     [SerializeField] private TMP_InputField lastNameField;
     [SerializeField] private TMP_InputField passwordField;
-    [SerializeField] private DateInputField dateField;
+    [SerializeField] private TMP_InputField ageField;
+    [SerializeField] private TMP_Dropdown handDropdown;
 
     [Header("Mensaje de error")]
     [SerializeField] private TMP_Text errorMessageText;
@@ -31,7 +32,8 @@ public class SignUpController : MonoBehaviour
         public string password;
         public string firstName;
         public string lastName;
-        public string birthDate; // ISO format: yyyy-MM-dd
+        public int age;
+        public string handedness; // "diestro" o "zurdo"
     }
 
     public async void OnSignUp()
@@ -40,21 +42,7 @@ public class SignUpController : MonoBehaviour
         loadingSpinner.SetActive(true);
         SetFieldsInteractable(false);
 
-        string birthDateIso = string.Empty;
-        if (dateField != null)
-        {
-            DateTime? date = dateField.GetDate();
-            if (date.HasValue)
-                birthDateIso = date.Value.ToString("yyyy-MM-dd");
-        }
-
-        var result = await SendRegisterRequest(
-            nicknameField.text,
-            passwordField.text,
-            firstNameField.text,
-            lastNameField.text,
-            birthDateIso
-        );
+        var result = await SendRegisterRequest();
 
         loadingSpinner.SetActive(false);
 
@@ -69,16 +57,16 @@ public class SignUpController : MonoBehaviour
         OnSignUpSuccess();
     }
 
-    private async Task<(bool success, string errorMessage)> SendRegisterRequest(
-        string username, string password, string firstName, string lastName, string birthDate)
+    private async Task<(bool success, string errorMessage)> SendRegisterRequest()
     {
         var payload = new RegisterRequest
         {
-            username = username,
-            password = password,
-            firstName = firstName,
-            lastName = lastName,
-            birthDate = birthDate
+            username = nicknameField.text,
+            password = passwordField.text,
+            firstName = firstNameField.text,
+            lastName = lastNameField.text,
+            age = ageField.text.Length > 0 ? int.Parse(ageField.text) : 0,
+            handedness = handDropdown.options[handDropdown.value].text
         };
 
         var json = JsonUtility.ToJson(payload);

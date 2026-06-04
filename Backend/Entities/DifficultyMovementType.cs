@@ -12,7 +12,5 @@ namespace FluffGameApi.Entities
         public required int IdDifficulty { get; set; }
         public required int IdMovementType{ get; set; }
         public decimal Probability { get; set; } = 0;
-        public decimal MinSpeed { get; set; } = 0;
-        public decimal MaxSpeed { get; set; } = 0;
     }
 }

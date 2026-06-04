@@ -93,8 +93,8 @@ namespace FluffGameApi.Repositories
             try
             {
                 string insertUser = @"
-                    INSERT INTO users (Username, FirstName, LastName, BirthDate, PasswordHash, CreatedDate, LogTimestamp)
-                    VALUES (@Username, @FirstName, @LastName, @BirthDate, @PasswordHash, @CreatedDate, @LogTimestamp);
+                    INSERT INTO users (Username, FirstName, LastName, Age, Handedness, PasswordHash, CreatedDate, LogTimestamp)
+                    VALUES (@Username, @FirstName, @LastName, @Age, @Handedness, @PasswordHash, @CreatedDate, @LogTimestamp);
                     SELECT LAST_INSERT_ID();";
 
                 int newUserId = await connection.ExecuteScalarAsync<int>(insertUser, new
@@ -102,7 +102,8 @@ namespace FluffGameApi.Repositories
                     user.Username,
                     user.FirstName,
                     user.LastName,
-                    user.BirthDate,
+                    user.Age,
+                    user.Handedness,
                     user.PasswordHash,
                     user.CreatedDate,
                     user.LogTimestamp

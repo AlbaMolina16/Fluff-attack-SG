@@ -6,6 +6,7 @@ namespace FluffGameApi.Dtos
         public required string Password { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public DateTime? BirthDate { get; set; }
+        public int Age { get; set; }
+        public required string Handedness { get; set; }
     }
 }

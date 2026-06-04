@@ -14,8 +14,8 @@ CREATE TABLE difficulties (
 -- Insertamos niveles por defecto
 -- INSERT INTO difficulties (NAME) VALUES ('easy'), ('medium'), ('advanced');
 INSERT INTO `fluff_unity_db`.`difficulties` (`Name`, `EnemySpeed`, `EnemyLifeTime`, `SpawnRate`, `AmountEnemies`) VALUES 
-	('easy', 0, 0, 0.3334, 8),
-	('medium', 6.0, 10, 0.5, 12),
+	('easy', 0, 0, 0.1, 8),
+	('medium', 3.0, 15, 0.143, 12),
 	('advanced', 12.0, 5, 1, 20);
     
 CREATE TABLE movement_type (
@@ -34,27 +34,26 @@ CREATE TABLE difficulty_movementType (
     IdDifficulty INT NOT NULL COMMENT 'Id del registro en la tabla difficulties',
     IdMovementType INT NOT NULL COMMENT 'Id del registro en la tabla movement_type',
     Probability FLOAT NOT NULL DEFAULT 0 COMMENT 'Porcentaje de probabilidad de que se de este tipo de movimiento en la pelusa',
-    MinSpeed FLOAT NOT NULL DEFAULT 0 COMMENT 'Velocidad mínima que se le aplica al movimiento',
-    MaxSpeed FLOAT NOT NULL DEFAULT 0 COMMENT 'Valocidad máxima que se le aplica al movimiento',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdMovementType) REFERENCES movement_type(Id) ON DELETE CASCADE
 ) COMMENT 'Tabla que indica los tipos de movimiento que tiene asignados una dificultad';
 ALTER TABLE difficulty_movementType ADD UNIQUE `unique_difficulty_movementType` (IdDifficulty, IdMovementType);
-INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`, `Probability`, `MinSpeed`, `MaxSpeed`) VALUES 
-	(1, 1, 1, 0, 0),
-	(2, 1, 0.4, 0, 0),
-	(2, 2, 0.6, 2, 4),
-    (3, 1, 0.1, 0, 0),
-    (3, 2, 0.5, 3, 5),
-    (3, 3, 0.4, 2, 4);
+INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`, `Probability`) VALUES 
+	(1, 1, 1),
+	(2, 1, 0.4),
+	(2, 2, 0.6),
+    (3, 1, 0.1),
+    (3, 2, 0.5),
+    (3, 3, 0.4);
     
 CREATE TABLE users (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del usuario',
     Username VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre de usuario',
     FirstName VARCHAR(50) COMMENT 'Nombre',
     LastName VARCHAR(150) COMMENT 'Apellidos',
-    BirthDate DATE COMMENT 'Fecha de cumpleaños',
+    Age INT COMMENT 'Edad',
+	Handedness VARCHAR(150) COMMENT 'Indica la mano dominante',
     PasswordHash VARCHAR(255) NOT NULL COMMENT 'Contraseña hasehada',
     CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha de creacion del usuario',
     LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 

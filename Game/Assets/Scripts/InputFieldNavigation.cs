@@ -25,12 +25,6 @@ public class InputFieldNavigation : MonoBehaviour
     /// </summary>
     [SerializeField] private TMP_InputField confirmPasswordField;
 
-    [Header("Campo de fecha")]
-    /// <summary>
-    /// Campo de la fecha de cumpleaños
-    /// </summary>
-    [SerializeField] private DateInputField dateField;
-
     [SerializeField] private TMP_Text errorMessageText;
     /// <summary>
     /// Spinner de carga
@@ -137,8 +131,7 @@ public class InputFieldNavigation : MonoBehaviour
         }
 
         bool passwordValid = PasswordsMatch();
-        bool dateValid = dateField == null || dateField.IsValidDate();
-        submitButton.interactable = enabled && passwordValid && dateValid;
+        submitButton.interactable = enabled && passwordValid;
     }
 
     /// <summary>

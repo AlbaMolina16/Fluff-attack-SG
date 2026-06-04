@@ -54,7 +54,7 @@ namespace FluffGameApi.Services
                 Nickname = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Birthday = user.BirthDate,
+                Age = user.Age,
                 Preferences = preferences ?? new() { Id = 0, IdDifficulty = 0, DifficultyName = string.Empty }
             };
 
@@ -91,7 +91,8 @@ namespace FluffGameApi.Services
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(newUserDto.Password),
                 FirstName = newUserDto.FirstName ?? string.Empty,
                 LastName = newUserDto.LastName ?? string.Empty,
-                BirthDate = newUserDto.BirthDate,
+                Age = newUserDto.Age,
+                Handedness = newUserDto.Handedness,
                 CreatedDate = DateTime.UtcNow,
                 LogTimestamp = DateTime.UtcNow
             };

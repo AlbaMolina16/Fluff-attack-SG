@@ -13,8 +13,6 @@ public class MovementController : MonoBehaviour
     // 2. Velocidad de movimiento mínima y máxima.
     // 3. La dirección del movimiento
     private DifficultyMovement movementType; // Tipo de movimiento a ejecutar
-    private float minSpeed = 0f;
-    private float maxSpeed = 0f;
     private float speed = 0f; // Velocidad de movimiento que tendrá la direccion de la pelusa
     private Vector2 direction; // Dirección del movimiento
     private bool hasMovement = false;
@@ -24,6 +22,10 @@ public class MovementController : MonoBehaviour
     private float zigzagInterval = 3f;
     #endregion
 
+    void Start()
+    {
+        speed = UserSession.Instance.UserDifficulty != null ? UserSession.Instance.UserDifficulty.enemySpeed : 0f;
+    }
     /// <summary>
     /// Actualizará el movimiento del gameObject de la pelusa en caso de que se la haya asignado un tipo de movimiento
     /// </summary>
@@ -76,9 +78,6 @@ public class MovementController : MonoBehaviour
     public void InitMovevement(DifficultyMovement movement)
     {
         movementType = movement;
-        minSpeed = movement.minSpeed;
-        maxSpeed = movement.maxSpeed;
-        speed = Random.Range(minSpeed, maxSpeed); // Asignamos una velocidad aleatoria entre el mínimo y el máximo configurados para ese tipo de movimiento
 
         // Comprobamos si hay velocidad y movimiento
         if (speed > 0 && movementType != null && movementType.name != "none")

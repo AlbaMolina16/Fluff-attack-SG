@@ -24,7 +24,7 @@ namespace FluffGameApi.Repositories
         {
             string sql = @"
                 SELECT d.Id, d.Name, d.EnemySpeed, d.EnemyLifeTime, d.SpawnRate, d.AmountEnemies,
-                       mt.Name, dmt.Probability, dmt.MinSpeed, dmt.MaxSpeed
+                       mt.Name, dmt.Probability
                 FROM difficulties d
                 LEFT JOIN difficulty_movementType dmt ON d.Id = dmt.IdDifficulty
                 LEFT JOIN movement_type mt ON dmt.IdMovementType = mt.Id
