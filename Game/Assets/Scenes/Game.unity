@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2856e4f28a5ca5d479204e233ecebd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headerHeight: 31
+  headerCanvas: {fileID: 171230454}
 --- !u!1 &1050000412
 GameObject:
   m_ObjectHideFlags: 0

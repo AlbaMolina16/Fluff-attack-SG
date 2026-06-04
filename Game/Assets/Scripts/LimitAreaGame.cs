@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class LimitAreaGame : MonoBehaviour
 {
-    [Header("Altura de la cabecera")]
-    public float headerHeight = 80f; // Como he añadido un header canvas para mostrar la puntuacion y el tiempo, tengo que restar la altura que ocupa en la pantalla para limitar el puntero
+    [Header("Cabecera")]
+    public RectTransform headerCanvas;
 
     public static Vector3 InstanceMinPantalla { get; private set; }
     public static Vector3 InstanceMaxPantalla { get; private set; }
@@ -21,6 +21,7 @@ public class LimitAreaGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        float headerHeight = headerCanvas != null ?headerCanvas.rect.height : 0f;
         // Obtiene la distancia en Z entre la cámara y el plano de juego
         cameraZ = Math.Abs(Camera.main.transform.position.z - transform.position.z);
         // Convertir esquinas de pantalla a coordenadas del mundo
@@ -30,5 +31,14 @@ public class LimitAreaGame : MonoBehaviour
         // Asignar valores a las propiedades estáticas
         InstanceMinPantalla = minPantalla;
         InstanceMaxPantalla = maxPantalla;
+    }
+
+    public static Vector3 SpriteLimit(Vector3 position, float radius)
+    {
+        return new Vector3(
+            Mathf.Clamp(position.x, InstanceMinPantalla.x + radius, InstanceMaxPantalla.x - radius),
+            Mathf.Clamp(position.y, InstanceMinPantalla.y + radius, InstanceMaxPantalla.y - radius),
+            position.z
+        );
     }
 }

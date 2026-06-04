@@ -14,6 +14,7 @@ public class PointerController : MonoBehaviour
     // Private variables 
     private Rigidbody2D rb; // Reference to the Rigidbody2D component attached to the player
     private Vector2 movement; // Stores the direction of player movement
+    private float radius;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class PointerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         // Prevent the player from rotating
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        radius = GetComponent<SpriteRenderer>().bounds.extents.x; // Obtenemos el radio del spriteRender del crosshair
     }
 
     void Update()
@@ -45,10 +47,7 @@ public class PointerController : MonoBehaviour
         Vector3 pos = transform.position;
 
         // Limitar posición del puntero
-        pos.x = Mathf.Clamp(pos.x, LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
-        pos.y = Mathf.Clamp(pos.y, LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
-
-        transform.position = pos;
+        transform.position = LimitAreaGame.SpriteLimit(pos, radius); // Ajusta el radio del puntero según sea necesario (en este caso, 0.5f)
     }
 
     void FixedUpdate()
