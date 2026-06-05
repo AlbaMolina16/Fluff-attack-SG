@@ -41,11 +41,12 @@ CREATE TABLE difficulty_movementType (
 ALTER TABLE difficulty_movementType ADD UNIQUE `unique_difficulty_movementType` (IdDifficulty, IdMovementType);
 INSERT INTO `fluff_unity_db`.`difficulty_movementType` (`IdDifficulty`, `IdMovementType`, `Probability`) VALUES 
 	(1, 1, 1),
-	(2, 1, 0.4),
-	(2, 2, 0.6),
-    (3, 1, 0.1),
-    (3, 2, 0.5),
-    (3, 3, 0.4);
+	(2, 1, 0.2),
+	(2, 2, 0.5),
+	(2, 3, 0.3);
+    -- (3, 1, 0.1),
+    -- (3, 2, 0.5),
+
     
 CREATE TABLE users (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del usuario',

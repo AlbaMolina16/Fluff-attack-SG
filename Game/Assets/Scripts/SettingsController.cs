@@ -159,7 +159,9 @@ public class SettingsController : MonoBehaviour
             gameTime = float.Parse(gameTimeInput.text),
             enemyLifeTime = float.Parse(lifeTimeInput.text),
             enemySpeed = float.Parse(speedInput.text),
-            spawnRate = float.Parse(spawnFrequencyInput.text)
+            spawnRate = float.Parse(spawnFrequencyInput.text),
+            amountEnemies = _difficulties[difficultyDropdown.value].amountEnemies, // No se puede modificar este valor desde el panel de ajustes, así que lo dejamos igual que el de la dificultad seleccionada
+            movements = _difficulties[difficultyDropdown.value].movements // No se puede modificar
         };
 
         // Si ha modificado la dificultad, llamamos a la API para que permisista en futuras sesiones cuando se conecte

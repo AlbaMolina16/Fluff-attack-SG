@@ -54,7 +54,8 @@ public class GamePlayManager : MonoBehaviour
             {
                 secondsTimer -= 1f;
                 frequencyCount += UserSession.Instance.UserDifficulty.spawnRate;
-                SpawnFluff();
+                if (frequencyCount >= 1f)
+                    SpawnFluff();
             }
         }
 
@@ -95,9 +96,9 @@ public class GamePlayManager : MonoBehaviour
     /// </summary>
     private void SpawnFluff()
     {
-        if (frequencyCount >= 1f && UserSession.Instance.UserDifficulty != null && (fluffsContainer.childCount < UserSession.Instance.UserDifficulty.amountEnemies))
+        if (UserSession.Instance.UserDifficulty != null && (fluffsContainer.childCount < UserSession.Instance.UserDifficulty.amountEnemies))
         {
-            frequencyCount = 0f; // Reseteamos el contador de frecuencia de pelusas
+            frequencyCount -= 1f; // Restamos 1 manteniendo el exceso para mayor precisión
 
             // Seleccionamos el tipo de movimiento
             var movement = SelectProbabilityMovement() ?? new DifficultyMovement();

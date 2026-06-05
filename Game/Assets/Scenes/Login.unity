@@ -571,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4444104528220513350, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_text
-      value: segundos
+      value: ud/s
       objectReference: {fileID: 0}
     - target: {fileID: 4682804627488709355, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_Name
@@ -642,8 +642,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 325.88, y: -38.25875}
-  m_SizeDelta: {x: 248.24, y: 76.5175}
+  m_AnchoredPosition: {x: 335.46, y: -38.25875}
+  m_SizeDelta: {x: 229.07999, y: 76.5175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &269146471
 MonoBehaviour:
@@ -2883,8 +2883,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95.16, y: -10.275}
-  m_SizeDelta: {x: 190.32, y: 20.55}
+  m_AnchoredPosition: {x: 80.715, y: -10.275}
+  m_SizeDelta: {x: 161.43, y: 20.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &695847831
 MonoBehaviour:
@@ -2906,7 +2906,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Frecuencia aparici\xF3n (segundos)"
+  m_text: "Frecuencia aparici\xF3n (ud/s)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
@@ -6219,8 +6219,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100.88, y: -38.25875}
-  m_SizeDelta: {x: 201.76, y: 76.5175}
+  m_AnchoredPosition: {x: 110.46, y: -38.25875}
+  m_SizeDelta: {x: 220.92, y: 76.5175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1087915098
 MonoBehaviour:
@@ -10827,7 +10827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4444104528220513350, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_text
-      value: minutos
+      value: segundos
       objectReference: {fileID: 0}
     - target: {fileID: 4444104528220513350, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_fontSize
@@ -10980,8 +10980,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 71.92, y: -10.275}
-  m_SizeDelta: {x: 143.84, y: 20.55}
+  m_AnchoredPosition: {x: 76.635, y: -10.275}
+  m_SizeDelta: {x: 153.27, y: 20.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2031522040
 MonoBehaviour:
@@ -11003,7 +11003,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tiempo partida (minutos)
+  m_text: Tiempo partida (segundos)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
