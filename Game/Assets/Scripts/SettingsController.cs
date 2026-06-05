@@ -26,7 +26,6 @@ public class SettingsController : MonoBehaviour
     public GameObject loadingSpinner;
 
     private DifficultyOption[] _difficulties; // Array para almacenar los niveles de dificultad obtenidos desde el API.
-    // private int _savedDifficultyId;
 
     /// <summary>
     /// Al iniciar la primera vez carga las dificultades desde el API y las guarda en la sesión para evitar futuras llamadas
@@ -34,6 +33,20 @@ public class SettingsController : MonoBehaviour
     private async void Start()
     {
         await LoadDifficulties();
+    }
+
+    public void OnEnable()
+    {
+        Debug.Log("Settings enabled");
+        difficultyDropdown.onValueChanged.AddListener(SetDifficultyDefaultValues);
+        // Se van a actualizar los campos del panel con los parámetros de dificultad que tiene asignados el usuario en sesión
+        LoadDifficultParameters();
+    }
+
+    public void OnDisable()
+    {
+        Debug.Log("Settings disabled");
+        difficultyDropdown.onValueChanged.RemoveListener(SetDifficultyDefaultValues);
     }
 
     /// <summary>
@@ -64,91 +77,120 @@ public class SettingsController : MonoBehaviour
         }
 
         // 2. Limpia el dropdown y lo rellena con las niveles obtenidos.
+        InitDifficultyDropdown();
+        // 3. Carga el valor de los parámetros definidos por el usuario
+        LoadDifficultParameters();
+    }
+
+    private void InitDifficultyDropdown()
+    {
         difficultyDropdown.ClearOptions();
         var options = new List<TMP_Dropdown.OptionData>();
         foreach (var d in _difficulties)
             options.Add(new TMP_Dropdown.OptionData(d.name));
         difficultyDropdown.AddOptions(options);
-
-        // // 3. Selecciona la dificultad guardada en las preferencias del usuario, si existe.
-        // // Si no tuviera, marcaremos por defecto la primera dificultad (opción 0), pero sin guardar nada en preferencias hasta que el usuario pulse "Guardar".
-        // var prefs = UserSession.Instance.User?.preferences;
-        // if (prefs == null)
-        // {
-        //     difficultyDropdown.value = 0;
-        //     return;
-        // }
-
-        // // _savedDifficultyId = prefs.idDifficulty;
-        // int index = Array.FindIndex(_difficulties, d => d.id == prefs.idDifficulty);
-        // if (index >= 0) difficultyDropdown.value = index;
     }
 
-    public void OnEnable()
+
+    private void LoadDifficultParameters()
     {
-        Debug.Log("Settings enabled");
-        // Se van a actualizar los campos del panel con los parámetros de dificultad que tiene asignados el usuario en sesión
-        if (UserSession.Instance.UserDifficulty != null)
+        if (UserSession.Instance.UserDifficulty != null && _difficulties != null)
         {
             var difficulty = UserSession.Instance.UserDifficulty;
 
-            // _savedDifficultyId = prefs.idDifficulty;
             int index = Array.FindIndex(_difficulties, d => d.id == difficulty.id);
-            if (index >= 0) difficultyDropdown.value = index;
-            // gameTimeInput.text = difficulty.gameTime.ToString();
-            spawnFrequencyInput.text = difficulty.spawnRate.ToString();
-            lifeTimeInput.text = difficulty.enemyLifeTime.ToString();
-            speedInput.text = difficulty.enemySpeed.ToString();
+            if (index >= 0)
+            {
+                difficultyDropdown.value = index;
+                SetFieldsDefaultValues(difficulty);
+            }
         }
     }
 
-    public void OnDisable()
+    private void SetFieldsDefaultValues(DifficultyOption difficulty)
     {
-        Debug.Log("Settings disabled");
+        gameTimeInput.text = difficulty.gameTime.ToString();
+        spawnFrequencyInput.text = difficulty.spawnRate.ToString();
+        lifeTimeInput.text = difficulty.enemyLifeTime.ToString();
+        speedInput.text = difficulty.enemySpeed.ToString();
 
+        // Si la dificultad es la fácil, deshabilitamos el campo de velocidad porque no se aplica en esta dificultad
+        if (difficulty.name == "easy")
+        {
+            speedInput.interactable = false;
+        }
+        else
+        {
+            speedInput.interactable = true;
+        }
     }
-    private void SetDifficultParameters()
+
+    private void SetDifficultyDefaultValues(int index)
     {
-
+        SetFieldsDefaultValues(_difficulties[index]);
     }
 
-    private void EnableFieldByDifficult()
-    {
-
-    }
     /// <summary>
     /// Al pulsar el botón de guardar los ajustes del usuario, valida si se ha modificado alguno de los valores que ya tuviera el usuario guardados
     /// así evitamos hacer llamadas innecesarias a la API. Si se ha modificado la dificultad, hace la llamada al API para actualizar las preferencias del usuario. Si la llamada es correcta, actualiza el valor guardado en sesión para futuras comparaciones.
     /// </summary>
     public async void OnSaveClicked()
     {
-        var prefs = UserSession.Instance?.User?.preferences;
+        var prefs = UserSession.Instance?.UserDifficulty;
         if (prefs == null || _difficulties == null) return;
 
         int selectedId = _difficulties[difficultyDropdown.value].id;
-        if (selectedId == prefs.idDifficulty) return;
+        // Si no ha cambiado nada entonces no hacemos nada para evitar llamadas a la API
+        // y no actualizamos el valor guardado en sesión para evitar futuras comparaciones erróneas.
+        if (selectedId == prefs.id
+            && prefs.gameTime == float.Parse(gameTimeInput.text)
+            && prefs.enemyLifeTime == float.Parse(lifeTimeInput.text)
+            && prefs.enemySpeed == float.Parse(speedInput.text)
+            && prefs.spawnRate == float.Parse(spawnFrequencyInput.text)) return;
 
         loadingSpinner.SetActive(true);
         SetFieldsInteractable(false);
-
         saveButton.interactable = false;
-        bool success = await UpdatePreferences(prefs.id, selectedId);
+
+        DifficultyOption updatedDifficultyParameters = new()
+        {
+            id = selectedId,
+            name = _difficulties[difficultyDropdown.value].name,
+            gameTime = float.Parse(gameTimeInput.text),
+            enemyLifeTime = float.Parse(lifeTimeInput.text),
+            enemySpeed = float.Parse(speedInput.text),
+            spawnRate = float.Parse(spawnFrequencyInput.text)
+        };
+
+        // Si ha modificado la dificultad, llamamos a la API para que permisista en futuras sesiones cuando se conecte
+        if (selectedId != prefs.id)
+        {
+            bool success = await UpdatePreferences(selectedId);
+        }
+
         saveButton.interactable = true;
         SetFieldsInteractable(true);
         loadingSpinner.SetActive(false);
 
-        if (!success) return;
-
-        panelManager.ShowToast("¡Preferencias actualizadas!", "Tus ajustes se han guardado correctamente.");
-        UserSession.Instance.UpdateUserPreferences(selectedId, _difficulties[difficultyDropdown.value].name);
+        try
+        {
+            UserSession.Instance.UpdateUserPreferences(updatedDifficultyParameters);
+            panelManager.ShowToast("¡Preferencias actualizadas!", "Tus ajustes se han guardado correctamente.");
+        }
+        catch (System.Exception ex)
+        {
+            panelManager.ShowToast("Error al actualizar preferencias", "No se han podido guardar tus ajustes. Inténtalo de nuevo.");
+            Debug.LogError($"Error al actualizar las preferencias del usuario: {ex.Message}");
+        }
     }
 
-    private async Task<bool> UpdatePreferences(int preferencesId, int idDifficulty)
+    private async Task<bool> UpdatePreferences(int idDifficulty)
     {
         var payload = new UpdatePreferencesRequest { idDifficulty = idDifficulty };
         var json = JsonUtility.ToJson(payload);
 
-        using var req = new UnityWebRequest($"{ApiConfig.User.Preferences}/{preferencesId}", "PUT");
+        var userId = UserSession.Instance.User.id;
+        using var req = new UnityWebRequest($"{ApiConfig.User.Preferences}/{userId}", "PUT");
         byte[] body = Encoding.UTF8.GetBytes(json);
         req.uploadHandler = new UploadHandlerRaw(body);
         req.downloadHandler = new DownloadHandlerBuffer();

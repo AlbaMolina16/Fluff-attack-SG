@@ -17,21 +17,28 @@ public class LoginResponse
 {
     public bool success;
     public string message;
-    public UserLoginResponse user;
+    public UserInfo user;
+}
+
+[Serializable]
+public class UserInfoResponse : UserInfo
+{
+    public UserPreferences preferences;
 }
 
 /// <summary>
 /// Dto para mapear la información del usuario obtenida del API /auth/login
 /// </summary>
 [Serializable]
-public class UserLoginResponse
+public class UserInfo
 {
     public int id;
     public string nickname;
     public string firstName;
     public string lastName;
     public int age;
-    public UserPreferences preferences;
+    public string handedness; // "diestro" o "zurdo"
+    public int idDifficulty;
 }
 
 #endregion
@@ -47,7 +54,7 @@ public class UserPreferences
     public int id;
     public int idDifficulty;
     public string difficultyName;
-    public float gameTime; // Tiempo de juego en segundos
+    public float gameTime = 120f; // Tiempo de juego en segundos
     public float spawnRate; // Enemigos por segundo
     public float enemyLifeTime; // Tiempo de vida de los enemigos en segundos
     public float enemySpeed; // Velocidad de los enemigos
@@ -66,13 +73,14 @@ public class UpdatePreferencesRequest
 [Serializable]
 public class DifficultyOption
 {
-    public int id;
-    public string name;
-    public float enemySpeed;
-    public float spawnRate; // Enemigos por segundo -> enemy/seg
-    public float enemyLifeTime;
-    public int amountEnemies;
-    public List<DifficultyMovement> movements;
+    public int id = 0;
+    public string name = "";
+    public float gameTime = 120f; // Tiempo de juego en segundos
+    public float enemySpeed = 0f; // Velocidad de los enemigos
+    public float spawnRate = 0f; // Enemigos por segundo -> enemy/seg
+    public float enemyLifeTime = 0f; // Tiempo de vida de los enemigos en segundos
+    public int amountEnemies = 1; // Cantidad máxima de enemigos a la vez en pantalla
+    public List<DifficultyMovement> movements = new() { new DifficultyMovement() }; // Tipos de movimientos que pueden tener los enemigos en esta dificultad con su probabilidad de aparecer
 }
 
 [Serializable]

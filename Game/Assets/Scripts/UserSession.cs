@@ -16,12 +16,19 @@ public class UserSession : MonoBehaviour
     /// </summary>
     public static UserSession Instance { get; private set; }
 
-    public UserLoginResponse User { get; private set; }
+    /// <summary>
+    /// Información personal del usuario.
+    /// </summary>
+    public UserInfo User { get; private set; }
+    /// <summary>
+    /// Prefencias de juego del usuario con respecto a la dificultad de los modos de juego.
+    /// </summary>
+    public DifficultyOption UserDifficulty { get; private set; }
     /// <summary>
     /// Indica las diferentes dificultades que se pueden elegir en el juego.
     /// </summary>
     public DifficultyOption[] Difficulties { get; private set; }
-    public DifficultyOption UserDifficulty { get; private set; }
+
 
     private async void Start()
     {
@@ -75,17 +82,15 @@ public class UserSession : MonoBehaviour
     /// Registra en la sesión el usuario actual
     /// </summary>
     /// <param name="user">Información del usuario</param>
-    public void SetUser(UserLoginResponse user)
+    public void SetUser(UserInfo user)
     {
         User = user;
-        UserDifficulty = Difficulties.FirstOrDefault(x => x.id == user.preferences.idDifficulty);
+        UserDifficulty = Difficulties.FirstOrDefault(x => x.id == user.idDifficulty);
     }
 
-    public void UpdateUserPreferences(int idDifficulty, string difficultyName)
+    public void UpdateUserPreferences(DifficultyOption difficulty)
     {
-        User.preferences.difficultyName = difficultyName;
-        User.preferences.idDifficulty = idDifficulty;
-        UserDifficulty = Difficulties.FirstOrDefault(x => x.id == idDifficulty);
+        UserDifficulty = difficulty;
     }
 
     public void SetDifficulties(DifficultyOption[] difficulties)

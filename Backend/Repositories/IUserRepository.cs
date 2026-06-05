@@ -7,8 +7,8 @@ namespace FluffGameApi.Repositories
     {
         public Task<List<User>> GetAll();
         public Task<User?> GetByUsername(string username);
-        public Task<(User? user, UserPreferencesDto? preferences)> GetByUsernameWithPreferences(string username);
+        public Task<User?> GetUserByUsername(string username);
         public Task<int> CreateUser(User user);
-        public Task UpdatePreferences(int preferencesId, int idDifficulty);
+        public Task UpdatePreferences(int userId, int idDifficulty);
     }
 }

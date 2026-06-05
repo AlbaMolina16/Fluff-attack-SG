@@ -36,10 +36,10 @@ namespace FluffGameApi.Controllers
             return Ok(result);
         }
 
-        [HttpPut("preferences/{preferencesId}")]
-        public async Task<IActionResult> UpdatePreferences(int preferencesId, [FromBody] UpdatePreferencesDto dto)
+        [HttpPut("preferences/{userId}")]
+        public async Task<IActionResult> UpdatePreferences(int userId, [FromBody] UpdatePreferencesDto dto)
         {
-            var (success, message) = await _authService.UpdatePreferences(preferencesId, dto.IdDifficulty);
+            var (success, message) = await _authService.UpdatePreferences(userId, dto.IdDifficulty);
 
             if (!success)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message });

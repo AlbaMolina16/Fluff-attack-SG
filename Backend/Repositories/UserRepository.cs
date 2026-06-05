@@ -54,9 +54,9 @@ namespace FluffGameApi.Repositories
         }
 
         /// <summary>
-        /// Obtiene un usuario por su nickname junto con sus preferencias y la dificultad asociada
+        /// Obtiene un usuario por su nickname
         /// </summary>
-        public async Task<(User? user, UserPreferencesDto? preferences)> GetByUsernameWithPreferences(string username)
+        public async Task<User?> GetUserByUsername(string username)
         {
             using var connection = new MySqlConnection(_configuration.GetConnectionString("MySqlConnection"));
 
@@ -64,16 +64,9 @@ namespace FluffGameApi.Repositories
                 "SELECT * FROM users WHERE Username = @Username",
                 new { Username = username });
 
-            if (user == null) return (null, null);
+            if (user == null) return null;
 
-            var preferences = await connection.QueryFirstOrDefaultAsync<UserPreferencesDto>(
-                @"SELECT up.Id, up.IdDifficulty, d.Name AS DifficultyName
-                  FROM user_preferences up
-                  INNER JOIN difficulties d ON d.Id = up.IdDifficulty
-                  WHERE up.IdUser = @UserId",
-                new { UserId = user.Id });
-
-            return (user, preferences);
+            return user;
         }
 
         /// <summary>
@@ -92,9 +85,15 @@ namespace FluffGameApi.Repositories
 
             try
             {
+                int easyDifficultyId = await connection.ExecuteScalarAsync<int>(
+                    "SELECT Id FROM difficulties WHERE Name = 'easy'",
+                    transaction: transaction);
+
+                user.IdDifficulty = easyDifficultyId;
+
                 string insertUser = @"
-                    INSERT INTO users (Username, FirstName, LastName, Age, Handedness, PasswordHash, CreatedDate, LogTimestamp)
-                    VALUES (@Username, @FirstName, @LastName, @Age, @Handedness, @PasswordHash, @CreatedDate, @LogTimestamp);
+                    INSERT INTO users (Username, FirstName, LastName, Age, Handedness, PasswordHash, IdDifficulty, CreatedDate, LogTimestamp)
+                    VALUES (@Username, @FirstName, @LastName, @Age, @Handedness, @PasswordHash, @IdDifficulty, @CreatedDate, @LogTimestamp);
                     SELECT LAST_INSERT_ID();";
 
                 int newUserId = await connection.ExecuteScalarAsync<int>(insertUser, new
@@ -106,22 +105,8 @@ namespace FluffGameApi.Repositories
                     user.Handedness,
                     user.PasswordHash,
                     user.CreatedDate,
+                    user.IdDifficulty,
                     user.LogTimestamp
-                }, transaction);
-
-                int easyDifficultyId = await connection.ExecuteScalarAsync<int>(
-                    "SELECT Id FROM difficulties WHERE Name = 'easy'",
-                    transaction: transaction);
-
-                string insertPreferences = @"
-                    INSERT INTO user_preferences (IdUser, IdDifficulty, LogTimestamp)
-                    VALUES (@IdUser, @IdDifficulty, @LogTimestamp)";
-
-                await connection.ExecuteAsync(insertPreferences, new
-                {
-                    IdUser = newUserId,
-                    IdDifficulty = easyDifficultyId,
-                    LogTimestamp = DateTime.UtcNow
                 }, transaction);
 
                 transaction.Commit();
@@ -134,10 +119,10 @@ namespace FluffGameApi.Repositories
             }
         }
 
-        public async Task UpdatePreferences(int preferencesId, int idDifficulty)
+        public async Task UpdatePreferences(int userId, int idDifficulty)
         {
-            string sql = "UPDATE user_preferences SET IdDifficulty = @IdDifficulty WHERE Id = @Id";
-            await Connection.ExecuteAsync(sql, new { IdDifficulty = idDifficulty, Id = preferencesId });
+            string sql = "UPDATE users SET IdDifficulty = @IdDifficulty WHERE Id = @Id";
+            await Connection.ExecuteAsync(sql, new { IdDifficulty = idDifficulty, Id = userId });
         }
 
     }

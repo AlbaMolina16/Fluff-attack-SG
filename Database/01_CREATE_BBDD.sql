@@ -56,7 +56,9 @@ CREATE TABLE users (
 	Handedness VARCHAR(150) COMMENT 'Indica la mano dominante',
     PasswordHash VARCHAR(255) NOT NULL COMMENT 'Contraseña hasehada',
     CreatedDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha de creacion del usuario',
-    LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+	IdDifficulty INT NOT NULL COMMENT 'Id de la dificultad preferida por el usuario',
+    LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
 ) COMMENT 'Usuarios que acceden al juego';
 
 CREATE TABLE scores (
@@ -73,12 +75,3 @@ CREATE TABLE scores (
     FOREIGN KEY (IdUser) REFERENCES users(Id) ON DELETE CASCADE,
     FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
 ) COMMENT 'Puntuaciones que registra un usuario';
-
-CREATE TABLE user_preferences (
-    Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico de la preferencia de usuario',
-    IdUser INT NOT NULL COMMENT 'Usuario al que pertecenece',
-    IdDifficulty INT NOT NULL COMMENT 'Dificultad elegida',
-    LogTimestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (IdUser) REFERENCES users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (IdDifficulty) REFERENCES difficulties(Id)
-) COMMENT 'Preferencias de juego del usuario';

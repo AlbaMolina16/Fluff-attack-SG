@@ -35,6 +35,12 @@ namespace FluffGameApi.Entities
         /// Password hash of the user, must be generated using a secure hashing algorithm and should not be stored in plain text
         /// </summary>
         public required string PasswordHash { get; set; }
+
+        /// <summary>
+        /// Dificulty level preferred by the user
+        /// </summary>
+        public required int IdDifficulty { get; set; }
+
         /// <summary>
         /// Date of user creation, should be set to the current date and time when a new user is created
         /// </summary>

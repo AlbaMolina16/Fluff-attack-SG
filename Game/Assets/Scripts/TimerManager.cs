@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class TimerManager : MonoBehaviour
 {
-    public float remainingTime = 180f; // Tiempo restante para jugar en segundos. Por defecto, 3 minutos.
+    private float remainingTime; // Tiempo restante para jugar en segundos. Por defecto, 3 minutos.
     [SerializeField] private TMP_Text timerText; //GameObject de tipo texto donde se muestra la cuenta atrás.
 
     private bool running = false;
@@ -20,6 +20,7 @@ public class TimerManager : MonoBehaviour
     void Start()
     {
         // Inicalizamos el texto con color rojo para indicar que no se ha iniciado el juego.
+        remainingTime = UserSession.Instance.UserDifficulty != null ? UserSession.Instance.UserDifficulty.gameTime : 120f; // Si no hay dificultad seleccionada, se asigna el valor por defecto de 120 segundos.
         timerText.color = Color.red;
     }
 
@@ -36,7 +37,7 @@ public class TimerManager : MonoBehaviour
 
                 if (DoSomethingWhenCheckSecond(elapsedTime))
                 {
-                    timerText.text = GetRemainingTimeSring();
+                    timerText.text = GetRemainingTimeString();
                 }
             }
             else
@@ -53,7 +54,7 @@ public class TimerManager : MonoBehaviour
     {
         running = true;
         timerText.color = new Color32(0, 245, 255, 255);
-        timerText.text = GetRemainingTimeSring();
+        timerText.text = GetRemainingTimeString();
     }
 
     /// <summary>
@@ -66,7 +67,7 @@ public class TimerManager : MonoBehaviour
         timerText.color = Color.red;
     }
 
-    public string GetRemainingTimeSring()
+    public string GetRemainingTimeString()
     {
         return Mathf.CeilToInt(remainingTime).ToString() + " seg";
     }

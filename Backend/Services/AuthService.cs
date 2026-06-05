@@ -38,7 +38,7 @@ namespace FluffGameApi.Services
         /// <returns>(success = bool, message = string, userId = int)</returns>
         public async Task<(bool success, string message, UserLoginDto? user)> Login(LoginDto loginInfoDto)
         {
-            var (user, preferences) = await _userRepository.GetByUsernameWithPreferences(loginInfoDto.Username);
+            var user = await _userRepository.GetUserByUsername(loginInfoDto.Username);
 
             if (user == null)
                 return (false, "Usuario no existe", null);
@@ -55,7 +55,7 @@ namespace FluffGameApi.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Age = user.Age,
-                Preferences = preferences ?? new() { Id = 0, IdDifficulty = 0, DifficultyName = string.Empty }
+                IdDifficulty = user.IdDifficulty
             };
 
             return (true, "Login correcto", userLoginDto);
@@ -64,18 +64,19 @@ namespace FluffGameApi.Services
         /// <summary>
         /// Valida si ya existe un usuario con ese nickName. Si no existe encripta la contraseña y lo crea en bbdd
         /// </summary>
-        /// <param name="newUserDto"></param>
+        /// <param name="userId">Identificador del usuario en la tabla users</param>
+        /// <param name="idDifficulty">Identificador de la dificultad preferida por el usuario</param>
         /// <returns>Si es satisfactorio, de devuelve el id del usuario creado</returns>
-        public async Task<(bool success, string message)> UpdatePreferences(int preferencesId, int idDifficulty)
+        public async Task<(bool success, string message)> UpdatePreferences(int userId, int idDifficulty)
         {
             try
             {
-                await _userRepository.UpdatePreferences(preferencesId, idDifficulty);
-                return (true, "Preferencias actualizadas correctamente");
+                await _userRepository.UpdatePreferences(userId, idDifficulty);
+                return (true, "Dificultad actualizada correctamente");
             }
             catch (Exception ex)
             {
-                return (false, $"Error actualizando preferencias: {ex.Message}");
+                return (false, $"Error al actualizar la dificultad del usuario: {ex.Message}");
             }
         }
 
@@ -93,6 +94,7 @@ namespace FluffGameApi.Services
                 LastName = newUserDto.LastName ?? string.Empty,
                 Age = newUserDto.Age,
                 Handedness = newUserDto.Handedness,
+                IdDifficulty = 0,
                 CreatedDate = DateTime.UtcNow,
                 LogTimestamp = DateTime.UtcNow
             };
