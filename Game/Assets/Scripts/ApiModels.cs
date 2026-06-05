@@ -47,6 +47,10 @@ public class UserPreferences
     public int id;
     public int idDifficulty;
     public string difficultyName;
+    public float gameTime; // Tiempo de juego en segundos
+    public float spawnRate; // Enemigos por segundo
+    public float enemyLifeTime; // Tiempo de vida de los enemigos en segundos
+    public float enemySpeed; // Velocidad de los enemigos
 }
 
 [Serializable]
@@ -76,15 +80,11 @@ public class DifficultyMovement
 {
     public string name;
     public float probability; // Probabilidad del tipo de movimiento que seguirá una pelusa
-    // public float minSpeed; // Mínima velocidad de la pelusa
-    // public float maxSpeed; // Mácima velocidad de la pelusa
 
     public DifficultyMovement()
     {
         name = "none";
         probability = 1f;
-        // minSpeed = 0f;
-        // maxSpeed = 0f;
     }
 }
 

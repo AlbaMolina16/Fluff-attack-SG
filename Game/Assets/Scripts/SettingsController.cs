@@ -9,7 +9,16 @@ using UnityEngine.UI;
 
 public class SettingsController : MonoBehaviour
 {
+    [Header("Dificultad")]
     [SerializeField] private TMP_Dropdown difficultyDropdown; // Dropdown de seleccion de dificultad
+
+    [Header("Parámetros de la dificultad")]
+    public TMP_InputField gameTimeInput;
+    public TMP_InputField spawnFrequencyInput;
+    public TMP_InputField lifeTimeInput;
+    public TMP_InputField speedInput;
+
+    [Header("Boton guardar")]
     [SerializeField] private Button saveButton; // Botón de guardado de preferencias
     [SerializeField] private PanelManager panelManager;
 
@@ -61,20 +70,52 @@ public class SettingsController : MonoBehaviour
             options.Add(new TMP_Dropdown.OptionData(d.name));
         difficultyDropdown.AddOptions(options);
 
-        // 3. Selecciona la dificultad guardada en las preferencias del usuario, si existe.
-        // Si no tuviera, marcaremos por defecto la primera dificultad (opción 0), pero sin guardar nada en preferencias hasta que el usuario pulse "Guardar".
-        var prefs = UserSession.Instance.User?.preferences;
-        if (prefs == null)
-        {
-            difficultyDropdown.value = 0;
-            return;
-        }
+        // // 3. Selecciona la dificultad guardada en las preferencias del usuario, si existe.
+        // // Si no tuviera, marcaremos por defecto la primera dificultad (opción 0), pero sin guardar nada en preferencias hasta que el usuario pulse "Guardar".
+        // var prefs = UserSession.Instance.User?.preferences;
+        // if (prefs == null)
+        // {
+        //     difficultyDropdown.value = 0;
+        //     return;
+        // }
 
-        // _savedDifficultyId = prefs.idDifficulty;
-        int index = Array.FindIndex(_difficulties, d => d.id == prefs.idDifficulty);
-        if (index >= 0) difficultyDropdown.value = index;
+        // // _savedDifficultyId = prefs.idDifficulty;
+        // int index = Array.FindIndex(_difficulties, d => d.id == prefs.idDifficulty);
+        // if (index >= 0) difficultyDropdown.value = index;
     }
 
+    public void OnEnable()
+    {
+        Debug.Log("Settings enabled");
+        // Se van a actualizar los campos del panel con los parámetros de dificultad que tiene asignados el usuario en sesión
+        if (UserSession.Instance.UserDifficulty != null)
+        {
+            var difficulty = UserSession.Instance.UserDifficulty;
+
+            // _savedDifficultyId = prefs.idDifficulty;
+            int index = Array.FindIndex(_difficulties, d => d.id == difficulty.id);
+            if (index >= 0) difficultyDropdown.value = index;
+            // gameTimeInput.text = difficulty.gameTime.ToString();
+            spawnFrequencyInput.text = difficulty.spawnRate.ToString();
+            lifeTimeInput.text = difficulty.enemyLifeTime.ToString();
+            speedInput.text = difficulty.enemySpeed.ToString();
+        }
+    }
+
+    public void OnDisable()
+    {
+        Debug.Log("Settings disabled");
+
+    }
+    private void SetDifficultParameters()
+    {
+
+    }
+
+    private void EnableFieldByDifficult()
+    {
+
+    }
     /// <summary>
     /// Al pulsar el botón de guardar los ajustes del usuario, valida si se ha modificado alguno de los valores que ya tuviera el usuario guardados
     /// así evitamos hacer llamadas innecesarias a la API. Si se ha modificado la dificultad, hace la llamada al API para actualizar las preferencias del usuario. Si la llamada es correcta, actualiza el valor guardado en sesión para futuras comparaciones.
@@ -101,22 +142,6 @@ public class SettingsController : MonoBehaviour
         panelManager.ShowToast("¡Preferencias actualizadas!", "Tus ajustes se han guardado correctamente.");
         UserSession.Instance.UpdateUserPreferences(selectedId, _difficulties[difficultyDropdown.value].name);
     }
-
-    // /// <summary>
-    // /// Obtiene la lista de dificultades desde el API. Si la llamada falla, devuelve null.
-    // /// </summary>
-    // /// <returns>Niveles de dificultad obtenidos</returns>
-    // private async Task<DifficultyOption[]> FetchDifficulties()
-    // {
-    //     using var req = UnityWebRequest.Get(ApiConfig.Difficulty.GetAll);
-    //     var op = req.SendWebRequest();
-    //     while (!op.isDone) await Task.Yield();
-
-    //     if (req.result != UnityWebRequest.Result.Success) return null;
-
-    //     var response = JsonUtility.FromJson<DifficultiesResponse>(req.downloadHandler.text);
-    //     return response?.difficulties;
-    // }
 
     private async Task<bool> UpdatePreferences(int preferencesId, int idDifficulty)
     {

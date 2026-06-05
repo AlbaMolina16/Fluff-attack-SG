@@ -46,7 +46,6 @@ public class PanelManager : MonoBehaviour
     /// </summary>
     public void ShowSignUp()
     {
-
         loginPanel.SetActive(false);
         signUpPanel.SetActive(true);
         settingsPanel.SetActive(false);
