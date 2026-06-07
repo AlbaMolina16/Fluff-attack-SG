@@ -26,6 +26,7 @@ public class GamePlayManager : MonoBehaviour
     [SerializeField] private GameObject instructionsPanel;
 
     private bool gameStarted = false;
+    private bool gameFinished = false;
     /// <summary>
     /// Croshair del jugador
     /// </summary>
@@ -42,7 +43,7 @@ public class GamePlayManager : MonoBehaviour
 
     async void Update()
     {
-        if (!gameStarted && Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
+        if (!gameStarted && !gameFinished && Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
         {
             EnablePointer(true);
             instructionsPanel.SetActive(false);
@@ -55,11 +56,12 @@ public class GamePlayManager : MonoBehaviour
             titleText.text = "3, 2, 1... Vamos!";
             messageText.gameObject.SetActive(false);
         }
-        else if (gameStarted && !timer.IsRunning())
+        else if (gameStarted && !gameFinished && !timer.IsRunning())
         {
             fluffSpawner.enabled = false;
             titleText.text = "Se acabo!";
             // gameStarted = false;
+            gameFinished = true;
             EnablePointer(false);
 
             var result = await SaveScore();
