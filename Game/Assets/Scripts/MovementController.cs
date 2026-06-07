@@ -70,8 +70,9 @@ public class MovementController : MonoBehaviour
     /// <summary>
     /// Inicializa los parámetros del movimiento
     /// </summary>
-    /// <param name="movement"></param>
-    public void InitMovevement(DifficultyMovement movement)
+    /// <param name="movement">Movimiento de la pelusa</param>
+    /// <param name="enemySpeed">Velocidad de la pelusa</param>
+    public void InitMovevement(DifficultyMovement movement, float enemySpeed = 0f)
     {
         movementType = movement;
 
@@ -79,7 +80,7 @@ public class MovementController : MonoBehaviour
         if (movementType != null && movementType.name != "none")
         {
             hasMovement = true;
-            speed = UserSession.Instance.UserDifficulty != null ? UserSession.Instance.UserDifficulty.enemySpeed : 0f;
+            speed = enemySpeed;
 
             switch (movementType.name)
             {
