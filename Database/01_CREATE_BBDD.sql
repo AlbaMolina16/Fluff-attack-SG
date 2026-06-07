@@ -16,7 +16,7 @@ CREATE TABLE difficulties (
 INSERT INTO `fluff_unity_db`.`difficulties` (`Name`, `EnemySpeed`, `EnemyLifeTime`, `SpawnRate`, `AmountEnemies`) VALUES 
 	('easy', 0, 0, 0.1, 8),
 	('medium', 3.0, 15, 0.143, 12),
-	('advanced', 12.0, 5, 1, 20);
+	('autoadaptative', 0, 0, 0, 0);
     
 CREATE TABLE movement_type (
     Id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del tipo de movimiento',
