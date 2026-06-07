@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Score.unity
     guid: f487fab890f76ed489162495a2da722a
+  - enabled: 1
+    path: Assets/Scenes/AdaptativeGame.unity
+    guid: b2076f4609ee6eb4dac32b077e941d83
   m_configObjects: {}

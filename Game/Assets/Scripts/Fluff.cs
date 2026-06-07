@@ -18,22 +18,36 @@ public class Fluff : MonoBehaviour
     public EnemyType type;
 
     public float fadeDuration = 2f; // Tiempo que tarde en desaparecer
-    private SpriteRenderer sr; // Componente Sprite Renderer del gameObject Fluff
-    private Color fluffColor; // Color original de la pelusa
+
+    /// <summary>
+    /// Permite que el FluffSpawner establezca el tiempo de vida directamente.
+    /// -1 = usar el valor de UserSession (comportamiento original).
+    /// </summary>
+    [HideInInspector] public float lifeTimeOverride = -1f;
+
+    private SpriteRenderer sr;
+    private Color fluffColor;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         fluffColor = sr.color;
-        // Comprobamos si hay configurado un tiempo de vida para las pelusas
-        if (UserSession.Instance.UserDifficulty != null && UserSession.Instance.UserDifficulty.enemyLifeTime > 0)
-            StartCoroutine(FadeOut());
+
+        float lifeTime = lifeTimeOverride >= 0f
+            ? lifeTimeOverride
+            : (UserSession.Instance.UserDifficulty != null ? UserSession.Instance.UserDifficulty.enemyLifeTime : 0f);
+
+        if (lifeTime > 0f)
+            StartCoroutine(FadeOut(lifeTime));
     }
 
-    private IEnumerator FadeOut()
+    /// <summary>
+    /// Hace desaparecer a la pelusa de forma gradual
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <returns></returns>
+    private IEnumerator FadeOut(float delay)
     {
-        // Esperamos el tiempo que se haya configurado en la dificultad para que la pelusa empiece a desaparecer
-        float delay = UserSession.Instance.UserDifficulty.enemyLifeTime;
         yield return new WaitForSeconds(delay);
 
         float elapsedTime = 0f;
@@ -44,9 +58,8 @@ public class Fluff : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        // TODO Si añadieramos la puntuación de las pelusas en una tabla de configuración de bbdd podríamos saber cuantos se han perdido
-        // Lo dejo con 10 porque es lo que se está contabilizando
-        ScoreManager.Instance.AddMissingPoints(10);
+
+        ScoreManager.Instance.AddMissingPointsByColor(type);
         Destroy(gameObject);
     }
 }

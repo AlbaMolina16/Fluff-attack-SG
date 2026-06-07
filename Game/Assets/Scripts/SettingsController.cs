@@ -37,7 +37,7 @@ public class SettingsController : MonoBehaviour
 
     public void OnEnable()
     {
-        Debug.Log("Settings enabled");
+        // Nos suscribimos al evento de cambio del dropdown para aplicar los valores por defecto diseñados
         difficultyDropdown.onValueChanged.AddListener(SetDifficultyDefaultValues);
         // Se van a actualizar los campos del panel con los parámetros de dificultad que tiene asignados el usuario en sesión
         LoadDifficultParameters();
@@ -45,7 +45,6 @@ public class SettingsController : MonoBehaviour
 
     public void OnDisable()
     {
-        Debug.Log("Settings disabled");
         difficultyDropdown.onValueChanged.RemoveListener(SetDifficultyDefaultValues);
     }
 
@@ -113,21 +112,36 @@ public class SettingsController : MonoBehaviour
         spawnFrequencyInput.text = difficulty.spawnRate.ToString();
         lifeTimeInput.text = difficulty.enemyLifeTime.ToString();
         speedInput.text = difficulty.enemySpeed.ToString();
-
-        // Si la dificultad es la fácil, deshabilitamos el campo de velocidad porque no se aplica en esta dificultad
-        if (difficulty.name == "easy")
-        {
-            speedInput.interactable = false;
-        }
-        else
-        {
-            speedInput.interactable = true;
-        }
+        SetInteractableParamatersByDifficulty(difficulty.name);
     }
 
     private void SetDifficultyDefaultValues(int index)
     {
         SetFieldsDefaultValues(_difficulties[index]);
+    }
+
+    private void SetInteractableParamatersByDifficulty(string difficultyName)
+    {
+        // Si la dificultad es la fácil, deshabilitamos el campo de velocidad porque no se aplica en esta dificultad
+        if (difficultyName == "easy")
+        {
+            speedInput.interactable = false;
+            lifeTimeInput.interactable = true;
+            spawnFrequencyInput.interactable = true;
+        }
+        else if (difficultyName == "autoadaptative")
+        {
+            // En el modo de juego autoadaptativo sólo se puede modificar el tiempo de partida
+            speedInput.interactable = false;
+            lifeTimeInput.interactable = false;
+            spawnFrequencyInput.interactable = false;
+        }
+        else
+        {
+            speedInput.interactable = true;
+            lifeTimeInput.interactable = true;
+            spawnFrequencyInput.interactable = true;
+        }
     }
 
     /// <summary>
@@ -172,6 +186,7 @@ public class SettingsController : MonoBehaviour
 
         saveButton.interactable = true;
         SetFieldsInteractable(true);
+        SetInteractableParamatersByDifficulty(updatedDifficultyParameters.name);
         loadingSpinner.SetActive(false);
 
         try

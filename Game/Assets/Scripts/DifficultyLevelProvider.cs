@@ -16,11 +16,18 @@ public class DifficultyLevelProvider : IDifficultyLevelProvider
     public float SpawnRate => _difficulty.spawnRate;
     public int AmountEnemies => _difficulty.amountEnemies;
     public float EnemySpeed => _difficulty.enemySpeed;
+    public float EnemyLifeTime => _difficulty.enemyLifeTime;
 
     /// <summary>
-    /// Devuelve el tipo de movimiento que se le asignará a la pelusa en función de la probabilidad acumulada 
+    /// Selecciona el indice de prefab de pelusa.
     /// </summary>
+    /// <param name="count"></param>
     /// <returns></returns>
+    public int SelectFluffIndex(int count) => Random.Range(0, count);
+
+    /// <summary>
+    /// Devuelve el tipo de movimiento que se le asignara a la pelusa en funcion de la probabilidad acumulada 
+    /// </summary>
     public DifficultyMovement SelectMovement()
     {
         if (_difficulty.movements == null || _difficulty.movements.Count == 0)

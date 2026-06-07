@@ -18,18 +18,21 @@ public class PointerShooter : MonoBehaviour
     [SerializeField] private AudioClip shootAudio;
     [SerializeField] private AudioClip shootFailAudio;
 
-    private HashSet<Collider2D> fluffsInPointer = new HashSet<Collider2D>(); // Lista de pelusas que almacenamos cuando estan en el area del puntero
+    /// <summary>
+    /// Lista de pelusas que almacenaos cuando están en en el area de la mirilla
+    /// </summary>
+    private HashSet<Collider2D> FluffsInPointer = new();
 
     void OnTriggerEnter2D(Collider2D enemy)
     {
         // Detectamos la pelusa que ha entrado en el area del puntero
-        fluffsInPointer.Add(enemy);
+        FluffsInPointer.Add(enemy);
     }
 
     void OnTriggerExit2D(Collider2D outEnemy)
     {
         // Detectamos la pelusa que se está saliendo del area del puntero para eliminarla de la lista
-        fluffsInPointer.Remove(outEnemy);
+        FluffsInPointer.Remove(outEnemy);
     }
 
     void Update()
@@ -38,30 +41,28 @@ public class PointerShooter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H) || Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.L))
         {
             // Si se ha pulsado alguna de las teclas, probamos si hay alguna pelusa en el área para ese color
-            if (fluffsInPointer != null && fluffsInPointer.Count > 0)
+            if (FluffsInPointer != null && FluffsInPointer.Count > 0)
             {
                 Collider2D find = null;
 
                 if (Input.GetKeyDown(KeyCode.H))
-                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Red);
+                    find = FluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Red);
                 else if (Input.GetKeyDown(KeyCode.J))
-                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Yellow);
+                    find = FluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Yellow);
                 else if (Input.GetKeyDown(KeyCode.K))
-                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Green);
+                    find = FluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Green);
                 else if (Input.GetKeyDown(KeyCode.L))
-                    find = fluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Blue);
+                    find = FluffsInPointer.FirstOrDefault(f => f.GetComponent<Fluff>().type == EnemyType.Blue);
 
                 if (find != null)
                 {
-                    fluffsInPointer.Remove(find);
+                    FluffsInPointer.Remove(find);
                     Destroy(find.gameObject);
-                    // TODO Aquí podemos sustituir la puntuación por un valor fijo en BBDD
                     ScoreManager.Instance.AddOrSubstractPoints(true, find.GetComponent<Fluff>().type);
                     SoundManager.Instance.PlaySound(shootAudio);
                 }
                 else
                 {
-                    // TODO Aquí podemos sustituir la puntuación por un valor fijo en BBDD que esté informado en función de la dificultad
                     // Si se ha pulsado una tecla pero no es la correcta, se penaliza con puntuación
                     ScoreManager.Instance.AddOrSubstractPoints(false); // Puedes cambiar el tipo de enemigo según tu lógica
                     SoundManager.Instance.PlaySound(shootFailAudio);
@@ -78,11 +79,11 @@ public class PointerShooter : MonoBehaviour
     private void UpdateTexts()
     {
         if (totalScoreText != null)
-            totalScoreText.text = Mathf.FloorToInt(ScoreManager.Instance.totalScore).ToString();
+            totalScoreText.text = Mathf.FloorToInt(ScoreManager.Instance.TotalScore).ToString();
         if (lastScoreText != null)
         {
-            lastScoreText.color = ScoreManager.Instance.lastScore > 0 ? Color.green : Color.red;
-            lastScoreText.text = (ScoreManager.Instance.lastScore >= 0 ? "(+" : "(") + ScoreManager.Instance.lastScore + ")";
+            lastScoreText.color = ScoreManager.Instance.LastScore > 0 ? Color.green : Color.red;
+            lastScoreText.text = (ScoreManager.Instance.LastScore >= 0 ? "(+" : "(") + ScoreManager.Instance.LastScore + ")";
         }
     }
 }

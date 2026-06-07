@@ -10,7 +10,7 @@ public class FluffSpawner : MonoBehaviour
     [SerializeField] private GameObject[] fluffPrefabs;
 
     [Header("Contenedor de pelusas")]
-    [Tooltip("Contenedor donde se instanciarán los prefabs de pelusas.")]
+    [Tooltip("Contenedor donde se instanciaran los prefabs de pelusas.")]
     [SerializeField] private Transform fluffsContainer;
 
     /// <summary>
@@ -23,7 +23,6 @@ public class FluffSpawner : MonoBehaviour
     /// <summary>
     /// Se inicializa el spawner en función de la dificultad que le asigne el GamePlayManager.
     /// </summary>
-    /// <param name="provider"></param>
     public void SetProvider(IDifficultyLevelProvider provider)
     {
         _provider = provider;
@@ -46,7 +45,7 @@ public class FluffSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Genera una nueva pelusa si no ha alcanzado el límite de pelusas en pantalla
+    /// Genera una nueva pelusa en una posicion aleatoria de la pantalla si no ha alcanzado el limite de pelusas en pantalla
     /// </summary>
     public void SpawnFluff()
     {
@@ -59,10 +58,15 @@ public class FluffSpawner : MonoBehaviour
         float x = Random.Range(LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
         float y = Random.Range(LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
 
-        int idx = Random.Range(0, fluffPrefabs.Length);
-        var fluff = Instantiate(fluffPrefabs[idx], new Vector3(x, y, 0), Quaternion.identity, fluffsContainer);
+        int idx = _provider.SelectFluffIndex(fluffPrefabs.Length);
+        var newFluff = Instantiate(fluffPrefabs[idx], new Vector3(x, y, 0), Quaternion.identity, fluffsContainer);
 
-        var mc = fluff.GetComponent<MovementController>();
+        // Tiempo de vida inyectado desde el proveedor (soporte para DDA)
+        var fluff = newFluff.GetComponent<Fluff>();
+        if (fluff != null)
+            fluff.lifeTimeOverride = _provider.EnemyLifeTime;
+
+        var mc = newFluff.GetComponent<MovementController>();
         if (mc != null)
             mc.InitMovevement(movement, _provider.EnemySpeed);
     }

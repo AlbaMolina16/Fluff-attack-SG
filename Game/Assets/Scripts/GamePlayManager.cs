@@ -81,12 +81,12 @@ public class GamePlayManager : MonoBehaviour
         {
             idUser = UserSession.Instance.User.id,
             idDifficulty = UserSession.Instance.UserDifficulty.id,
-            redPoints = ScoreManager.Instance.redPoints,
-            bluePoints = ScoreManager.Instance.bluePoints,
-            greenPoints = ScoreManager.Instance.greenPoints,
-            yellowPoints = ScoreManager.Instance.yellowPoints,
-            missingPoints = ScoreManager.Instance.missingPoints,
-            totalPoints = ScoreManager.Instance.totalScore
+            redPoints = ScoreManager.Instance.RedFluffsCount,
+            bluePoints = ScoreManager.Instance.BlueFluffsCount,
+            greenPoints = ScoreManager.Instance.GreenFluffsCount,
+            yellowPoints = ScoreManager.Instance.YellowFluffsCount,
+            missingPoints = ScoreManager.Instance.MissingFluffsCount,
+            totalPoints = ScoreManager.Instance.TotalScore
         };
 
         var json = JsonUtility.ToJson(newScore);
