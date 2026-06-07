@@ -56,14 +56,14 @@ public class PointerShooter : MonoBehaviour
                     fluffsInPointer.Remove(find);
                     Destroy(find.gameObject);
                     // TODO Aquí podemos sustituir la puntuación por un valor fijo en BBDD
-                    ScoreManager.Instance.AddOrSubstractPoints(10, find.GetComponent<Fluff>().type);
+                    ScoreManager.Instance.AddOrSubstractPoints(true, find.GetComponent<Fluff>().type);
                     SoundManager.Instance.PlaySound(shootAudio);
                 }
                 else
                 {
                     // TODO Aquí podemos sustituir la puntuación por un valor fijo en BBDD que esté informado en función de la dificultad
                     // Si se ha pulsado una tecla pero no es la correcta, se penaliza con puntuación
-                    ScoreManager.Instance.AddOrSubstractPoints(-5); // Puedes cambiar el tipo de enemigo según tu lógica
+                    ScoreManager.Instance.AddOrSubstractPoints(false); // Puedes cambiar el tipo de enemigo según tu lógica
                     SoundManager.Instance.PlaySound(shootFailAudio);
                 }
 

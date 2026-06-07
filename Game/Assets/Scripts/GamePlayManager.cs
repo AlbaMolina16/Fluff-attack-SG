@@ -22,6 +22,9 @@ public class GamePlayManager : MonoBehaviour
     [Header("Botonera final")]
     [SerializeField] private GameObject buttonsContainer;
 
+    [Header("Panel de instrucciones")]
+    [SerializeField] private GameObject instructionsPanel;
+
     private bool gameStarted = false;
     /// <summary>
     /// Croshair del jugador
@@ -31,17 +34,20 @@ public class GamePlayManager : MonoBehaviour
     void Start()
     {
         pointer = GameObject.FindGameObjectWithTag("Player");
-        EnablePointer(true);
+        EnablePointer(false);
         ScoreManager.Instance.ClearScore();
         fluffSpawner.enabled = false;
+        instructionsPanel.SetActive(true);
     }
 
     async void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
+        if (!gameStarted && Input.GetKeyDown(KeyCode.Space) && !timer.IsRunning())
         {
+            EnablePointer(true);
+            instructionsPanel.SetActive(false);
             fluffSpawner.SetProvider(new DifficultyLevelProvider(UserSession.Instance.UserDifficulty));
-            fluffSpawner.enabled = true; // 
+            fluffSpawner.enabled = true; //
             fluffSpawner.SpawnFluff();
 
             timer.StartTimer();
@@ -53,7 +59,7 @@ public class GamePlayManager : MonoBehaviour
         {
             fluffSpawner.enabled = false;
             titleText.text = "Se acabo!";
-            gameStarted = false;
+            // gameStarted = false;
             EnablePointer(false);
 
             var result = await SaveScore();

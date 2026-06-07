@@ -12,7 +12,8 @@ using static Fluff;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
-
+    private static int correctScore = 1;
+    private static int failScore = -1;
     public int totalScore { get; private set; } = 0; // Puntos conseguidos durante el transcurso de la partida
     public int lastScore { get; private set; } = 0; // últimos puntos obtenidos
     public int redPoints { get; private set; } = 0;
@@ -36,31 +37,31 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void AddOrSubstractPoints(int points, EnemyType? color = null)
+    public void AddOrSubstractPoints(bool isCorrect, EnemyType? color = null)
     {
         // Calculamos la puntuación total
-        totalScore += points;
+        totalScore += isCorrect ? correctScore : failScore;
         // Alamacenamos la última puntuación (negativa o positiva)
-        lastScore = points;
+        lastScore = isCorrect ? correctScore : failScore;
 
         // Si ha sido un disparo fallido, aumentamos el contador de fallos. Si no, sumamos los puntos en función del color para llevar un recuento.
-        if (points < 0)
+        if (!isCorrect)
             fails++;
         else if (color.HasValue)
         {
             switch (color)
             {
                 case EnemyType.Red:
-                    redPoints += points;
+                    redPoints += correctScore;
                     break;
                 case EnemyType.Yellow:
-                    yellowPoints += points;
+                    yellowPoints += correctScore;
                     break;
                 case EnemyType.Green:
-                    greenPoints += points;
+                    greenPoints += correctScore;
                     break;
                 case EnemyType.Blue:
-                    bluePoints += points;
+                    bluePoints += correctScore;
                     break;
             }
         }
