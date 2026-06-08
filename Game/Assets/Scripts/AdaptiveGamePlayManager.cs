@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
-/// Orquesta la partida en modo de dificultad ADAPTATIVA (DDA).
+/// Maneja la partida en modo AUTOADAPTATIVO de juego
 /// Separado de GamePlayManager para no afectar la logica de dificultades fijas.
 /// </summary>
 public class AdaptiveGamePlayManager : MonoBehaviour
@@ -26,12 +26,12 @@ public class AdaptiveGamePlayManager : MonoBehaviour
     [Header("Panel de instrucciones")]
     [SerializeField] private GameObject instructionsPanel;
 
-    [Header("Indicador de nivel de dificultad (opcional)")]
+    [Header("Indicador de nivel de dificultad")]
     [Tooltip("Si se asigna, mostrara el nivel de dificultad actual como porcentaje.")]
     [SerializeField] private TextMeshProUGUI difficultyLevelText;
 
     [Header("Configuracion DDA")]
-    [SerializeField] private AdaptiveDifficultyConfig adaptiveConfig = new AdaptiveDifficultyConfig();
+    [SerializeField] private AdaptiveDifficultyConfig adaptiveConfig = new();
 
     private bool _gameStarted = false;
     private bool _gameFinished = false;

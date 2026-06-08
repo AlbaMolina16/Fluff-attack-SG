@@ -1,13 +1,11 @@
 using UnityEngine;
 
 /// <summary>
-/// Proveedor de dificultad adaptativa (DDA) basado en el rendimiento del jugador.
+/// Maneja y ajusta la dificultad adaptativa (DDA) basandose en el rendimiento del jugador.
 /// Ajusta los parametros de juego periodicamente para mantener un nivel terapeutico optimo.
-///
-/// Metricas monitorizadas:
+/// ¿Qué vamos a medir?
 /// - Precision global (aciertos / intentos totales) -> ajusta la dificultad general
 /// - Precision por color -> ajusta el sesgo de aparicion de cada pelusa (rehabilitacion por dedo)
-///
 /// Parametros ajustados:
 /// - spawnRate, amountEnemies, enemySpeed, enemyLifeTime
 /// - Peso de aparicion por color [Rojo, Amarillo, Verde, Azul]
@@ -16,7 +14,9 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
 {
     private readonly AdaptiveDifficultyConfig _config;
 
-    /// <summary>Nivel de dificultad normalizado [0=facil, 1=dificil].</summary>
+    /// <summary>
+    /// Nivel de dificultad aplicado (entre 0-1)
+    /// </summary>
     public float DifficultyLevel { get; private set; }
 
     // Pesos de aparicion por color: [Red=0, Yellow=1, Green=2, Blue=3]
@@ -25,18 +25,36 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
 
     // Ventana de evaluacion
     private readonly float _windowDuration;
-    private float _windowTimer;
+    private float _windowTimer; // Contador de segundos para ver si hay que evaluar una nueva ventana
 
-    // Snapshot de metricas al inicio de cada ventana
-    private int _snapTotalHits;
-    private int _snapFails;
-    private readonly int[] _snapColorHits    = new int[4];
+    // Fotografía de las metricas al inicio de cada ventana
+    private int _snapTotalShoots; // Foto del número total de disparos acertados
+    private int _snapFails; // Foto del número total de fallos
+
+    /// <summary>
+    /// El array de cuadro posiciones representa [Red=0, Yellow=1, Green=2, Blue=3]
+    /// </summary>
+    private readonly int[] _snapColorShoots = new int[4];
+    private readonly int[] _snapColorFails = new int[4];
     private readonly int[] _snapColorExpired = new int[4];
 
-    // --- IDifficultyLevelProvider ---
-    public float SpawnRate    => Mathf.Lerp(_config.minSpawnRate, _config.maxSpawnRate, DifficultyLevel);
-    public int   AmountEnemies => Mathf.RoundToInt(Mathf.Lerp(_config.minAmountEnemies, _config.maxAmountEnemies, DifficultyLevel));
-    public float EnemySpeed   => Mathf.Lerp(_config.minEnemySpeed, _config.maxEnemySpeed, DifficultyLevel);
+    // Penalizaciones suaves para evitar que el sesgo fatigue al jugador final.
+    private const float ColorFailWeight = 0.60f;
+    private const float ColorExpiredWeight = 0.35f;
+
+    // Precision calculada en la ventana anterior (-1 = sin ventana previa)
+    private float _prevWindowAccuracy = -1f;
+    private readonly float[] _prevColorAccuracy = { -1f, -1f, -1f, -1f };
+
+    /// <summary>
+    /// Se interpola el spawnRate en función del nivel de dificultad para dar a cada nivel(paso) su valor correspondiente estre el min/max
+    /// </summary>
+    public float SpawnRate => Mathf.Lerp(_config.minSpawnRate, _config.maxSpawnRate, DifficultyLevel);
+    /// <summary>
+    /// Interpola la cantidad de enemigos al igual que el SpawnRate, pero al ser un entero redondea en caso de que el cálculo sea decimal
+    /// </summary>
+    public int AmountEnemies => Mathf.RoundToInt(Mathf.Lerp(_config.minAmountEnemies, _config.maxAmountEnemies, DifficultyLevel));
+    public float EnemySpeed => Mathf.Lerp(_config.minEnemySpeed, _config.maxEnemySpeed, DifficultyLevel);
     public float EnemyLifeTime =>
         _config.enableEnemyLifeTime
             ? Mathf.Lerp(_config.maxEnemyLifeTime, _config.minEnemyLifeTime, DifficultyLevel)
@@ -70,18 +88,18 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
     public DifficultyMovement SelectMovement()
     {
         float rand = Random.value;
-        float noneProb   = Mathf.Lerp(0.90f, 0.00f, DifficultyLevel);
+        float noneProb = Mathf.Lerp(0.90f, 0.00f, DifficultyLevel);
         float linealProb = Mathf.Lerp(0.10f, 0.55f, DifficultyLevel);
 
         if (rand < noneProb)
-            return new DifficultyMovement { name = "none",   probability = 1f };
+            return new DifficultyMovement { name = "none", probability = 1f };
         if (rand < noneProb + linealProb)
             return new DifficultyMovement { name = "lineal", probability = 1f };
         return new DifficultyMovement { name = "zigzag", probability = 1f };
     }
 
     /// <summary>
-    /// Selecciona el indice de prefab de pelusa con sesgo adaptativo hacia los dedos con peor rendimiento.
+    /// Selecciona el indice de prefab de pelusa en función del peso que tiene asignado cada color
     /// </summary>
     public int SelectFluffIndex(int count)
     {
@@ -105,51 +123,79 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
         var sm = ScoreManager.Instance;
         if (sm == null) return;
 
-        // Calcular deltas dentro de la ventana
-        int windowHits  = sm.TotalHits - _snapTotalHits;
-        int windowFails = sm.Fails      - _snapFails;
+        // Calcular valores generados dentro de la propia ventana
+        // Obtiene el número total del ScoreManager y le resta la foto de la ventana anterior
+        int windowShoots = sm.TotalHits - _snapTotalShoots;
+        int windowFails = sm.TotalFails - _snapFails;
 
-        int[] colorHitDeltas     = new int[4];
-        int[] colorExpiredDeltas = new int[4];
+        int[] windowColorShoots = new int[4];
+        int[] windowColorFails = new int[4];
+        int[] windowMissingFluffs = new int[4];
 
-        colorHitDeltas[0] = sm.RedFluffsCount    - _snapColorHits[0];
-        colorHitDeltas[1] = sm.YellowFluffsCount - _snapColorHits[1];
-        colorHitDeltas[2] = sm.GreenFluffsCount  - _snapColorHits[2];
-        colorHitDeltas[3] = sm.BlueFluffsCount   - _snapColorHits[3];
+        windowColorShoots[0] = sm.RedFluffsCount - _snapColorShoots[0];
+        windowColorShoots[1] = sm.YellowFluffsCount - _snapColorShoots[1];
+        windowColorShoots[2] = sm.GreenFluffsCount - _snapColorShoots[2];
+        windowColorShoots[3] = sm.BlueFluffsCount - _snapColorShoots[3];
 
-        colorExpiredDeltas[0] = sm.MissingRedFluffs    - _snapColorExpired[0];
-        colorExpiredDeltas[1] = sm.MissingYellowFluffs - _snapColorExpired[1];
-        colorExpiredDeltas[2] = sm.MissingGreenFluffs  - _snapColorExpired[2];
-        colorExpiredDeltas[3] = sm.MissingBlueFluffs   - _snapColorExpired[3];
+        windowColorFails[0] = sm.RedFluffFails - _snapColorFails[0];
+        windowColorFails[1] = sm.YellowFluffFails - _snapColorFails[1];
+        windowColorFails[2] = sm.GreenFluffFails - _snapColorFails[2];
+        windowColorFails[3] = sm.BlueFluffFails - _snapColorFails[3];
 
-        int windowExpired = colorExpiredDeltas[0] + colorExpiredDeltas[1] + colorExpiredDeltas[2] + colorExpiredDeltas[3];
-        int windowTotal   = windowHits + windowFails + windowExpired;
+        windowMissingFluffs[0] = sm.MissingRedFluffs - _snapColorExpired[0];
+        windowMissingFluffs[1] = sm.MissingYellowFluffs - _snapColorExpired[1];
+        windowMissingFluffs[2] = sm.MissingGreenFluffs - _snapColorExpired[2];
+        windowMissingFluffs[3] = sm.MissingBlueFluffs - _snapColorExpired[3];
 
-        // --- Ajuste global de dificultad ---
-        if (windowTotal >= _config.minAttemptsForEvaluation)
+        int windowExpired = windowMissingFluffs[0] + windowMissingFluffs[1] + windowMissingFluffs[2] + windowMissingFluffs[3];
+        int windowTotal = windowShoots + windowFails + windowExpired;
+
+        // Evaluamos la precisión de disparo general en la partida teniendo en cuenta las que no se ha conseguido eliminar y ha desaparecido
+        float currentAccuracy = windowTotal > 0 ? (float)windowShoots / windowTotal : -1f;
+
+        if (_prevWindowAccuracy >= 0f && currentAccuracy >= 0f)
         {
-            float accuracy = (float)windowHits / windowTotal;
+            bool prevHigh = _prevWindowAccuracy > _config.targetAccuracy + _config.accuracyTolerance;
+            bool prevLow = _prevWindowAccuracy < _config.targetAccuracy - _config.accuracyTolerance;
+            bool currHigh = currentAccuracy > _config.targetAccuracy + _config.accuracyTolerance;
+            bool currLow = currentAccuracy < _config.targetAccuracy - _config.accuracyTolerance;
 
-            if (accuracy > _config.targetAccuracy + _config.accuracyTolerance)
+            // Si las dos ventanas consecutivas tienen un rendimiento por encima del óptimo, subimos la dificultad
+            // y si ambas estan por debajo, la bajamos
+            if (prevHigh && currHigh)
                 DifficultyLevel = Mathf.Clamp01(DifficultyLevel + _config.difficultyStep);
-            else if (accuracy < _config.targetAccuracy - _config.accuracyTolerance)
+            else if (prevLow && currLow)
                 DifficultyLevel = Mathf.Clamp01(DifficultyLevel - _config.difficultyStep);
         }
+        _prevWindowAccuracy = currentAccuracy;
 
-        // --- Ajuste de sesgo por color (rehabilitacion especifica por dedo) ---
+        // Evaluamos por color la precisión que se está teniendo
         for (int i = 0; i < 4; i++)
         {
-            int colorTotal = colorHitDeltas[i] + colorExpiredDeltas[i];
-            if (colorTotal < _config.minColorAttemptsForBias) continue;
+            // Rendimiento por color teniendo en cuenta aciertos, fallos de disparo y expiraciones.
+            int colorRawSamples = windowColorShoots[i] + windowColorFails[i] + windowMissingFluffs[i];
+            // Se minimiza la penalización por fallos de color y expiración para evitar fatiga
+            float weightedPenalty = (windowColorFails[i] * ColorFailWeight) + (windowMissingFluffs[i] * ColorExpiredWeight);
+            float weightedTotal = windowColorShoots[i] + weightedPenalty;
+            float colorAcc = colorRawSamples >= _config.minColorAttemptsForBias && weightedTotal > 0f
+                ? (float)windowColorShoots[i] / weightedTotal
+                : -1f;
 
-            float colorAcc = (float)colorHitDeltas[i] / colorTotal;
+            if (_prevColorAccuracy[i] >= 0f && colorAcc >= 0f)
+            {
+                bool prevLow = _prevColorAccuracy[i] < _config.targetAccuracy - _config.accuracyTolerance;
+                bool prevHigh = _prevColorAccuracy[i] > _config.targetAccuracy + _config.accuracyTolerance;
+                bool currLow = colorAcc < _config.targetAccuracy - _config.accuracyTolerance;
+                bool currHigh = colorAcc > _config.targetAccuracy + _config.accuracyTolerance;
 
-            if (colorAcc < _config.targetAccuracy - _config.accuracyTolerance)
-                // Dedo con bajo rendimiento: aumentar su presencia para forzar practica
-                _colorWeights[i] = Mathf.Clamp(_colorWeights[i] * 1.25f, 1f, 3f);
-            else if (colorAcc > _config.targetAccuracy + _config.accuracyTolerance)
-                // Dedo con buen rendimiento: normalizar gradualmente su peso
-                _colorWeights[i] = Mathf.Lerp(_colorWeights[i], 1f, 0.3f);
+                if (prevLow && currLow)
+                    // Dedo con bajo rendimiento aumentamos un 25% la aparicion de ese color
+                    _colorWeights[i] = Mathf.Clamp(_colorWeights[i] * 1.25f, 1f, 3f);
+                else if (prevHigh && currHigh)
+                    // Dedo con buen rendimiento sostenido: se normaliza el peso del color reduciendolo un 30% para que sea gradual
+                    _colorWeights[i] = Mathf.Lerp(_colorWeights[i], 1f, 0.3f);
+            }
+            _prevColorAccuracy[i] = colorAcc;
         }
 
         TakeSnapshot();
@@ -160,13 +206,18 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
         var sm = ScoreManager.Instance;
         if (sm == null) return;
 
-        _snapTotalHits = sm.TotalHits;
-        _snapFails     = sm.Fails;
+        _snapTotalShoots = sm.TotalHits;
+        _snapFails = sm.TotalFails;
 
-        _snapColorHits[0] = sm.RedFluffsCount;
-        _snapColorHits[1] = sm.YellowFluffsCount;
-        _snapColorHits[2] = sm.GreenFluffsCount;
-        _snapColorHits[3] = sm.BlueFluffsCount;
+        _snapColorShoots[0] = sm.RedFluffsCount;
+        _snapColorShoots[1] = sm.YellowFluffsCount;
+        _snapColorShoots[2] = sm.GreenFluffsCount;
+        _snapColorShoots[3] = sm.BlueFluffsCount;
+
+        _snapColorFails[0] = sm.RedFluffFails;
+        _snapColorFails[1] = sm.YellowFluffFails;
+        _snapColorFails[2] = sm.GreenFluffFails;
+        _snapColorFails[3] = sm.BlueFluffFails;
 
         _snapColorExpired[0] = sm.MissingRedFluffs;
         _snapColorExpired[1] = sm.MissingYellowFluffs;

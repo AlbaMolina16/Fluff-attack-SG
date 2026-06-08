@@ -13,8 +13,9 @@ public class ScoreManager : MonoBehaviour
     /// <summary>
     /// Puntos que suma al acertar en una pelusa. Se tiene en cuenta con valor uno para que se asemeje también a la cantidad
     /// </summary>
-    private static int CorrectScore = 1;
-    private static int FailScore = -CorrectScore;
+    private static readonly int CorrectScore = 1;
+    private static readonly int FailScore = -CorrectScore;
+
     /// <summary>
     /// Puntos conseguidos durante el transcurso de la partida (tiene en cuenta los fallos) para visualizarlo en pantalla
     /// </summary>
@@ -24,21 +25,37 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public int LastScore { get; private set; } = 0;
 
-    public int RedFluffsCount { get; private set; } = 0; 
+    #region Contadores de aciertos por color
+    public int RedFluffsCount { get; private set; } = 0;
     public int YellowFluffsCount { get; private set; } = 0;
     public int BlueFluffsCount { get; private set; } = 0;
     public int GreenFluffsCount { get; private set; } = 0;
-    public int MissingFluffsCount { get; private set; } = 0;
-    public int Fails { get; private set; } = 0; // Número de fallos cometidos durante la partida
- 
+    #endregion
+
+    // Total de disparos acertados
+    public int TotalHits => RedFluffsCount + YellowFluffsCount + GreenFluffsCount + BlueFluffsCount;
+
+    #region Contadores de pelusas perdidas por color (para DDA)
     // Pelusas perdidas por color (para el DDA adaptativo)
     public int MissingRedFluffs { get; private set; } = 0;
     public int MissingYellowFluffs { get; private set; } = 0;
     public int MissingGreenFluffs { get; private set; } = 0;
     public int MissingBlueFluffs { get; private set; } = 0;
+    #endregion
 
-    // Total de disparos acertados
-    public int TotalHits => RedFluffsCount + YellowFluffsCount + GreenFluffsCount + BlueFluffsCount;
+    public int MissingFluffsCount => MissingRedFluffs + MissingYellowFluffs + MissingGreenFluffs + MissingBlueFluffs;
+
+    #region Contador de fallos por color (para DDA)
+    public int RedFluffFails { get; private set; } = 0;
+    public int YellowFluffFails { get; private set; } = 0;
+    public int BlueFluffFails { get; private set; } = 0;
+    public int GreenFluffFails { get; private set; } = 0;
+    #endregion
+
+    /// <summary>
+    /// Número de fallos cometidos durante la partida (DDA)
+    /// </summary>
+    public int TotalFails => RedFluffFails + YellowFluffFails + GreenFluffFails + BlueFluffFails;
 
     private void Awake()
     {
@@ -67,25 +84,41 @@ public class ScoreManager : MonoBehaviour
         // Alamacenamos la última puntuación (negativa o positiva)
         LastScore = isCorrect ? CorrectScore : FailScore;
 
-        // Si ha sido un disparo fallido, aumentamos el contador de fallos. Si no, sumamos los puntos en función del color para llevar un recuento.
-        if (!isCorrect)
-            Fails++;
-        else if (color.HasValue)
+        // Si ha sido un disparo fallido, aumentamos el contador total y, si aplica,
+        // el contador de fallos del color sobre el que se disparó.
+        if (color.HasValue)
         {
-            switch (color)
+            if (!isCorrect)
             {
-                case EnemyType.Red:
-                    RedFluffsCount += CorrectScore;
-                    break;
-                case EnemyType.Yellow:
-                    YellowFluffsCount += CorrectScore;
-                    break;
-                case EnemyType.Green:
-                    GreenFluffsCount += CorrectScore;
-                    break;
-                case EnemyType.Blue:
-                    BlueFluffsCount += CorrectScore;
-                    break;
+                switch (color)
+                {
+                    case EnemyType.Red:
+                        RedFluffFails += 1; break;
+                    case EnemyType.Yellow:
+                        YellowFluffFails += 1; break;
+                    case EnemyType.Green:
+                        GreenFluffFails += 1; break;
+                    case EnemyType.Blue:
+                        BlueFluffFails += 1; break;
+                }
+            }
+            else
+            {
+                switch (color)
+                {
+                    case EnemyType.Red:
+                        RedFluffsCount += CorrectScore;
+                        break;
+                    case EnemyType.Yellow:
+                        YellowFluffsCount += CorrectScore;
+                        break;
+                    case EnemyType.Green:
+                        GreenFluffsCount += CorrectScore;
+                        break;
+                    case EnemyType.Blue:
+                        BlueFluffsCount += CorrectScore;
+                        break;
+                }
             }
         }
     }
@@ -95,8 +128,6 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void AddMissingPointsByColor(EnemyType color)
     {
-        MissingFluffsCount += 1;
-
         switch (color)
         {
             case EnemyType.Red: MissingRedFluffs++; break;
@@ -114,8 +145,10 @@ public class ScoreManager : MonoBehaviour
         YellowFluffsCount = 0;
         BlueFluffsCount = 0;
         GreenFluffsCount = 0;
-        Fails = 0;
-        MissingFluffsCount = 0;
+        RedFluffFails = 0;
+        YellowFluffFails = 0;
+        BlueFluffFails = 0;
+        GreenFluffFails = 0;
         MissingRedFluffs = 0;
         MissingYellowFluffs = 0;
         MissingGreenFluffs = 0;

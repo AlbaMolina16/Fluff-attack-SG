@@ -30,8 +30,7 @@ public class AdaptiveDifficultyConfig
     public float minEnemyLifeTime = 3f;
 
     [Header("Tiempo de la ventana de analisis del rendimiento del jugador")]
-    [Tooltip("Cada cuantos segundos se recalcula la dificultad")]
-    public float evaluationWindowSeconds = 20f;
+    public float evaluationWindowSeconds = 15f;
 
     [Header("Parametros de ajuste")]
     [Tooltip("Rango óptimo de trabajo/esfuerzo [0-1]. Por encima se sube dificultad, por debajo se baja")]
@@ -43,8 +42,6 @@ public class AdaptiveDifficultyConfig
     [Tooltip("Cuanto sube o baja el nivel de dificultad por ventana de evaluacion")]
     [Range(0.01f, 0.3f)]
     public float difficultyStep = 0.1f;
-    [Tooltip("Minimo de shoots contabilizados en la ventana para ajustar dificultad")]
-    public int minAttemptsForEvaluation = 5;
     [Tooltip("Minimo de shoots por color en la ventana para ajustar su sesgo de aparicion")]
     public int minColorAttemptsForBias = 3;
 }
