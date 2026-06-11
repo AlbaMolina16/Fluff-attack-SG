@@ -3,17 +3,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-// TODO: Me gustaría cambiarle el nombre al fichero, porque al final creo que lo utilizaré para cargar cosas iniciales y luego
-// almacenar la información del usuario
-
 /// <summary>
 /// Singleton para almacenar la sesión del usuario actual.
 /// </summary>
 public class UserSession : MonoBehaviour
 {
-    /// <summary>
-    /// Instancia única de acceso global
-    /// </summary>
     public static UserSession Instance { get; private set; }
 
     /// <summary>

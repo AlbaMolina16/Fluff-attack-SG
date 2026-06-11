@@ -7700,6 +7700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstName
       objectReference: {fileID: 0}
+    - target: {fileID: 6104153216775634160, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9671,6 +9675,10 @@ PrefabInstance:
     - target: {fileID: 4682804627488709355, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_Name
       value: LastName
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104153216775634160, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12555,6 +12563,10 @@ PrefabInstance:
     - target: {fileID: 4682804627488709355, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_Name
       value: Nickname
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104153216775634160, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8180433040060721264, guid: f35a6bd547ed5594289d892ff130977c, type: 3}
       propertyPath: m_PreferredHeight
