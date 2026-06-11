@@ -33,7 +33,7 @@ namespace FluffGameApi.Controllers
         }
 
         /// <summary>
-        /// Endpoint que obtiene la última puntuación conseguida por un usuario
+        /// Endpoint que obtiene la ultima puntuacion conseguida por un usuario
         /// </summary>
         /// <param name="userId">Identificador del usuario</param>
         /// <returns></returns>

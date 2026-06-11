@@ -15,16 +15,6 @@ namespace FluffGameApi.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var (success, message, users) = await _authService.GetAll();
-            if (success)
-                return Ok(new { message, users });
-
-            return StatusCode(StatusCodes.Status500InternalServerError, new { message });
-        }
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto newUserDto)
         {
@@ -36,10 +26,10 @@ namespace FluffGameApi.Controllers
             return Ok(result);
         }
 
-        [HttpPut("preferences/{userId}")]
-        public async Task<IActionResult> UpdatePreferences(int userId, [FromBody] UpdatePreferencesDto dto)
+        [HttpPut("preferences")]
+        public async Task<IActionResult> UpdatePreferences([FromBody] UpdatePreferencesDto dto)
         {
-            var (success, message) = await _authService.UpdatePreferences(userId, dto.IdDifficulty);
+            var (success, message) = await _authService.UpdatePreferences(dto);
 
             if (!success)
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message });

@@ -14,24 +14,6 @@ namespace FluffGameApi.Services
         }
 
         /// <summary>
-        /// Obtiene todos los usuarios registrados en la base de datos. Devuelve un mensaje ok si los obtuvo correctamente o un ko si no pudo realizar la operación.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<(bool success, string message, List<User> users)> GetAll()
-        {
-            try
-            {
-                var users = await _userRepository.GetAll();
-
-                return (true, "Users retrieved successfully", users);
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error retrieving users: {ex.Message}", []);
-            }
-        }
-
-        /// <summary>
         /// Valida la informacion del login y permite el acceso o no
         /// </summary>
         /// <param name="loginInfoDto"></param>
@@ -41,12 +23,12 @@ namespace FluffGameApi.Services
             var user = await _userRepository.GetUserByUsername(loginInfoDto.Username);
 
             if (user == null)
-                return (false, "Usuario no existe", null);
+                return (false, "Usuario no existe.", null);
 
             bool match = BCrypt.Net.BCrypt.Verify(loginInfoDto.Password, user.PasswordHash);
 
             if (!match)
-                return (false, "Contraseña incorrecta", null);
+                return (false, "Contraseña incorrecta.", null);
 
             UserLoginDto userLoginDto = new()
             {
@@ -58,7 +40,7 @@ namespace FluffGameApi.Services
                 IdDifficulty = user.IdDifficulty
             };
 
-            return (true, "Login correcto", userLoginDto);
+            return (true, "Login correcto.", userLoginDto);
         }
 
         /// <summary>
@@ -67,24 +49,24 @@ namespace FluffGameApi.Services
         /// <param name="userId">Identificador del usuario en la tabla users</param>
         /// <param name="idDifficulty">Identificador de la dificultad preferida por el usuario</param>
         /// <returns>Si es satisfactorio, de devuelve el id del usuario creado</returns>
-        public async Task<(bool success, string message)> UpdatePreferences(int userId, int idDifficulty)
+        public async Task<(bool success, string message)> UpdatePreferences(UpdatePreferencesDto dto)
         {
             try
             {
-                await _userRepository.UpdatePreferences(userId, idDifficulty);
-                return (true, "Dificultad actualizada correctamente");
+                await _userRepository.UpdatePreferences(dto);
+                return (true, "Dificultad actualizada correctamente.");
             }
             catch (Exception ex)
             {
-                return (false, $"Error al actualizar la dificultad del usuario: {ex.Message}");
+                return (false, $"Error al actualizar la dificultad del usuario.");
             }
         }
 
-        public async Task<(bool success, string message, int idUsuario)> Register(RegisterDto newUserDto)
+        public async Task<(bool success, string message)> Register(RegisterDto newUserDto)
         {
             var existing = await _userRepository.GetByUsername(newUserDto.Username);
             if (existing != null)
-                return (false, "Ya existe el usuario", 0);
+                return (false, "Ya existe el usuario.");
 
             var user = new User
             {
@@ -99,8 +81,9 @@ namespace FluffGameApi.Services
                 LogTimestamp = DateTime.UtcNow
             };
 
-            int newId = await _userRepository.CreateUser(user);
-            return (true, "Usuario registrado correctamente", newId);
+            await _userRepository.CreateUser(user);
+
+            return (true, "Usuario registrado correctamente.");
         }
 
     }

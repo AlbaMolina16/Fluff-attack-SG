@@ -203,11 +203,10 @@ public class SettingsController : MonoBehaviour
 
     private async Task<bool> UpdatePreferences(int idDifficulty)
     {
-        var payload = new UpdatePreferencesRequest { idDifficulty = idDifficulty };
+        var payload = new UpdatePreferencesRequest { idUser = UserSession.Instance.User.id, idDifficulty = idDifficulty };
         var json = JsonUtility.ToJson(payload);
 
-        var userId = UserSession.Instance.User.id;
-        using var req = new UnityWebRequest($"{ApiConfig.User.Preferences}/{userId}", "PUT");
+        using var req = new UnityWebRequest($"{ApiConfig.User.Preferences}", "PUT");
         byte[] body = Encoding.UTF8.GetBytes(json);
         req.uploadHandler = new UploadHandlerRaw(body);
         req.downloadHandler = new DownloadHandlerBuffer();

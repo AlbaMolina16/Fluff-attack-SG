@@ -28,7 +28,7 @@ namespace FluffGameApi.Services
             }
             catch (Exception ex)
             {
-                return (false, $"Error obteniendo las puntuaciones: {ex.Message}", []);
+                return (false, $"Error obteniendo las puntuaciones.", []);
             }
         }
 
@@ -46,7 +46,7 @@ namespace FluffGameApi.Services
             }
             catch (Exception ex)
             {
-                return (false, $"Error al obtener la última puntuación: {ex.Message}", null);
+                return (false, $"Error al obtener la última puntuación.", null);
             }
         }
 
@@ -59,7 +59,7 @@ namespace FluffGameApi.Services
             }
             catch (Exception ex)
             {
-                return (false, $"Error al añadir la nueva puntuación: {ex.Message}");
+                return (false, $"Error al añadir la nueva puntuación.");
             }
         }
     }

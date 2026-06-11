@@ -63,6 +63,7 @@ public class UserPreferences
 [Serializable]
 public class UpdatePreferencesRequest
 {
+    public int idUser;
     public int idDifficulty;
 }
 

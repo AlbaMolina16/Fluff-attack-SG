@@ -18,17 +18,6 @@ namespace FluffGameApi.Repositories
         }
 
         /// <summary>
-        /// Obtiene todos los usuarios registrados en la base de datos. Devuelve una lista de objetos User con la informacion de cada usuario.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<User>> GetAll()
-        {
-            var users = await Connection.QueryAsync<User>("SELECT * FROM users");
-
-            return users.ToList();
-        }
-
-        /// <summary>
         /// Obtiene un usuario por su nickname
         /// </summary>
         /// <param name="username"></param>
@@ -74,7 +63,7 @@ namespace FluffGameApi.Repositories
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<int> CreateUser(User user)
+        public async Task CreateUser(User user)
         {
             using var connection = new MySqlConnection(_configuration.GetConnectionString("MySqlConnection"));
             await connection.OpenAsync();
@@ -110,7 +99,6 @@ namespace FluffGameApi.Repositories
                 }, transaction);
 
                 transaction.Commit();
-                return newUserId;
             }
             catch
             {
@@ -119,10 +107,10 @@ namespace FluffGameApi.Repositories
             }
         }
 
-        public async Task UpdatePreferences(int userId, int idDifficulty)
+        public async Task UpdatePreferences(UpdatePreferencesDto dto)
         {
             string sql = "UPDATE users SET IdDifficulty = @IdDifficulty WHERE Id = @Id";
-            await Connection.ExecuteAsync(sql, new { IdDifficulty = idDifficulty, Id = userId });
+            await Connection.ExecuteAsync(sql, new { dto.IdDifficulty, Id = dto.IdUser });
         }
 
     }

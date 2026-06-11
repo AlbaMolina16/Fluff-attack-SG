@@ -17,11 +17,11 @@ namespace FluffGameApi.Services
             try
             {
                 var difficulties = await _difficultyRepository.GetAll();
-                return (true, "Niveles de dificultad obtenidos correctamente", difficulties);
+                return (true, "Niveles de dificultad obtenidos correctamente.", difficulties);
             }
             catch (Exception ex)
             {
-                return (false, $"Error obteniendo los niveles de dificultad: {ex.Message}", []);
+                return (false, $"Error obteniendo los niveles de dificultad.", []);
             }
         }
     }
