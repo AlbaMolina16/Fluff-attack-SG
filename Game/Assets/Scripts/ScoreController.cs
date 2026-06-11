@@ -27,13 +27,19 @@ public class ScoreController : MonoBehaviour
     public TMP_Text yellowPointsText;
     public TMP_Text missingPointsText;
 
+    [Header("Loading")]
+    [SerializeField]
+    private GameObject loadingSpinner;
+    
     /// <summary>
     /// Al iniciar la escena, se cargan las puntuaciones más recientes y la última puntuación del usuario.
     /// </summary>
     private async void Start()
     {
+        loadingSpinner.SetActive(true);
         await LoadRecentScores();
         await LoadLastScore();
+        loadingSpinner.SetActive(false);
     }
 
     public async Task LoadRecentScores()

@@ -23,7 +23,6 @@ public class UserSession : MonoBehaviour
     /// </summary>
     public DifficultyOption[] Difficulties { get; private set; }
 
-
     private async void Start()
     {
         await LoadDifficulties();
