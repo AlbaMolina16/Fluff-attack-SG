@@ -99,6 +99,29 @@ public class AdaptiveDifficultyProvider : IDifficultyLevelProvider
     }
 
     /// <summary>
+    /// Selecciona la posicion de spawn sesgada hacia la zona de pantalla menos visitada por el jugador,
+    /// para forzar la movilidad de muneca. La probabilidad de usar la zona fria es configurable, de esta manera
+    /// mantendremos un poco el caos en la partida para no hacer predecible el comportamiento de las pelusas.
+    /// </summary>
+    public Vector2 SelectSpawnPosition(Vector2 min, Vector2 max)
+    {
+        var hm = HeatmapTracker.Instance;
+        // Selección de la posición de la pelusa teniendo en cuenta el mapa de accion del jugados
+        if (hm != null && Random.value < _config.coldZoneSpawnBias)
+        {
+            Vector2 coldCenter = hm.GetColdZoneCenter();
+            // Randomizar dentro de la celda para evitar patrones predecibles
+            float halfCellW = (max.x - min.x) / (_config.heatmapCols * 2f);
+            float halfCellH = (max.y - min.y) / (_config.heatmapRows * 2f);
+            float x = Mathf.Clamp(coldCenter.x + Random.Range(-halfCellW, halfCellW), min.x, max.x);
+            float y = Mathf.Clamp(coldCenter.y + Random.Range(-halfCellH, halfCellH), min.y, max.y);
+            return new Vector2(x, y);
+        }
+        // Selección aleatoria de la posición de la pelusa
+        return new Vector2(Random.Range(min.x, max.x), Random.Range(min.y, max.y));
+    }
+
+    /// <summary>
     /// Selecciona el indice de prefab de pelusa en función del peso que tiene asignado cada color
     /// </summary>
     public int SelectFluffIndex(int count)

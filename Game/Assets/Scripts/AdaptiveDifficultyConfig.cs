@@ -44,4 +44,13 @@ public class AdaptiveDifficultyConfig
     public float difficultyStep = 0.1f;
     [Tooltip("Minimo de shoots por color en la ventana para ajustar su sesgo de aparicion")]
     public int minColorAttemptsForBias = 3;
+
+    [Header("Mapa de calor - Movilidad de muneca")]
+    [Tooltip("Columnas de la cuadricula de calor (division horizontal de la pantalla)")]
+    public int heatmapCols = 4;
+    [Tooltip("Filas de la cuadricula de calor (division vertical de la pantalla)")]
+    public int heatmapRows = 4;
+    [Range(0f, 1f)]
+    [Tooltip("Probabilidad [0-1] de que una pelusa aparezca en la zona menos visitada para forzar movilidad")]
+    public float coldZoneSpawnBias = 0.6f;
 }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// Interfaz de acceso a DifficultyLevelProvider 
 /// </summary>
@@ -9,4 +11,5 @@ public interface IDifficultyLevelProvider
     float EnemyLifeTime { get; }
     DifficultyMovement SelectMovement();
     int SelectFluffIndex(int count);
+    Vector2 SelectSpawnPosition(Vector2 min, Vector2 max);
 }

@@ -55,8 +55,11 @@ public class FluffSpawner : MonoBehaviour
         _frequencyCount -= 1f;
 
         var movement = _provider.SelectMovement();
-        float x = Random.Range(LimitAreaGame.InstanceMinPantalla.x, LimitAreaGame.InstanceMaxPantalla.x);
-        float y = Random.Range(LimitAreaGame.InstanceMinPantalla.y, LimitAreaGame.InstanceMaxPantalla.y);
+        Vector2 spawnPos = _provider.SelectSpawnPosition(
+            LimitAreaGame.InstanceMinPantalla,
+            LimitAreaGame.InstanceMaxPantalla);
+        float x = spawnPos.x;
+        float y = spawnPos.y;
 
         int idx = _provider.SelectFluffIndex(fluffPrefabs.Length);
         var newFluff = Instantiate(fluffPrefabs[idx], new Vector3(x, y, 0), Quaternion.identity, fluffsContainer);

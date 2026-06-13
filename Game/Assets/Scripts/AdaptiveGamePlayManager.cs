@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 
 /// <summary>
 /// Maneja la partida en modo AUTOADAPTATIVO de juego
-/// Separado de GamePlayManager para no afectar la logica de dificultades fijas.
 /// </summary>
 public class AdaptiveGamePlayManager : MonoBehaviour
 {
@@ -66,6 +65,8 @@ public class AdaptiveGamePlayManager : MonoBehaviour
     private void StartAdaptiveGame()
     {
         _adaptiveProvider = new AdaptiveDifficultyProvider(adaptiveConfig);
+
+        HeatmapTracker.Instance.Initialize(adaptiveConfig.heatmapCols, adaptiveConfig.heatmapRows);
 
         EnablePointer(true);
         instructionsPanel.SetActive(false);

@@ -57,6 +57,7 @@ public class PointerShooter : MonoBehaviour
                 if (find != null)
                 {
                     FluffsInPointer.Remove(find);
+                    HeatmapTracker.Instance.RegisterHit(find.transform.position);
                     Destroy(find.gameObject);
                     ScoreManager.Instance.AddOrSubstractPoints(true, find.GetComponent<Fluff>().type);
                     SoundManager.Instance.PlaySound(shootAudio);

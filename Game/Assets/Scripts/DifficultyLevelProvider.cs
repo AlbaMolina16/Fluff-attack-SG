@@ -26,6 +26,13 @@ public class DifficultyLevelProvider : IDifficultyLevelProvider
     public int SelectFluffIndex(int count) => Random.Range(0, count);
 
     /// <summary>
+    /// Devuelve la posicion de mundo donde debe aparecer la siguiente pelusa.
+    /// Los parametros min/max definen los limites del area de juego.
+    /// </summary>
+    public Vector2 SelectSpawnPosition(Vector2 min, Vector2 max) =>
+        new(Random.Range(min.x, max.x), Random.Range(min.y, max.y));
+
+    /// <summary>
     /// Devuelve el tipo de movimiento que se le asignara a la pelusa en funcion de la probabilidad acumulada 
     /// </summary>
     public DifficultyMovement SelectMovement()
